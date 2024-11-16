@@ -1,0 +1,63 @@
+// Establece la conexi n
+        Connection con = DriverManager.getConnection ("jdbc:odbc:miBD", 
+                    "miLogin", "miPassword" );
+
+        // Ejecuta la consulta
+        Statement stmt = (Statement) con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT nombre, edad FROM Empleados");
+
+        // Procesa los resultados
+        while (rs.next()) {
+               String nombre = rs.getString("nombre");
+               int edad = rs.getInt("edad");
+        }
+
+/*----------------------------------------------------------------------------------*/
+
+// Crear tabla en MySQL.
+delimiter $$
+
+CREATE TABLE `clientes` (
+  `Cod_Cliente` int(3) NOT NULL DEFAULT '0',
+  `Nombre` tinytext,
+  `Telefono` tinytext,
+  PRIMARY KEY (`Cod_Cliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+
+/*----------------------------------------------------------------------------------*/
+
+// DDL rutina insertar cliente
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertaCliente`(IN Cod_Cliente INTEGER, IN Nombre TinyText,IN Telefono TinyText )
+BEGIN
+INSERT INTO clientes
+	VALUES (Cod_Cliente,
+		Nombre,
+		Telefono);
+
+END
+
+/*----------------------------------------------------------------------------------*/
+
+Estructura usada para recoger excepciones
+
+try {
+              // Bloque de instrucciones del try
+            
+            }catch (FileNotFoundException fnfe){
+              // Bloque para excepci n por fichero no encontrado
+                
+            }catch(IOException ioe){
+              // Bloque para excepci n por error de entrada salida
+                
+            }catch(SQLException sqle){
+              // Bloque para excepci n por error con SQL
+            }catch(Exception e){
+
+            }finally{
+             //Instrucciones finales para, por ejemplo, limpieza
+            }

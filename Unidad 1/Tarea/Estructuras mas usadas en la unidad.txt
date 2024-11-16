@@ -1,0 +1,30 @@
+File f= new File("C://users//Andres//prueba"); // descriptor de la ruta
+f.getName(); // nombre del archivo
+f.getPath(); // ruta relativa
+f.getAbsolutePath(); // ruta absoluta
+f.canWrite(); // se puede escribir en el archivo
+f.canRead(); // se puede leer el archivo
+f.lenght(); // tamaño de mi archivo
+f.isFile(); // es un archivo
+f.isDirectory(); // es un directorio
+f.list(); // lista el contenido del directorio
+f.exists();
+f.mkdir(); crea solo un directorio o un archivo, devulve true o false si lo hizo
+f.mkdirs(); crea todos los directorios necesarios
+File fichero= new File("C://users//Andres//prueba//prueba.txt"); // descriptor del archivo pero no lo crea todavía
+FileWriter fw= new FileWriter(fichero); // crea el fichero, puede lanzar excepción
+fw.write("cadena"); // escribe el texto en el archivo
+fw.append("."); // escribe al final del archivo
+fw.close(); // cerrar siempre el fichero al final
+
+FileInputStream y Scanner para leer archivos (while/hasNextLine y nextLine)
+
+controlar excepciones System.error
+
+Lectura de archivos binarios .dat:
+Comprobar que hay mas datos while(dataInputStream.available()>0)
+FileInputStream y DataInputStream, readUTF(), readInt(), readBoolean()
+
+Escritura de archivos binarios .dat:
+FileOutputStream y DataOutputStream, writeUTF(). writeInt(), writeBoolean()
+
