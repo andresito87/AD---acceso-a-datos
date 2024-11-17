@@ -47,7 +47,7 @@ public class AD02_Ej03_PodaderaGonzalezAndresSamuel {
         try {
             // establece la conexion
             conexionDB = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3306/" + nombreDB, username, password);
+                    .getConnection("jdbc:mysql://localhost:3307/" + nombreDB, username, password);
             System.out.println("Conexion a la base de datos realizada correctamente");
 
             // ejecutar el primer procedimiento
