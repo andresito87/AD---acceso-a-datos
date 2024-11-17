@@ -44,7 +44,7 @@ import java.sql.PreparedStatement;
  * @author ANDRES SAMUEL PODADERA GONZALEZ
  * <p>
  * Desarrollo de aplicaciones multiplataforma - Acceso a datos - 2024/2025
- * </P>
+ * </p>
  */
 public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
 
@@ -90,7 +90,7 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
                 try {
                     conexionDB.close();
                 } catch (SQLException ex) {
-                    System.out.println("Error al cerrar la conexión a la base de datos");
+                    System.out.println("Error al cerrar la conexión a la base de datos." + ex.getMessage());
                 }
             }
         }
@@ -136,8 +136,7 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
                         apellidos);
             }
         } catch (SQLException ex) {
-            System.out.println("Error al realizar la primera consulta a la base de datos");
-            System.out.println(ex.getMessage());
+            System.out.println("Error al realizar la primera consulta a la base de datos. "+ ex.getMessage());
         } finally {
             // cierra el ResultSet y el Statement
             try {
@@ -187,8 +186,7 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
                         numeroTrabajadores);
             }
         } catch (SQLException ex) {
-            System.out.println("Error al realizar la segunda consulta a la base de datos");
-            System.out.println(ex.getMessage());
+            System.out.println("Error al realizar la segunda consulta a la base de datos. "+ ex.getMessage());
         } finally {
             // cierra el ResultSet y el Statement
             try {
@@ -240,8 +238,7 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
                 System.out.println("No se encontró información para el código de guardería especificado.");
             }
         } catch (SQLException ex) {
-            System.out.println("Error al realizar la tercera consulta a la base de datos");
-            System.out.println(ex.getMessage());
+            System.out.println("Error al realizar la tercera consulta a la base de datos. " + ex.getMessage());
         } finally {
             // cierra el ResultSet y el Statement
             try {
