@@ -1,3 +1,8 @@
+-- Alumno: Andrés Samuel Podadera González
+-- Ciclo: Desarrollo de aplicaciones multiplataforma
+-- Módulo: Acceso a datos
+-- Curso: 2024/2025
+-- Prodecimento 1: Este procedimiento obtiene la cantidad de guarderías que superan un límite de capacidad dado.
 use centroseducacioninfantil;
 DELIMITER //
 CREATE PROCEDURE Guarderias_Con_Maxima_Capacidad(
@@ -7,6 +12,6 @@ CREATE PROCEDURE Guarderias_Con_Maxima_Capacidad(
 BEGIN
 	SELECT count(*) INTO cantidadGuarderias
     FROM guarderia
-    where capacidad > capacidadLimite;
+    WHERE capacidad > capacidadLimite;
 END //
 DELIMITER ;

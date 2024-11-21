@@ -1,3 +1,8 @@
+-- Alumno: Andrés Samuel Podadera González
+-- Ciclo: Desarrollo de aplicaciones multiplataforma
+-- Módulo: Acceso a datos
+-- Curso: 2024/2025
+-- Prodecimento 3: Este procedimiento incrementa el salario de los educadores de una guardería en un porcentaje dado.
 use centroseducacioninfantil;
 DELIMITER //
 CREATE PROCEDURE Incremento_Salarial_Porcentaje(
