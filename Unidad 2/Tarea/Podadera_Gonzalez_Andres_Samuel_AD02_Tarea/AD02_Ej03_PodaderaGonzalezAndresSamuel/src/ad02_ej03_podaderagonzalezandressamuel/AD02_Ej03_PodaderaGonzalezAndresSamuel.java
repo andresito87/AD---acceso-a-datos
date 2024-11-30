@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Scanner;
 
 /**
  *
@@ -80,19 +81,127 @@ public class AD02_Ej03_PodaderaGonzalezAndresSamuel {
                     .getConnection("jdbc:mysql://localhost:3307/" + nombreDB, username, password);
             //System.out.println("**Conexion a la base de datos realizada correctamente**");
 
-            // ejecutar el primer procedimiento
-            int capacidadMaxima = 50;
-            ejecutarPrimerProcedimiento(conexionDB, capacidadMaxima);
+            // menu de opciones
+            Scanner sc = new Scanner(System.in);
+            int opcion = 0;
+            do {
+                System.out.println("\n**** Elige uno de los siguientes prodecimientos almacenados o pulsa 4 para salir: ****");
+                System.out.println("1.- Procedimiento que recupera el número de guarderías que superan una capacidad maxima solicitada:");
+                System.out.println("2.- Procedimiento que recupera el listado de educadores con un rango salarial entre dos extremos solicitados:");
+                System.out.println("3.- Procedimiento que aumenta el salario de todos los trabajadores de una guardería con un codigo solicitado:");
+                System.out.println("4.- Salir");
+                System.out.print("Opcion seleccionada: ");
 
-            // ejecutar el segundo procedimiento
-            int minIntervalo = 36000;
-            int maxIntervalo = 42000;
-            ejecutarSegundoProcedimiento(conexionDB, minIntervalo, maxIntervalo);
+                if (sc.hasNextInt()) {
+                    opcion = sc.nextInt();
+                    sc.nextLine(); // Limpia el buffer después de leer el número
+                } else {
+                    System.out.println("Por favor, introduce un número válido.");
+                    sc.nextLine(); // limpia el buffer si la entrada no es válida
+                    continue;
+                }
 
-            // ejecutar el tercer procedimiento
-            String codigoGuarderia = "CDE03";
-            int porcentajeAumento = 15;
-            ejecutarTercerProcedimiento(conexionDB, codigoGuarderia, porcentajeAumento);
+                switch (opcion) {
+                    case 1:
+                        int capacidadMaxima = 0;
+                        boolean hayCapacidadMaxima = false;
+                        
+                        do {
+                            System.out.print("Introduzca la capacidad maxima de la guardería (Ejemplo: 50): ");
+                            if (sc.hasNextInt()) {
+                                capacidadMaxima = sc.nextInt();
+                                hayCapacidadMaxima = true;
+                                sc.nextLine(); // limpia el buffer después de leer el número
+                            } else {
+                                System.out.println("Por favor, introduce un número válido.");
+                                sc.nextLine(); // limpia el buffer si la entrada no es válida
+                            }
+                        } while (!hayCapacidadMaxima);
+
+                        // ejecutar el primer procedimiento
+                        ejecutarPrimerProcedimiento(conexionDB, capacidadMaxima);
+                        break;
+
+                    case 2:
+                        int minIntervalo = 0;
+                        int maxIntervalo = 0;
+
+                        // solicitar el valor mínimo del intervalo
+                        boolean intervaloValido = false;
+                        do {
+                            System.out.print("Introduzca el valor mínimo del intervalo (Ejemplo: 36000): ");
+                            if (sc.hasNextInt()) {
+                                minIntervalo = sc.nextInt();
+                                sc.nextLine(); // limpia el buffer después de leer el número
+                                intervaloValido = true;
+                            } else {
+                                System.out.println("Por favor, introduce un número válido.");
+                                sc.nextLine(); // limpia el buffer para evitar un ciclo infinito
+                            }
+                        } while (!intervaloValido);
+
+                        // solicitar el valor máximo del intervalo
+                        intervaloValido = false;
+                        do {
+
+                            System.out.print("Introduzca el valor máximo del intervalo (Ejemplo: 42000): ");
+                            if (sc.hasNextInt()) {
+                                maxIntervalo = sc.nextInt();
+                                sc.nextLine(); // limpia el buffer después de leer el número
+                                if (maxIntervalo > minIntervalo) {
+                                    intervaloValido = true;
+                                } else {
+                                    System.out.println("El valor máximo debe ser mayor que el valor mínimo. Intente de nuevo.");
+                                }
+                            } else {
+                                System.out.println("Por favor, introduce un número válido.");
+                                sc.nextLine(); // limpia el buffer para evitar un ciclo infinito
+                            }
+                        } while (!intervaloValido);
+
+                        // ejecutar el segundo procedimiento
+                        ejecutarSegundoProcedimiento(conexionDB, minIntervalo, maxIntervalo);
+                        break;
+
+                    case 3:
+                        // solicitar el código de la guardería
+                        System.out.print("Introduzca el código de una guardería (Ejemplo: CDE03): ");
+                        String codigoGuarderia = sc.nextLine();
+
+                        // Solicitar el porcentaje de aumento
+                        int porcentajeAumento = 0;
+                        boolean porcentajeValido = false;
+                        do {
+                            System.out.print("Introduzca el porcentaje de aumento salarial (Ejemplo: 15): ");
+                            if (sc.hasNextInt()) {
+                                porcentajeAumento = sc.nextInt();
+                                sc.nextLine(); // limpia el buffer después de leer el número
+                                if (porcentajeAumento > 0) {
+                                    porcentajeValido = true;
+                                } else {
+                                    System.out.println("El porcentaje debe ser un número positivo. Intente de nuevo.");
+                                }
+                            } else {
+                                System.out.println("Por favor, introduce un número válido.");
+                                sc.nextLine(); // limpia el buffer para evitar un ciclo infinito
+                            }
+                        } while (!porcentajeValido);
+                        
+                        // ejecutar el tercer procedimiento con los valores ingresados
+                        ejecutarTercerProcedimiento(conexionDB, codigoGuarderia, porcentajeAumento);
+                        break;
+
+                    default:
+                        if (opcion != 4) {
+                            System.out.println("Opción invalida, vuelva a intentarlo");
+                        } else {
+                            System.out.println("Saliendo...");
+                        }
+                }
+
+            } while (opcion != 4);
+
+            sc.close();
 
         } catch (SQLException ex) {
             System.out.println("Error de conexión a la base de datos");

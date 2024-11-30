@@ -24,6 +24,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.util.Scanner;
 
 /**
  * Este programa establece conexión con una base de datos MySQL llamada
@@ -71,17 +72,58 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
                     .getConnection("jdbc:mysql://localhost:3307/" + nombreDB, username, password);
             //System.out.println("Conexion a la base de datos realizada correctamente");
 
-            // ejecutar la primera sentencia y mostrar resultado
-            String nombreGuarderia = "Centro Aventura";
-            ejecutarPrimeraConsulta(conexionDB, nombreGuarderia);
+            // menu de opciones
+            Scanner sc = new Scanner(System.in);
+            int opcion = 0;
+            do {
+                System.out.println("\n**** Elige una de las siguientes consultas o pulsa 4 para salir: ****");
+                System.out.println("1.- Consulta el listado de trabajadores de una guarderia:");
+                System.out.println("2.- Consulta el número de trabajadores de una guardería:");
+                System.out.println("3.- Consulta la cantidad de dinero gastada en los trabajadores de una guardería:");
+                System.out.println("4.- Salir");
+                System.out.print("Opcion seleccionada: ");
 
-            // ejecutar la segunda sentencia y mostrar el resultado
-            ejecutarSegundaConsulta(conexionDB);
+                if (sc.hasNextInt()) {
+                    opcion = sc.nextInt();
+                    sc.nextLine(); // Limpia el buffer después de leer el número
+                } else {
+                    System.out.println("Por favor, introduce un número válido.");
+                    sc.nextLine(); // Limpia el buffer si la entrada no es válida
+                    continue;
+                }
 
-            // ejecutar la tercera sentencia y mostrar el resultado
-            String codigoGuarderia = "ABC01";
-            ejecutarTerceraConsulta(conexionDB, codigoGuarderia);
+                switch (opcion) {
+                    case 1:
+                        System.out.println("Introduzca el nombre de una guardería: (Ejemplo: Centro Aventura)");
+                        String nombreGuarderia = sc.nextLine();
 
+                        // ejecutar la primera sentencia y mostrar resultado
+                        ejecutarPrimeraConsulta(conexionDB, nombreGuarderia);
+                        break;
+
+                    case 2:
+                        // ejecutar la segunda sentencia y mostrar el resultado
+                        ejecutarSegundaConsulta(conexionDB);
+                        break;
+
+                    case 3:
+                        System.out.println("Introduzca el código de una guardería: (Ejemplo: ABC01)");
+                        String codigoGuarderia = sc.nextLine();
+
+                        // ejecutar la tercera sentencia y mostrar el resultado
+                        ejecutarTerceraConsulta(conexionDB, codigoGuarderia);
+                        break;
+
+                    default:
+                        if (opcion != 4) {
+                            System.out.println("Opción invalida, vuelva a intentarlo");
+                        } else {
+                            System.out.println("Saliendo...");
+                        }
+                }
+
+            } while (opcion != 4);
+            sc.close();
         } catch (SQLException ex) {
             System.out.println("Error de conexión a la base de datos");
         } finally {
@@ -125,7 +167,9 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
 
             // procesa los resultados
             System.out.println("*** CONSULTA 1: LISTADO DE TRABAJADORES DE GUARDERIA - " + nombreGuarderia + " ***");
+            boolean hayResultados = false;
             while (rs.next()) {
+                hayResultados = true;
                 String dni = rs.getString("dni");
                 String nombre = rs.getString("nombre");
                 String apellidos = rs.getString("apellidos");
@@ -135,8 +179,12 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
                         nombre,
                         apellidos);
             }
+            
+            if(!hayResultados){
+                System.out.println("No se encontraron trabajadores para la guardería especificada.");
+            }
         } catch (SQLException ex) {
-            System.out.println("Error al realizar la primera consulta a la base de datos. "+ ex.getMessage());
+            System.out.println("Error al realizar la primera consulta a la base de datos. " + ex.getMessage());
         } finally {
             // cierra el ResultSet y el Statement
             try {
@@ -186,7 +234,7 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
                         numeroTrabajadores);
             }
         } catch (SQLException ex) {
-            System.out.println("Error al realizar la segunda consulta a la base de datos. "+ ex.getMessage());
+            System.out.println("Error al realizar la segunda consulta a la base de datos. " + ex.getMessage());
         } finally {
             // cierra el ResultSet y el Statement
             try {
