@@ -19,6 +19,7 @@ package ad02_ej02_podaderagonzalezandressamuel;
  * así como el cierre de recursos utilizados de forma adecuada si la aplicación
  * dejara de funcionar (usa la sentencia try-catch-finally o equivalente).
  */
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -125,7 +126,7 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
             } while (opcion != 4);
             sc.close();
         } catch (SQLException ex) {
-            System.out.println("Error de conexión a la base de datos");
+            System.out.println("Error de conexión a la base de datos. " + ex.getMessage());
         } finally {
             // si la conexion esta creada, la cerramos
             if (conexionDB != null) {
@@ -179,8 +180,8 @@ public class AD02_Ej02_PodaderaGonzalezAndresSamuel {
                         nombre,
                         apellidos);
             }
-            
-            if(!hayResultados){
+
+            if (!hayResultados) {
                 System.out.println("No se encontraron trabajadores para la guardería especificada.");
             }
         } catch (SQLException ex) {
