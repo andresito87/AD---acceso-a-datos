@@ -1,10 +1,9 @@
 package view;
 
 import controller.EstudianteController;
+import controller.UniversidadController;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -14,6 +13,7 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.table.DefaultTableModel;
 import model.dto.RespuestaDTO;
 import model.entity.Estudiante;
+import model.entity.Universidad;
 
 /**
  *
@@ -92,6 +92,11 @@ public class EstudianteDialog extends javax.swing.JDialog {
 
         menuItemEliminar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         menuItemEliminar.setText("eliminar");
+        menuItemEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menuItemEliminarMousePressed(evt);
+            }
+        });
         popupMenuTablaEstudiantes.add(menuItemEliminar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -107,7 +112,7 @@ public class EstudianteDialog extends javax.swing.JDialog {
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "NIF", "Nombre", "Apellidos", "Fecha naciemiento", "Direccion", "Provincia", "Importe Matricula", "Becado", "Codigo Universidad"
+                "NIF", "Nombre", "Apellidos", "Fecha naciemiento", "Direccion", "Provincia", "Importe Matricula", "Becado", "Universidad"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -282,11 +287,28 @@ public class EstudianteDialog extends javax.swing.JDialog {
     private void botonGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonGuardarMouseClicked
 
         String nif = this.campoNif.getText();
+        String nombre = this.campoNombre.getText();
+        String apellidos = this.campoApellidos.getText();
+        Date fechaNacimiento = (Date) this.spinnerFechaNac.getValue();
+        String direccion = this.campoDireccion.getText();
+        String provincia = this.campoProvincia.getText();
+        String importeMatricula = this.campoImporteMat.getText();
+        boolean esBecado = this.checkboxBecado.isSelected();
+        String codUniversidad = this.campoCodigoUni.getText();
+        Universidad universidad = UniversidadController.obtener(codUniversidad);
 
         if (nif != null && !nif.trim().isEmpty()) {
 
             Estudiante nuevoEstudiante = new Estudiante();
             nuevoEstudiante.setNif(nif);
+            nuevoEstudiante.setNombre(nombre);
+            nuevoEstudiante.setApellidos(apellidos);
+            nuevoEstudiante.setFechaNacimiento(fechaNacimiento);
+            nuevoEstudiante.setDireccion(direccion);
+            nuevoEstudiante.setProvincia(provincia);
+            nuevoEstudiante.setImporteMatricula(Float.parseFloat(importeMatricula));
+            nuevoEstudiante.setBecado(esBecado);
+            nuevoEstudiante.setUniversidad(universidad);
 
             // compruebo si quiere actualizar
             if (esOperacionActalizacion) {
@@ -343,7 +365,7 @@ public class EstudianteDialog extends javax.swing.JDialog {
         this.campoNif.setText(valor1.toString());
         this.campoNombre.setText(valor2.toString());
         this.campoApellidos.setText(valor3.toString());
-        
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
             // Convertir el String a Date
@@ -355,7 +377,7 @@ public class EstudianteDialog extends javax.swing.JDialog {
         } catch (ParseException e) {
             System.out.println("Error al convertir la fecha: " + e.getMessage());
         }
-        
+
         this.campoDireccion.setText(valor5.toString());
         this.campoProvincia.setText(valor6.toString());
         this.campoImporteMat.setText(valor7.toString());
@@ -365,6 +387,43 @@ public class EstudianteDialog extends javax.swing.JDialog {
         this.cargarEstudiantes(this.codigoUniversidad);
 
     }//GEN-LAST:event_menuItemModificarMousePressed
+
+    private void menuItemEliminarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemEliminarMousePressed
+
+        // Comprobar si hay una fila seleccionada
+        if (!hayFilaSeleccionada()) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una fila primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener la fila seleccionada
+        int filaSeleccionada = tablaEstudiantes.getSelectedRow();
+
+        // Extraer los valores de la fila seleccionada
+        String nifEstudiante = tablaEstudiantes.getValueAt(filaSeleccionada, 0).toString(); // nif (ID)
+
+        // Confirmar la eliminación
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que quieres eliminar el estudiante \"" + tablaEstudiantes.getValueAt(filaSeleccionada, 1).toString() + "\"?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            // Eliminar el estudiante de la base de datos
+            RespuestaDTO respuesta = eliminar(nifEstudiante);
+
+            if (respuesta.isSuccess()) {
+                // Eliminar la fila de la JTable
+                DefaultTableModel model = (DefaultTableModel) tablaEstudiantes.getModel();
+                model.removeRow(filaSeleccionada);
+
+                JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+
+    }//GEN-LAST:event_menuItemEliminarMousePressed
 
     /**
      * @param args the command line arguments
@@ -530,13 +589,13 @@ public class EstudianteDialog extends javax.swing.JDialog {
 
         this.colocarFechaDeNacimiento();
     }
-    
-     private RespuestaDTO agregar(Estudiante nuevoEstudiante) {
+
+    private RespuestaDTO agregar(Estudiante nuevoEstudiante) {
         return EstudianteController.agregarNuevo(nuevoEstudiante);
     }
 
-    private RespuestaDTO eliminar(Estudiante estudiante) {
-        return EstudianteController.eliminar(estudiante);
+    private RespuestaDTO eliminar(String nifEstudiante) {
+        return EstudianteController.eliminar(nifEstudiante);
     }
 
     private RespuestaDTO modificar(Estudiante estudiante) {

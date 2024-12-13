@@ -302,27 +302,18 @@ public class UniversidadDialog extends javax.swing.JDialog {
         int filaSeleccionada = tablaUniversidades.getSelectedRow();
 
         // Extraer los valores de la fila seleccionada
-        Object valor1 = tablaUniversidades.getValueAt(filaSeleccionada, 0); // Código (ID)
-        Object valor2 = tablaUniversidades.getValueAt(filaSeleccionada, 1); // Nombre
-        Object valor3 = tablaUniversidades.getValueAt(filaSeleccionada, 2); // Provincia
-        Object valor4 = tablaUniversidades.getValueAt(filaSeleccionada, 3); // Privada (true/false)
+        String codigoUniversidad = tablaUniversidades.getValueAt(filaSeleccionada, 0).toString(); // Código (ID)
 
-        // Crear una instancia de Universidad usando los valores de la tabla
-        Universidad universidad = new Universidad();
-        universidad.setCodigo((Integer) valor1); // La columna 0 debe ser el ID (código)
-        universidad.setNombre((String) valor2);  // La columna 1 es el nombre
-        universidad.setProvinciaUni((String) valor3); // La columna 2 es la provincia
-        universidad.setPrivada(!(valor4 == "No")); // La columna 3 es si es privada o pública
 
         // Confirmar la eliminación
         int confirmacion = JOptionPane.showConfirmDialog(this,
-                "¿Estás seguro de que quieres eliminar la universidad \"" + universidad.getNombre() + "\"?",
+                "¿Estás seguro de que quieres eliminar la universidad \"" + tablaUniversidades.getValueAt(filaSeleccionada, 1).toString() + "\"?",
                 "Confirmación",
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             // Eliminar la universidad de la base de datos
-            RespuestaDTO respuesta = eliminar(universidad);
+            RespuestaDTO respuesta = eliminar(codigoUniversidad);
 
             if (respuesta.isSuccess()) {
                 // Eliminar la fila de la JTable
@@ -449,8 +440,8 @@ public class UniversidadDialog extends javax.swing.JDialog {
         return UniversidadController.agregarNueva(nuevaUniversidad);
     }
 
-    private RespuestaDTO eliminar(Universidad universidad) {
-        return UniversidadController.eliminar(universidad);
+    private RespuestaDTO eliminar(String codigoUniversidad) {
+        return UniversidadController.eliminar(codigoUniversidad);
     }
 
     private RespuestaDTO modificar(Universidad universidad) {

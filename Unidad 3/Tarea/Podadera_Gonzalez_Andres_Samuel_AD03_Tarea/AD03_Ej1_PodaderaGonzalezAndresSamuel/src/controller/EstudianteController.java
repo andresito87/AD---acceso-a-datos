@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import model.dto.RespuestaDTO;
 import model.entity.Estudiante;
+import model.hibernate.HibernateUtil;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -16,30 +16,11 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class EstudianteController {
 
-    // Singleton: SessionFactory solo se crea una vez
-    private static SessionFactory sessionFactory;
-
-    // Método para inicializar SessionFactory de forma segura y eficiente (patrón Singleton)
-    private static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            try {
-                sessionFactory = new Configuration()
-                        .configure(UniversidadController.class.getClassLoader().getResource("model/hibernate/hibernate.cfg.xml"))
-                        .buildSessionFactory();
-
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> cerrarSessionFactory())); // permite cerrar la session automaticamente
-            } catch (Exception e) {
-                System.err.println("Error al crear SessionFactory: " + e.getMessage());
-            }
-        }
-        return sessionFactory;
-    }
-
     public static List<Estudiante> listarTodos() {
         List<Estudiante> listaEstudiantes = new ArrayList<>();
         Session session = null;
         try {
-            session = getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             listaEstudiantes = session.createQuery("FROM Estudiante").list();
         } catch (Exception e) {
             System.out.println("Error al listar todos los estudiantes." + e.getMessage());
@@ -64,7 +45,7 @@ public class EstudianteController {
         List<Estudiante> listaEstudiantes = new ArrayList<>();
         Session session = null;
         try {
-            session = getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
 
             // JOIN FETCH carga de inmediato la universidad y evita problemas con el lazyloading o carga retardada de hibernate 
             listaEstudiantes = session.createQuery(
@@ -96,7 +77,7 @@ public class EstudianteController {
 
         try {
             // abrir la sesión
-            session = getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
 
             // iniciar la transacción
             transaction = session.beginTransaction();
@@ -150,16 +131,19 @@ public class EstudianteController {
     /**
      * Elimina un Estudiante de la base de datos.
      *
-     * @param estudiante El estudiante que se va a eliminar.
+     * @param nifEstudiante El nif del estudiante que se va a eliminar.
      */
-    public static RespuestaDTO eliminar(Estudiante estudiante) {
+    public static RespuestaDTO eliminar(String nifEstudiante) {
         Session session = null;
         Transaction transaction = null;
         RespuestaDTO respuesta = new RespuestaDTO(false, "");
 
         try {
             // abrir la sesión
-            session = getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            // obtener estudiante de la base de datos
+            Estudiante estudiante = EstudianteController.obtener(nifEstudiante);
 
             // iniciar la transacción
             transaction = session.beginTransaction();
@@ -209,7 +193,7 @@ public class EstudianteController {
 
         try {
             // abrir la sesión
-            session = getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
 
             // iniciar la transacción
             transaction = session.beginTransaction();
@@ -261,14 +245,43 @@ public class EstudianteController {
     }
 
     /**
-     * Cierra la SessionFactory para liberar todos los recursos de Hibernate.
-     * Este método debe llamarse al finalizar la aplicación.
+     * Devuelve una Universidad de la base de datos.
+     *
+     * @param nifEstudiante Nif del estudiante que va a devolver.
      */
-    public static void cerrarSessionFactory() {
-        if (sessionFactory != null && !sessionFactory.isClosed()) {
-            sessionFactory.close();
-            System.out.println("SessionFactory Estudiantes cerrado correctamente.");
-        }
-    }
+    public static Estudiante obtener(String nifEstudiante) {
+        Session session = null;
+        Estudiante estudiante = null;
 
+        try {
+            // Abrir la sesión de Hibernate
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            // Obtener la universidad usando el código proporcionado
+            estudiante = (Estudiante) session.get(Estudiante.class, nifEstudiante);
+
+            // Validar si la universidad existe
+            if (estudiante == null) {
+                System.err.println("No se encontró el estudiante con el nif: " + nifEstudiante);
+            } else {
+                System.out.println("Estudiante encontrado: " + estudiante.getNif());
+            }
+
+        } catch (HibernateException e) {
+            System.err.println("Error de Hibernate: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error general: " + e.getMessage());
+        } finally {
+            // Cerrar la sesión de forma segura
+            if (session != null && session.isOpen()) {
+                try {
+                    session.close();
+                } catch (Exception e) {
+                    System.err.println("Error al cerrar la sesión: " + e.getMessage());
+                }
+            }
+        }
+
+        return estudiante;
+    }
 }

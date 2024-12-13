@@ -5,10 +5,10 @@ import java.util.List;
 import model.dto.RespuestaDTO;
 import model.entity.Estudiante;
 import model.entity.Universidad;
+import model.hibernate.HibernateUtil;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -16,25 +16,6 @@ import org.hibernate.exception.ConstraintViolationException;
  * @author ANDRES SAMUEL PODADERA GONZALEZ
  */
 public class UniversidadController {
-
-    // Singleton: SessionFactory solo se crea una vez
-    private static SessionFactory sessionFactory;
-
-    // Método para inicializar SessionFactory de forma segura y eficiente (patrón Singleton)
-    private static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            try {
-                sessionFactory = new Configuration()
-                        .configure(UniversidadController.class.getClassLoader().getResource("model/hibernate/hibernate.cfg.xml"))
-                        .buildSessionFactory();
-
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> cerrarSessionFactory())); // permite cerrar la session automaticamente
-            } catch (Exception e) {
-                System.err.println("Error al crear SessionFactory: " + e.getMessage());
-            }
-        }
-        return sessionFactory;
-    }
 
     /**
      * Obtiene una lista con todas las universidades.
@@ -45,7 +26,7 @@ public class UniversidadController {
         List<Universidad> listaUniversidades = new ArrayList<>();
         Session session = null; // Declarar la sesión fuera del try-catch
         try {
-            session = getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             listaUniversidades = session.createQuery("FROM Universidad").list();
         } catch (Exception e) {
             System.err.println("Error al obtener la lista de universidades: " + e.getMessage());
@@ -69,7 +50,7 @@ public class UniversidadController {
 
         try {
             // abrir la sesión
-            session = getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
 
             // iniciar la transacción
             transaction = session.beginTransaction();
@@ -123,22 +104,22 @@ public class UniversidadController {
     /**
      * Elimina una Universidad de la base de datos.
      *
-     * @param universidad La universidad que se va a eliminar.
+     * @param codigoUniversidad El codigo de la universidad que se va a eliminar
      */
-    public static RespuestaDTO eliminar(Universidad universidad) {
+    public static RespuestaDTO eliminar(String codigoUniversidad) {
         Session session = null;
         Transaction transaction = null;
         RespuestaDTO respuesta = new RespuestaDTO(false, "");
 
         try {
             // abrir la sesión
-            session = getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
 
             // iniciar la transacción
             transaction = session.beginTransaction();
 
             // comprobar si la universidad tiene estudiantes
-            List<Estudiante> estudiantes = EstudianteController.listarPorCodigoUniversidad(universidad.getCodigo());
+            List<Estudiante> estudiantes = EstudianteController.listarPorCodigoUniversidad(Integer.parseInt(codigoUniversidad));
 
             if (!estudiantes.isEmpty()) {
 
@@ -147,6 +128,8 @@ public class UniversidadController {
                 respuesta.setMessage("No se puede eliminar la universidad porque tiene " + estudiantes.size() + " estudiantes matriculados.");
 
             } else {
+                // obtego la universidad
+                Universidad universidad= UniversidadController.obtener(codigoUniversidad);
 
                 // eliminar la universidad
                 session.delete(universidad);
@@ -194,7 +177,7 @@ public class UniversidadController {
 
         try {
             // abrir la sesión
-            session = getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
 
             // iniciar la transacción
             transaction = session.beginTransaction();
@@ -246,14 +229,44 @@ public class UniversidadController {
     }
 
     /**
-     * Cierra la SessionFactory para liberar todos los recursos de Hibernate.
-     * Este método debe llamarse al finalizar la aplicación.
+     * Devuelve una Universidad de la base de datos.
+     *
+     * @param codigoUniveridad Codigo de la universidad que va a devolver.
      */
-    public static void cerrarSessionFactory() {
-        if (sessionFactory != null && !sessionFactory.isClosed()) {
-            sessionFactory.close();
-            System.out.println("SessionFactory Universidades cerrado correctamente.");
+    public static Universidad obtener(String codigoUniversidad) {
+        Session session = null;
+        Universidad universidad = null;
+
+        try {
+            // Abrir la sesión de Hibernate
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            // Obtener la universidad usando el código proporcionado
+            universidad = (Universidad)session.get(Universidad.class, Integer.parseInt(codigoUniversidad));
+
+            // Validar si la universidad existe
+            if (universidad == null) {
+                System.err.println("No se encontró la universidad con el código: " + codigoUniversidad);
+            } else {
+                System.out.println("Universidad encontrada: " + universidad);
+            }
+
+        } catch (HibernateException e) {
+            System.err.println("Error de Hibernate: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error general: " + e.getMessage());
+        } finally {
+            // Cerrar la sesión de forma segura
+            if (session != null && session.isOpen()) {
+                try {
+                    session.close();
+                } catch (Exception e) {
+                    System.err.println("Error al cerrar la sesión: " + e.getMessage());
+                }
+            }
         }
+
+        return universidad;
     }
 
 }
