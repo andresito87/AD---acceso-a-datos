@@ -1,18 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import view.EstudianteDialog;
-import view.UniversidadDialog;
 
 /**
  *
- * @author andres
+ * @author ANDRES SAMUEL PODADERA GONZALEZ
  */
 public class FormularioPrincipal extends javax.swing.JFrame {
 
@@ -21,7 +11,7 @@ public class FormularioPrincipal extends javax.swing.JFrame {
      */
     public FormularioPrincipal() {
         initComponents();
-        setTitle("Ventana Principal");
+        setTitle("Acceso a Datos: Tarea 3 - Andres Samuel Podadera Gonzalez");
         setSize(950, 640);
         setDefaultCloseOperation(javax.swing.JDialog.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -39,35 +29,39 @@ public class FormularioPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         opcionMenuSelecciona = new javax.swing.JMenu();
-        menuItemUniversidad = new javax.swing.JMenuItem();
-        menuItemEstudiante = new javax.swing.JMenuItem();
+        menuItemApartadosABC = new javax.swing.JMenuItem();
+        menuItemApartadoDEF = new javax.swing.JMenuItem();
         opcionMenuSalir = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/uni.png"))); // NOI18N
 
-        opcionMenuSelecciona.setText("Seleccionar Tabla");
+        opcionMenuSelecciona.setText("Menú");
+        opcionMenuSelecciona.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
 
-        menuItemUniversidad.setText("Universidades");
-        menuItemUniversidad.addMouseListener(new java.awt.event.MouseAdapter() {
+        menuItemApartadosABC.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        menuItemApartadosABC.setText("Universidades y Estudiantes (Apartados A, B y C)");
+        menuItemApartadosABC.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                menuItemUniversidadMousePressed(evt);
+                menuItemApartadosABCMousePressed(evt);
             }
         });
-        opcionMenuSelecciona.add(menuItemUniversidad);
+        opcionMenuSelecciona.add(menuItemApartadosABC);
 
-        menuItemEstudiante.setText("Estudiantes");
-        menuItemEstudiante.addMouseListener(new java.awt.event.MouseAdapter() {
+        menuItemApartadoDEF.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        menuItemApartadoDEF.setText("Operaciones Complejas (Apartados D, E y F)");
+        menuItemApartadoDEF.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                menuItemEstudianteMousePressed(evt);
+                menuItemApartadoDEFMousePressed(evt);
             }
         });
-        opcionMenuSelecciona.add(menuItemEstudiante);
+        opcionMenuSelecciona.add(menuItemApartadoDEF);
 
         jMenuBar1.add(opcionMenuSelecciona);
 
         opcionMenuSalir.setText("Salir");
+        opcionMenuSalir.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         opcionMenuSalir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 opcionMenuSalirMouseClicked(evt);
@@ -94,18 +88,18 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void opcionMenuSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_opcionMenuSalirMouseClicked
-        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_opcionMenuSalirMouseClicked
 
-    private void menuItemUniversidadMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemUniversidadMousePressed
+    private void menuItemApartadosABCMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemApartadosABCMousePressed
         UniversidadDialog universidadDialog= new UniversidadDialog(this, rootPaneCheckingEnabled);
         universidadDialog.setVisible(true);
-    }//GEN-LAST:event_menuItemUniversidadMousePressed
+    }//GEN-LAST:event_menuItemApartadosABCMousePressed
 
-    private void menuItemEstudianteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemEstudianteMousePressed
-        EstudianteDialog estudianteDialog= new EstudianteDialog(this, rootPaneCheckingEnabled);
-        estudianteDialog.setVisible(true);
-    }//GEN-LAST:event_menuItemEstudianteMousePressed
+    private void menuItemApartadoDEFMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemApartadoDEFMousePressed
+        OperacionesComplejasDialog operacionesComplejasDialog= new OperacionesComplejasDialog(this, rootPaneCheckingEnabled);
+        operacionesComplejasDialog.setVisible(true);
+    }//GEN-LAST:event_menuItemApartadoDEFMousePressed
 
     /**
      * @param args the command line arguments
@@ -145,8 +139,8 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem menuItemEstudiante;
-    private javax.swing.JMenuItem menuItemUniversidad;
+    private javax.swing.JMenuItem menuItemApartadoDEF;
+    private javax.swing.JMenuItem menuItemApartadosABC;
     private javax.swing.JMenu opcionMenuSalir;
     private javax.swing.JMenu opcionMenuSelecciona;
     // End of variables declaration//GEN-END:variables

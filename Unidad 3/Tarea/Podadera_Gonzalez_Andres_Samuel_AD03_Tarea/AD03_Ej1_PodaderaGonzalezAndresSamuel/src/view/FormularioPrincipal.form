@@ -6,23 +6,32 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="opcionMenuSelecciona">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Seleccionar Tabla"/>
+            <Property name="text" type="java.lang.String" value="Men&#xfa;"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="24" style="1"/>
+            </Property>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="menuItemUniversidad">
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemApartadosABC">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Universidades"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Dialog" size="18" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Universidades y Estudiantes (Apartados A, B y C)"/>
               </Properties>
               <Events>
-                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuItemUniversidadMousePressed"/>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuItemApartadosABCMousePressed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="menuItemEstudiante">
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemApartadoDEF">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Estudiantes"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Dialog" size="18" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Operaciones Complejas (Apartados D, E y F)"/>
               </Properties>
               <Events>
-                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuItemEstudianteMousePressed"/>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuItemApartadoDEFMousePressed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -30,6 +39,9 @@
         <Menu class="javax.swing.JMenu" name="opcionMenuSalir">
           <Properties>
             <Property name="text" type="java.lang.String" value="Salir"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="24" style="1"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="opcionMenuSalirMouseClicked"/>

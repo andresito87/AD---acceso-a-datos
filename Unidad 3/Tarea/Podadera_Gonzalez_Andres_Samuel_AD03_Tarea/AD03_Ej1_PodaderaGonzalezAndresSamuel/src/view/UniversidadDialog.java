@@ -1,15 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
+
+import controller.UniversidadController;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.dto.RespuestaDTO;
+import model.entity.Universidad;
 
 /**
  *
- * @author andres
+ * @author ANDRES SAMUEL PODADERA GONZALEZ
  */
 public class UniversidadDialog extends javax.swing.JDialog {
+
+    private DefaultTableModel tableModel;
+    private boolean esOperacionActalizacion = false;
 
     /**
      * Creates new form UniversidadDialog
@@ -17,9 +22,12 @@ public class UniversidadDialog extends javax.swing.JDialog {
     public UniversidadDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setTitle("Universidad");
-        setSize(1000, 740);
+        setTitle("Universidades");
+        setSize(1030, 740);
         setLocationRelativeTo(null);
+
+        // rellenamos la tabla con las universidades
+        cargarUniversidades();
     }
 
     /**
@@ -31,32 +39,349 @@ public class UniversidadDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenu = new javax.swing.JPopupMenu();
+        menuItemAlumnos = new javax.swing.JMenuItem();
+        menuItemModificar = new javax.swing.JMenuItem();
+        menuItemEliminar = new javax.swing.JMenuItem();
         jLabelUniversidades = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaUniversidades = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        campoCodigo = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        campoNombre = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        campoProvincia = new javax.swing.JTextField();
+        checkboxPrivada = new javax.swing.JCheckBox();
+        botonGuardar = new javax.swing.JButton();
+        botonSalir = new javax.swing.JButton();
+
+        menuItemAlumnos.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        menuItemAlumnos.setText("mostrar Alumnos");
+        menuItemAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menuItemAlumnosMousePressed(evt);
+            }
+        });
+        popupMenu.add(menuItemAlumnos);
+
+        menuItemModificar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        menuItemModificar.setText("modificar");
+        menuItemModificar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menuItemModificarMousePressed(evt);
+            }
+        });
+        popupMenu.add(menuItemModificar);
+
+        menuItemEliminar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        menuItemEliminar.setText("eliminar");
+        menuItemEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menuItemEliminarMousePressed(evt);
+            }
+        });
+        popupMenu.add(menuItemEliminar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabelUniversidades.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         jLabelUniversidades.setText("Universidades");
 
+        tablaUniversidades.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Código", "Nombre", "Provincia", "Privada"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaUniversidades.setComponentPopupMenu(popupMenu);
+        jScrollPane1.setViewportView(tablaUniversidades);
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel1.setText("Agregar/Modificar una Universidad");
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setText("Código:");
+
+        campoCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoCodigoActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel3.setText("Nombre:");
+
+        campoNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoNombreActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel4.setText("Provincia:");
+
+        campoProvincia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoProvinciaActionPerformed(evt);
+            }
+        });
+
+        checkboxPrivada.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        checkboxPrivada.setText("Privada");
+
+        botonGuardar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        botonGuardar.setText("Guardar");
+        botonGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonGuardarMouseClicked(evt);
+            }
+        });
+
+        botonSalir.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        botonSalir.setText("Salir");
+        botonSalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonSalirMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 962, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(315, 315, 315)
+                        .addComponent(jLabelUniversidades, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(22, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(321, Short.MAX_VALUE)
-                .addComponent(jLabelUniversidades, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(314, 314, 314))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(288, 288, 288))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(206, 206, 206)
+                        .addComponent(jLabel3)
+                        .addGap(221, 221, 221)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(checkboxPrivada)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(119, 119, 119)
+                                .addComponent(botonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(81, 81, 81)
+                                .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(campoCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(115, 115, 115)
+                                .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(26, 26, 26)
                 .addComponent(jLabelUniversidades, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(438, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkboxPrivada))
+                .addGap(59, 59, 59)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(61, 61, 61))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void campoCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoCodigoActionPerformed
+
+    private void campoNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoNombreActionPerformed
+
+    private void campoProvinciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoProvinciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoProvinciaActionPerformed
+
+    private void botonGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonGuardarMouseClicked
+
+        String codigo = this.campoCodigo.getText();
+        String nombre = this.campoNombre.getText();
+        String provincia = this.campoProvincia.getText();
+        boolean esPrivada = this.checkboxPrivada.isSelected();
+
+        if (codigo != null && !codigo.trim().isEmpty()
+                && nombre != null && !nombre.trim().isEmpty() 
+                && provincia != null && !provincia.trim().isEmpty()) {
+
+            Universidad nuevaUniversidad = new Universidad();
+            nuevaUniversidad.setCodigo(Integer.parseInt(codigo));
+            nuevaUniversidad.setNombre(nombre);
+            nuevaUniversidad.setProvinciaUni(provincia);
+            nuevaUniversidad.setPrivada(esPrivada);
+            // compruebo si quiere actualizar
+            if (esOperacionActalizacion) {
+
+                RespuestaDTO respuesta = modificar(nuevaUniversidad);
+
+                if (!respuesta.isSuccess()) {
+                    JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    limpiarFormulario();
+                }
+
+            } else {
+
+                RespuestaDTO respuesta = agregar(nuevaUniversidad);
+
+                if (!respuesta.isSuccess()) {
+                    JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    limpiarFormulario();
+                }
+
+            }
+            // actualizo la tabla con las modifcaciones
+            cargarUniversidades();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debes rellenar todos los campos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_botonGuardarMouseClicked
+
+    private void menuItemEliminarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemEliminarMousePressed
+
+        // Comprobar si hay una fila seleccionada
+        if (!hayFilaSeleccionada()) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una fila primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener la fila seleccionada
+        int filaSeleccionada = tablaUniversidades.getSelectedRow();
+
+        // Extraer los valores de la fila seleccionada
+        Object valor1 = tablaUniversidades.getValueAt(filaSeleccionada, 0); // Código (ID)
+        Object valor2 = tablaUniversidades.getValueAt(filaSeleccionada, 1); // Nombre
+        Object valor3 = tablaUniversidades.getValueAt(filaSeleccionada, 2); // Provincia
+        Object valor4 = tablaUniversidades.getValueAt(filaSeleccionada, 3); // Privada (true/false)
+
+        // Crear una instancia de Universidad usando los valores de la tabla
+        Universidad universidad = new Universidad();
+        universidad.setCodigo((Integer) valor1); // La columna 0 debe ser el ID (código)
+        universidad.setNombre((String) valor2);  // La columna 1 es el nombre
+        universidad.setProvinciaUni((String) valor3); // La columna 2 es la provincia
+        universidad.setPrivada(!(valor4 == "No")); // La columna 3 es si es privada o pública
+
+        // Confirmar la eliminación
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que quieres eliminar la universidad \"" + universidad.getNombre() + "\"?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            // Eliminar la universidad de la base de datos
+            RespuestaDTO respuesta = eliminar(universidad);
+
+            if (respuesta.isSuccess()) {
+                // Eliminar la fila de la JTable
+                DefaultTableModel model = (DefaultTableModel) tablaUniversidades.getModel();
+                model.removeRow(filaSeleccionada);
+
+                JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_menuItemEliminarMousePressed
+
+    private void botonSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonSalirMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_botonSalirMouseClicked
+
+    private void menuItemModificarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemModificarMousePressed
+
+        // Comprobar si hay una fila seleccionada
+        if (!hayFilaSeleccionada()) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una fila primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // operacion de modificacion
+        esOperacionActalizacion = true;
+
+        // Obtener la fila seleccionada
+        int filaSeleccionada = tablaUniversidades.getSelectedRow();
+
+        // Extraer los valores de la fila seleccionada
+        Object valor1 = tablaUniversidades.getValueAt(filaSeleccionada, 0); // Código (ID)
+        Object valor2 = tablaUniversidades.getValueAt(filaSeleccionada, 1); // Nombre
+        Object valor3 = tablaUniversidades.getValueAt(filaSeleccionada, 2); // Provincia
+        Object valor4 = tablaUniversidades.getValueAt(filaSeleccionada, 3); // Privada (true/false)
+
+        this.campoCodigo.setText(valor1.toString());
+        this.campoNombre.setText(valor2.toString());
+        this.campoProvincia.setText(valor3.toString());
+        this.checkboxPrivada.setSelected(!(valor4 == "No"));
+
+        // actualizar los cambios en la tabla
+        cargarUniversidades();
+
+    }//GEN-LAST:event_menuItemModificarMousePressed
+
+    private void menuItemAlumnosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemAlumnosMousePressed
+
+        // Comprobar si hay una fila seleccionada
+        if (!hayFilaSeleccionada()) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar una fila primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int codigoUniversidad = Integer.parseInt(tablaUniversidades.getValueAt(tablaUniversidades.getSelectedRow(), 0).toString());
+        EstudianteDialog estudianteDialog = new EstudianteDialog(null, rootPaneCheckingEnabled, codigoUniversidad);
+        estudianteDialog.setVisible(true);
+    }//GEN-LAST:event_menuItemAlumnosMousePressed
 
     /**
      * @param args the command line arguments
@@ -87,6 +412,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 UniversidadDialog dialog = new UniversidadDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -100,7 +426,69 @@ public class UniversidadDialog extends javax.swing.JDialog {
         });
     }
 
+    private void cargarUniversidades() {
+        // Llamar al método listarTodas() del controlador
+        List<Universidad> listaUniversidades = UniversidadController.listarTodas();
+
+        // Limpiar el modelo de la tabla antes de cargar nuevos datos
+        tableModel = (DefaultTableModel) tablaUniversidades.getModel();
+        tableModel.setRowCount(0);
+
+        // Añadir cada universidad a la tabla
+        if (listaUniversidades != null) {
+            for (Universidad universidad : listaUniversidades) {
+                Object[] fila = {universidad.getCodigo(), universidad.getNombre(), universidad.getProvinciaUni(), universidad.isPrivada() ? "Sí" : "No"};
+                tableModel.addRow(fila);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar la lista de universidades", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private RespuestaDTO agregar(Universidad nuevaUniversidad) {
+        return UniversidadController.agregarNueva(nuevaUniversidad);
+    }
+
+    private RespuestaDTO eliminar(Universidad universidad) {
+        return UniversidadController.eliminar(universidad);
+    }
+
+    private RespuestaDTO modificar(Universidad universidad) {
+
+        // vuelvo a operacion de creacion
+        esOperacionActalizacion = false;
+
+        return UniversidadController.modificar(universidad);
+    }
+
+    private void limpiarFormulario() {
+        campoCodigo.setText("");
+        campoNombre.setText("");
+        campoProvincia.setText("");
+        checkboxPrivada.setSelected(false);
+    }
+
+    private boolean hayFilaSeleccionada() {
+        return this.tablaUniversidades.getSelectedRow() != -1;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonGuardar;
+    private javax.swing.JButton botonSalir;
+    private javax.swing.JTextField campoCodigo;
+    private javax.swing.JTextField campoNombre;
+    private javax.swing.JTextField campoProvincia;
+    private javax.swing.JCheckBox checkboxPrivada;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelUniversidades;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem menuItemAlumnos;
+    private javax.swing.JMenuItem menuItemEliminar;
+    private javax.swing.JMenuItem menuItemModificar;
+    private javax.swing.JPopupMenu popupMenu;
+    private javax.swing.JTable tablaUniversidades;
     // End of variables declaration//GEN-END:variables
 }
