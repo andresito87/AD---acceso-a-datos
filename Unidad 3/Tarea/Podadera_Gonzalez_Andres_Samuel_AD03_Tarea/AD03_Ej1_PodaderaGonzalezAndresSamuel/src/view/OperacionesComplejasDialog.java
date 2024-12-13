@@ -5,6 +5,20 @@
  */
 package view;
 
+import controller.EstudianteController;
+import controller.UniversidadController;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
+import model.dto.RespuestaDTO;
+import model.entity.Estudiante;
+import model.entity.Universidad;
+
 /**
  *
  * @author andres
@@ -18,8 +32,10 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setTitle("Operaciones Complejas: Apartados D, E y F de la tarea");
-        setSize(1000, 740);
+        setSize(1060, 800);
         setLocationRelativeTo(null);
+
+        inicializarFormulario();
     }
 
     /**
@@ -32,31 +48,319 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaEstudiantesOrdenados = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaUniversidadesImportes = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaEstudiantesAlmeria = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        botonInsertarEstudiante = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        botonModificarEstudiante = new javax.swing.JButton();
+        botonSalir = new javax.swing.JButton();
+        campoImporteMatricula = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setText("Operaciones Complejas con Hibernate");
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setText("Estudiantes ordenados por importe de matrícula (de menor a mayor):");
+
+        tablaEstudiantesOrdenados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Nombre", "Apellidos", "Universidad", "Importe Matrícula"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaEstudiantesOrdenados);
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel3.setText("Ingreso de matriculas por universidad:");
+
+        tablaUniversidadesImportes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Universidad", "Importe Matrículas"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tablaUniversidadesImportes);
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel4.setText("Estudiantes de la provincia de Almería que están becados:");
+
+        tablaEstudiantesAlmeria.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Nombre", "Apellidos", "Dirección"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tablaEstudiantesAlmeria);
+
+        jTextArea1.setBackground(new java.awt.Color(102, 255, 102));
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(0, 0, 0));
+        jTextArea1.setRows(2);
+        jTextArea1.setText("Insertar Estudiante\nnif: 11110000B, nombre: \"Javier\", apellidos: \"Pérez Pérez\", fecha_nacimiento: 23/11/2000, \ndireccion: \"Velázque, 33, Aguadulce\", provincia: \"GRANADA\", importe_matricula: 1550,20, becado: true, codigo_uni: 1001.");
+        jTextArea1.setCaretColor(new java.awt.Color(255, 0, 0));
+        jTextArea1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextArea1.setEnabled(false);
+        jScrollPane4.setViewportView(jTextArea1);
+
+        botonInsertarEstudiante.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonInsertarEstudiante.setForeground(new java.awt.Color(0, 153, 0));
+        botonInsertarEstudiante.setText("Insertar Estudiante");
+        botonInsertarEstudiante.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonInsertarEstudianteMouseClicked(evt);
+            }
+        });
+        botonInsertarEstudiante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonInsertarEstudianteActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setText("Modificar el importe de la matricula del estudiante con NIF 11110000B por una cantidad de:");
+
+        botonModificarEstudiante.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        botonModificarEstudiante.setForeground(new java.awt.Color(0, 153, 0));
+        botonModificarEstudiante.setText("Modificar Importe");
+        botonModificarEstudiante.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonModificarEstudianteMouseClicked(evt);
+            }
+        });
+        botonModificarEstudiante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonModificarEstudianteActionPerformed(evt);
+            }
+        });
+
+        botonSalir.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        botonSalir.setForeground(new java.awt.Color(255, 0, 0));
+        botonSalir.setText("Salir");
+        botonSalir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botonSalirMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addGap(313, 313, 313))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(campoImporteMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(botonModificarEstudiante)
+                                .addGap(26, 26, 26))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane4)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(398, 398, 398)
+                        .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(53, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(385, 385, 385)
+                .addComponent(botonInsertarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(646, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonInsertarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(botonModificarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoImporteMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botonInsertarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInsertarEstudianteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonInsertarEstudianteActionPerformed
+
+    private void botonModificarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarEstudianteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonModificarEstudianteActionPerformed
+
+    private void botonSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonSalirMouseClicked
+        this.dispose();
+    }//GEN-LAST:event_botonSalirMouseClicked
+
+    private void botonInsertarEstudianteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonInsertarEstudianteMouseClicked
+        Estudiante nuevoEstudiante = new Estudiante();
+        nuevoEstudiante.setNif("11110000B");
+        nuevoEstudiante.setNombre("Javier");
+        nuevoEstudiante.setApellidos("Pérez Pérez");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            // Convertir el String a Date
+            Date fecha = dateFormat.parse("23/11/2000");
+
+            // Asignar la fecha al JSpinner
+            nuevoEstudiante.setFechaNacimiento(new Date(fecha.getTime()));
+
+        } catch (ParseException e) {
+            System.out.println("Error al convertir la fecha: " + e.getMessage());
+        }
+
+        nuevoEstudiante.setDireccion("Velázquez, 33, Aguadulce");
+        nuevoEstudiante.setProvincia("GRANADA");
+        nuevoEstudiante.setImporteMatricula(Float.parseFloat("1550.20"));
+        nuevoEstudiante.setBecado(true);
+
+        Universidad universidad = UniversidadController.obtener("1001");
+
+        nuevoEstudiante.setUniversidad(universidad);
+
+        RespuestaDTO respuesta = agregar(nuevoEstudiante);
+
+        if (respuesta.isSuccess()) {
+            JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Exito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_botonInsertarEstudianteMouseClicked
+
+    private void botonModificarEstudianteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonModificarEstudianteMouseClicked
+
+        Estudiante nuevoEstudiante = new Estudiante();
+        nuevoEstudiante.setNif("11110000B");
+        nuevoEstudiante.setNombre("Javier");
+        nuevoEstudiante.setApellidos("Pérez Pérez");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            // Convertir el String a Date
+            Date fecha = dateFormat.parse("23/11/2000");
+
+            // Asignar la fecha al JSpinner
+            nuevoEstudiante.setFechaNacimiento(new Date(fecha.getTime()));
+
+        } catch (ParseException e) {
+            System.out.println("Error al convertir la fecha: " + e.getMessage());
+        }
+
+        nuevoEstudiante.setDireccion("Velázquez, 33, Aguadulce");
+        nuevoEstudiante.setProvincia("GRANADA");
+        try {
+            String importeMatricula = campoImporteMatricula.getText().replace(",", ".");
+            nuevoEstudiante.setImporteMatricula(Float.parseFloat(importeMatricula));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error en el importe de matricula", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        nuevoEstudiante.setBecado(true);
+
+        Universidad universidad = UniversidadController.obtener("1001");
+
+        nuevoEstudiante.setUniversidad(universidad);
+
+        RespuestaDTO respuesta = EstudianteController.modificar(nuevoEstudiante);
+
+        if (respuesta.isSuccess()) {
+            JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Exito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_botonModificarEstudianteMouseClicked
 
     /**
      * @param args the command line arguments
@@ -87,6 +391,7 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 OperacionesComplejasDialog dialog = new OperacionesComplejasDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -100,7 +405,119 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
         });
     }
 
+    private RespuestaDTO agregar(Estudiante estudiante) {
+        return EstudianteController.agregarNuevo(estudiante);
+    }
+
+    private void inicializarFormulario() {
+
+        // relleno la tabla de estudiantes ordenados por importe de matricula
+        completarTablaEstudiantesOrdenados();
+
+        // relleno la tabla de ingresos de matriculas por universidad
+        completarTablaIngresosMatriculas();
+
+        // relleno la tabla de estudiantes de Almeria que estan becados
+        completarTablaEstudiantesAlmeria();
+
+        // inicializo el campo del importe de matriculacion que sera actualizado
+        this.campoImporteMatricula.setText("1200,00");
+    }
+
+    private void completarTablaEstudiantesOrdenados() {
+
+        // Llamo al método listarTodos los estudiantes y me los devuelve ordeandos por el importe en orden descendente
+        List<Estudiante> listaEstudiantes = EstudianteController.listarTodos("importeMatricula", "DESC");
+
+        // Limpiar el modelo de la tabla antes de cargar nuevos datos
+        DefaultTableModel modelo = (DefaultTableModel) this.tablaEstudiantesOrdenados.getModel();
+        modelo.setRowCount(0);
+
+        // Añadir cada estudiante a la tabla
+        if (listaEstudiantes != null && !listaEstudiantes.isEmpty()) {
+            // Recorrer la lista de estudiantes y agregarla al modelo de la tabla
+            for (Estudiante estudiante : listaEstudiantes) {
+                Object[] fila = {
+                    estudiante.getNif(),
+                    estudiante.getNombre(),
+                    estudiante.getApellidos(),
+                    String.format("%.2f", estudiante.getImporteMatricula()), // Mostrar 2 decimales
+                };
+                modelo.addRow(fila);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar la lista de universidades", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Asignar el modelo a la tabla
+        this.tablaEstudiantesOrdenados.setModel(modelo);
+    }
+
+    private void completarTablaIngresosMatriculas() {
+        List<Universidad> listaUniversidades = UniversidadController.listarTodas();
+
+        // Limpiar el modelo de la tabla antes de cargar nuevos datos
+        DefaultTableModel modelo = (DefaultTableModel) this.tablaUniversidadesImportes.getModel();
+        modelo.setRowCount(0);
+
+        for (Universidad universidad : listaUniversidades) {
+            String nombreUniversidad = universidad.getNombre();
+            double ingresoMatriculas = UniversidadController.obtenerIngresoMatriculas(universidad.getCodigo());
+
+            Object[] fila = {
+                nombreUniversidad,
+                String.format("%.2f", ingresoMatriculas), // Mostrar 2 decimales
+            };
+            modelo.addRow(fila);
+        }
+
+        // Asignar el modelo a la tabla
+        this.tablaUniversidadesImportes.setModel(modelo);
+    }
+
+    private void completarTablaEstudiantesAlmeria() {
+        List<Estudiante> listaEstudiantesAlmeriensesBecados = EstudianteController.obtenerAlmeriensesBecados();
+
+        if (listaEstudiantesAlmeriensesBecados != null && !listaEstudiantesAlmeriensesBecados.isEmpty()) {
+
+            // Limpiar el modelo de la tabla antes de cargar nuevos datos
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaEstudiantesAlmeria.getModel();
+            modelo.setRowCount(0);
+
+            for (Estudiante estudiante : listaEstudiantesAlmeriensesBecados) {
+
+                Object[] fila = {
+                    estudiante.getNombre(),
+                    estudiante.getApellidos(),
+                    estudiante.getDireccion()
+                };
+                modelo.addRow(fila);
+            }
+
+            // Asignar el modelo a la tabla
+            this.tablaEstudiantesAlmeria.setModel(modelo);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar la lista de universidades", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonInsertarEstudiante;
+    private javax.swing.JButton botonModificarEstudiante;
+    private javax.swing.JButton botonSalir;
+    private javax.swing.JTextField campoImporteMatricula;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTable tablaEstudiantesAlmeria;
+    private javax.swing.JTable tablaEstudiantesOrdenados;
+    private javax.swing.JTable tablaUniversidadesImportes;
     // End of variables declaration//GEN-END:variables
 }

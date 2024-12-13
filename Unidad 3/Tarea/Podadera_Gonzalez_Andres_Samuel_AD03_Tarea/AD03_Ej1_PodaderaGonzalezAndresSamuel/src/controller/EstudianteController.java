@@ -1,11 +1,13 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import model.dto.RespuestaDTO;
 import model.entity.Estudiante;
 import model.hibernate.HibernateUtil;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
@@ -16,14 +18,53 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class EstudianteController {
 
+    /**
+     * Recupera una lista con todos los estudiantes de la base de datos,
+     * ordenados de forma predeterminada.
+     *
+     * Este método llama a la versión de {@link #listarTodos(String, String)}
+     * con los valores predeterminados para el atributo y el orden. De forma
+     * predeterminada, la lista se ordena por el atributo **"nombre"** en
+     * **orden ascendente (ASC)**.
+     *
+     * @return Una lista de objetos {@link Estudiante} que contiene todos los
+     * estudiantes de la base de datos, ordenados por **nombre en orden
+     * ascendente (ASC)**. Si ocurre algún error, se devuelve una lista vacía.
+     */
     public static List<Estudiante> listarTodos() {
+        // Llamar a la versión con parámetros y establecer valores predeterminados
+        return listarTodos("nif", "ASC");
+    }
+
+    /**
+     * Recupera una lista de todos los estudiantes, ordenados por un atributo y
+     * en un orden específico.
+     *
+     * @param atributo El atributo por el que se ordenarán los estudiantes.
+     * @param orden El tipo de orden, puede ser "ASC" o "DESC".
+     * @return Una lista de objetos {@link Estudiante} que contiene todos los
+     * estudiantes ordenados.
+     */
+    public static List<Estudiante> listarTodos(String atributo, String orden) {
         List<Estudiante> listaEstudiantes = new ArrayList<>();
+        List<String> atributosPermitidos = Arrays.asList("nif", "nombre", "apellidos", "fechaNacimiento", "direccion", "provincia", "importeMatricula", "becado");
         Session session = null;
+
         try {
+            if (!atributosPermitidos.contains(atributo)) {
+                throw new IllegalArgumentException("El atributo '" + atributo + "' no está permitido.");
+            }
+
+            if (!orden.equalsIgnoreCase("ASC") && !orden.equalsIgnoreCase("DESC")) {
+                throw new IllegalArgumentException("El orden debe ser 'ASC' o 'DESC'.");
+            }
+
             session = HibernateUtil.getSessionFactory().openSession();
-            listaEstudiantes = session.createQuery("FROM Estudiante").list();
-        } catch (Exception e) {
-            System.out.println("Error al listar todos los estudiantes." + e.getMessage());
+            String hql = "FROM Estudiante e ORDER BY e." + atributo + " " + orden;
+            listaEstudiantes = session.createQuery(hql).list();
+
+        } catch (IllegalArgumentException | HibernateException e) {
+            System.out.println("Error al listar todos los estudiantes. " + e.getMessage());
         } finally {
             if (session != null) {
                 session.close();
@@ -69,6 +110,7 @@ public class EstudianteController {
      * Inserta una nuevo Estudiante en la base de datos.
      *
      * @param estudiante El estudiante que se va a insertar.
+     * @return RespuestaDTO Devuelve una respuesta con la operacion realizada
      */
     public static RespuestaDTO agregarNuevo(Estudiante estudiante) {
         Session session = null;
@@ -92,7 +134,7 @@ public class EstudianteController {
 
             // configurar la respuesta de éxito
             respuesta.setSuccess(true);
-            respuesta.setMessage("Estudiante agregada con éxito");
+            respuesta.setMessage("Estudiante agregado con éxito");
             respuesta.setData(estudiante); // devolvemos el estudiante agregado
 
         } catch (ConstraintViolationException e) {
@@ -132,6 +174,7 @@ public class EstudianteController {
      * Elimina un Estudiante de la base de datos.
      *
      * @param nifEstudiante El nif del estudiante que se va a eliminar.
+     * @return RespuestaDTO Devuelve una respuesta con la operacion realizada
      */
     public static RespuestaDTO eliminar(String nifEstudiante) {
         Session session = null;
@@ -185,6 +228,7 @@ public class EstudianteController {
      * Modifica un Estudiante de la base de datos.
      *
      * @param estudiante El estudiante que se va a modificar.
+     * @return RespuestaDTO Devuelve una respuesta con la operacion realizada
      */
     public static RespuestaDTO modificar(Estudiante estudiante) {
         Session session = null;
@@ -248,6 +292,7 @@ public class EstudianteController {
      * Devuelve una Universidad de la base de datos.
      *
      * @param nifEstudiante Nif del estudiante que va a devolver.
+     * @return RespuestaDTO Devuelve una respuesta con la operacion realizada
      */
     public static Estudiante obtener(String nifEstudiante) {
         Session session = null;
@@ -283,5 +328,62 @@ public class EstudianteController {
         }
 
         return estudiante;
+    }
+
+    /**
+     * Obtiene una lista de estudiantes que residen en la provincia de "Almería"
+     * y que además están becados.
+     *
+     * Este método utiliza una consulta HQL para filtrar los estudiantes cuya
+     * provincia es "Almería" y cuyo estado de becado es verdadero (true). La
+     * consulta se realiza mediante la apertura de una sesión de Hibernate y el
+     * uso de parámetros en la consulta para hacerla más segura.
+     *
+     * @return Una lista de objetos {@link Estudiante} que contiene los
+     * estudiantes que cumplen con la condición de estar en la provincia de
+     * "ALMERIA" y estar becados. Si ocurre algún error o no se encuentran
+     * estudiantes, se devuelve **null**.
+     *
+     * @throws HibernateException Si ocurre algún problema al abrir la sesión,
+     * ejecutar la consulta o procesar los resultados.
+     * @throws Exception Si ocurre cualquier otro tipo de excepción no
+     * controlada.
+     */
+    public static List<Estudiante> obtenerAlmeriensesBecados() {
+        Session session = null;
+        List<Estudiante> listaEstudiantes = null;
+
+        try {
+            // Abrir la sesión de Hibernate
+            session = HibernateUtil.getSessionFactory().openSession();
+            // Crear la consulta HQL para obtener la lista de estudiantes
+            String hql = "SELECT e FROM Estudiante e "
+                    + "WHERE e.provincia = :provincia "
+                    + "AND e.becado = :becado";
+
+            // Crear la consulta con parámetros
+            Query query = session.createQuery(hql);
+            query.setParameter("provincia", "ALMERIA");
+            query.setParameter("becado", true);
+
+            // Obtener la lista de resultados
+            listaEstudiantes = query.list();
+
+        } catch (HibernateException e) {
+            System.err.println("Error de Hibernate: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error general: " + e.getMessage());
+        } finally {
+            // Cerrar la sesión de forma segura
+            if (session != null && session.isOpen()) {
+                try {
+                    session.close();
+                } catch (Exception e) {
+                    System.err.println("Error al cerrar la sesión: " + e.getMessage());
+                }
+            }
+        }
+
+        return listaEstudiantes;
     }
 }

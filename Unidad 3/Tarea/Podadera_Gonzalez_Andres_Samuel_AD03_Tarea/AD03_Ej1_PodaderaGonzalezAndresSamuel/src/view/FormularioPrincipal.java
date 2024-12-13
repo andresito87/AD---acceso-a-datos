@@ -11,8 +11,8 @@ public class FormularioPrincipal extends javax.swing.JFrame {
      */
     public FormularioPrincipal() {
         initComponents();
-        setTitle("Acceso a Datos: Tarea 3 - Andres Samuel Podadera Gonzalez");
-        setSize(950, 640);
+        setTitle("Acceso a Datos: Tarea 3 - Andrés Samuel Podadera González");
+        setSize(950, 700);
         setDefaultCloseOperation(javax.swing.JDialog.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -27,8 +27,9 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        labelTitulo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        opcionMenuSelecciona = new javax.swing.JMenu();
+        opcionMenuAcciones = new javax.swing.JMenu();
         menuItemApartadosABC = new javax.swing.JMenuItem();
         menuItemApartadoDEF = new javax.swing.JMenuItem();
         opcionMenuSalir = new javax.swing.JMenu();
@@ -37,8 +38,11 @@ public class FormularioPrincipal extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/uni.png"))); // NOI18N
 
-        opcionMenuSelecciona.setText("Menú");
-        opcionMenuSelecciona.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        labelTitulo.setFont(new java.awt.Font("Dialog", 1, 20)); // NOI18N
+        labelTitulo.setText("Universidades y Estudiantes");
+
+        opcionMenuAcciones.setText("Acciones");
+        opcionMenuAcciones.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
 
         menuItemApartadosABC.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         menuItemApartadosABC.setText("Universidades y Estudiantes (Apartados A, B y C)");
@@ -47,7 +51,7 @@ public class FormularioPrincipal extends javax.swing.JFrame {
                 menuItemApartadosABCMousePressed(evt);
             }
         });
-        opcionMenuSelecciona.add(menuItemApartadosABC);
+        opcionMenuAcciones.add(menuItemApartadosABC);
 
         menuItemApartadoDEF.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         menuItemApartadoDEF.setText("Operaciones Complejas (Apartados D, E y F)");
@@ -56,9 +60,9 @@ public class FormularioPrincipal extends javax.swing.JFrame {
                 menuItemApartadoDEFMousePressed(evt);
             }
         });
-        opcionMenuSelecciona.add(menuItemApartadoDEF);
+        opcionMenuAcciones.add(menuItemApartadoDEF);
 
-        jMenuBar1.add(opcionMenuSelecciona);
+        jMenuBar1.add(opcionMenuAcciones);
 
         opcionMenuSalir.setText("Salir");
         opcionMenuSalir.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -78,10 +82,18 @@ public class FormularioPrincipal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 6, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 921, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelTitulo)
+                .addGap(327, 327, 327))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -139,9 +151,10 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JLabel labelTitulo;
     private javax.swing.JMenuItem menuItemApartadoDEF;
     private javax.swing.JMenuItem menuItemApartadosABC;
+    private javax.swing.JMenu opcionMenuAcciones;
     private javax.swing.JMenu opcionMenuSalir;
-    private javax.swing.JMenu opcionMenuSelecciona;
     // End of variables declaration//GEN-END:variables
 }

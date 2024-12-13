@@ -18,6 +18,8 @@ public class UniversidadDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form UniversidadDialog
+     * @param parent
+     * @param modal
      */
     public UniversidadDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -40,7 +42,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         popupMenu = new javax.swing.JPopupMenu();
-        menuItemAlumnos = new javax.swing.JMenuItem();
+        menuItemEstudiantes = new javax.swing.JMenuItem();
         menuItemModificar = new javax.swing.JMenuItem();
         menuItemEliminar = new javax.swing.JMenuItem();
         jLabelUniversidades = new javax.swing.JLabel();
@@ -57,14 +59,14 @@ public class UniversidadDialog extends javax.swing.JDialog {
         botonGuardar = new javax.swing.JButton();
         botonSalir = new javax.swing.JButton();
 
-        menuItemAlumnos.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        menuItemAlumnos.setText("mostrar Alumnos");
-        menuItemAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+        menuItemEstudiantes.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        menuItemEstudiantes.setText("mostrar estudiantes");
+        menuItemEstudiantes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                menuItemAlumnosMousePressed(evt);
+                menuItemEstudiantesMousePressed(evt);
             }
         });
-        popupMenu.add(menuItemAlumnos);
+        popupMenu.add(menuItemEstudiantes);
 
         menuItemModificar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         menuItemModificar.setText("modificar");
@@ -145,6 +147,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
         checkboxPrivada.setText("Privada");
 
         botonGuardar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        botonGuardar.setForeground(new java.awt.Color(0, 153, 0));
         botonGuardar.setText("Guardar");
         botonGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -153,6 +156,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
         });
 
         botonSalir.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        botonSalir.setForeground(new java.awt.Color(255, 0, 0));
         botonSalir.setText("Salir");
         botonSalir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -270,6 +274,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
                     limpiarFormulario();
+                    JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
                 }
 
             } else {
@@ -280,6 +285,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
                     limpiarFormulario();
+                    JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
                 }
 
             }
@@ -361,7 +367,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
 
     }//GEN-LAST:event_menuItemModificarMousePressed
 
-    private void menuItemAlumnosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemAlumnosMousePressed
+    private void menuItemEstudiantesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemEstudiantesMousePressed
 
         // Comprobar si hay una fila seleccionada
         if (!hayFilaSeleccionada()) {
@@ -372,7 +378,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
         int codigoUniversidad = Integer.parseInt(tablaUniversidades.getValueAt(tablaUniversidades.getSelectedRow(), 0).toString());
         EstudianteDialog estudianteDialog = new EstudianteDialog(null, rootPaneCheckingEnabled, codigoUniversidad);
         estudianteDialog.setVisible(true);
-    }//GEN-LAST:event_menuItemAlumnosMousePressed
+    }//GEN-LAST:event_menuItemEstudiantesMousePressed
 
     /**
      * @param args the command line arguments
@@ -476,8 +482,8 @@ public class UniversidadDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelUniversidades;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JMenuItem menuItemAlumnos;
     private javax.swing.JMenuItem menuItemEliminar;
+    private javax.swing.JMenuItem menuItemEstudiantes;
     private javax.swing.JMenuItem menuItemModificar;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable tablaUniversidades;

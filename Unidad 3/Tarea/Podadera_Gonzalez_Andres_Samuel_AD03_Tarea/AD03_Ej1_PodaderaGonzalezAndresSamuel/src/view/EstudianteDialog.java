@@ -154,6 +154,7 @@ public class EstudianteDialog extends javax.swing.JDialog {
         jLabel11.setText("Provincia:");
 
         botonSalir.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        botonSalir.setForeground(new java.awt.Color(255, 0, 0));
         botonSalir.setText("Salir");
         botonSalir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -162,6 +163,7 @@ public class EstudianteDialog extends javax.swing.JDialog {
         });
 
         botonGuardar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        botonGuardar.setForeground(new java.awt.Color(0, 153, 0));
         botonGuardar.setText("Guardar");
         botonGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -292,12 +294,19 @@ public class EstudianteDialog extends javax.swing.JDialog {
         Date fechaNacimiento = (Date) this.spinnerFechaNac.getValue();
         String direccion = this.campoDireccion.getText();
         String provincia = this.campoProvincia.getText();
-        String importeMatricula = this.campoImporteMat.getText();
+        float importeMatricula = Float.parseFloat(this.campoImporteMat.getText().replace(",", "."));
         boolean esBecado = this.checkboxBecado.isSelected();
         String codUniversidad = this.campoCodigoUni.getText();
         Universidad universidad = UniversidadController.obtener(codUniversidad);
 
-        if (nif != null && !nif.trim().isEmpty()) {
+        if (nif != null && !nif.trim().isEmpty()
+                && nombre != null && !nombre.trim().isEmpty()
+                && apellidos != null && !apellidos.trim().isEmpty()
+                && fechaNacimiento != null
+                && direccion != null && !direccion.trim().isEmpty()
+                && provincia != null && !provincia.trim().isEmpty()
+                && codUniversidad != null && !codUniversidad.trim().isEmpty()
+                && universidad != null) {
 
             Estudiante nuevoEstudiante = new Estudiante();
             nuevoEstudiante.setNif(nif);
@@ -306,7 +315,7 @@ public class EstudianteDialog extends javax.swing.JDialog {
             nuevoEstudiante.setFechaNacimiento(fechaNacimiento);
             nuevoEstudiante.setDireccion(direccion);
             nuevoEstudiante.setProvincia(provincia);
-            nuevoEstudiante.setImporteMatricula(Float.parseFloat(importeMatricula));
+            nuevoEstudiante.setImporteMatricula(importeMatricula);
             nuevoEstudiante.setBecado(esBecado);
             nuevoEstudiante.setUniversidad(universidad);
 
@@ -501,7 +510,7 @@ public class EstudianteDialog extends javax.swing.JDialog {
                     fechaNacimientoFormateada,
                     estudiante.getDireccion(),
                     estudiante.getProvincia(),
-                    estudiante.getImporteMatricula(),
+                    String.format("%.2f", estudiante.getImporteMatricula()),
                     estudiante.isBecado() ? "Sí" : "No",
                     estudiante.getUniversidad().getNombre(), // el controlador devuelve el objeto universidad completo
                 };

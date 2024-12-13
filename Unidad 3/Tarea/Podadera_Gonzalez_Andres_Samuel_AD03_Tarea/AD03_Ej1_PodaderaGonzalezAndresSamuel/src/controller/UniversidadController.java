@@ -42,6 +42,7 @@ public class UniversidadController {
      * Inserta una nueva Universidad en la base de datos.
      *
      * @param universidad La universidad que se va a insertar.
+     * @return RespuestaDTO Devuelve una respuesta con la operacion realizada
      */
     public static RespuestaDTO agregarNueva(Universidad universidad) {
         Session session = null;
@@ -105,6 +106,7 @@ public class UniversidadController {
      * Elimina una Universidad de la base de datos.
      *
      * @param codigoUniversidad El codigo de la universidad que se va a eliminar
+     * @return RespuestaDTO Devuelve una respuesta con la operacion realizada
      */
     public static RespuestaDTO eliminar(String codigoUniversidad) {
         Session session = null;
@@ -129,7 +131,7 @@ public class UniversidadController {
 
             } else {
                 // obtego la universidad
-                Universidad universidad= UniversidadController.obtener(codigoUniversidad);
+                Universidad universidad = UniversidadController.obtener(codigoUniversidad);
 
                 // eliminar la universidad
                 session.delete(universidad);
@@ -169,6 +171,7 @@ public class UniversidadController {
      * Modifica una Universidad de la base de datos.
      *
      * @param universidad La universidad que se va a modificar.
+     * @return RespuestaDTO Devuelve una respuesta con la operacion realizada
      */
     public static RespuestaDTO modificar(Universidad universidad) {
         Session session = null;
@@ -231,7 +234,8 @@ public class UniversidadController {
     /**
      * Devuelve una Universidad de la base de datos.
      *
-     * @param codigoUniveridad Codigo de la universidad que va a devolver.
+     * @param codigoUniversidad Codigo de la universidad que va a devolver.
+     * @return RespuestaDTO Devuelve una respuesta con la operacion realizada
      */
     public static Universidad obtener(String codigoUniversidad) {
         Session session = null;
@@ -242,7 +246,7 @@ public class UniversidadController {
             session = HibernateUtil.getSessionFactory().openSession();
 
             // Obtener la universidad usando el código proporcionado
-            universidad = (Universidad)session.get(Universidad.class, Integer.parseInt(codigoUniversidad));
+            universidad = (Universidad) session.get(Universidad.class, Integer.parseInt(codigoUniversidad));
 
             // Validar si la universidad existe
             if (universidad == null) {
@@ -267,6 +271,42 @@ public class UniversidadController {
         }
 
         return universidad;
+    }
+
+    /**
+     * Obtiene la suma total de los importes de matrícula para todos los
+     * estudiantes de una universidad específica.
+     *
+     * @param codigoUniversidad El código de la universidad para la cual se
+     * calculará la suma de importes de matrícula.
+     * @return El total de los importes de matrícula de los estudiantes de la
+     * universidad. Si no hay estudiantes, se devuelve 0.
+     */
+    public static double obtenerIngresoMatriculas(int codigoUniversidad) {
+        double totalImporteMatriculas = 0.0f;
+        Session session = null;
+
+        try {
+            // Abrir la sesión de Hibernate
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            // Crear la consulta HQL para sumar los importes de matrícula, coalesce garantiza que sino tiene estudiantes, la suma sea 0 y no null
+            String hql = "SELECT COALESCE(SUM(e.importeMatricula), 0) FROM Estudiante e WHERE e.universidad.codigo = :codigoUniversidad";
+
+            // Ejecutar la consulta con parámetro
+            totalImporteMatriculas = (double) session.createQuery(hql)
+                    .setParameter("codigoUniversidad", codigoUniversidad)
+                    .uniqueResult();
+
+        } catch (Exception e) {
+            System.out.println("Error al obtener el ingreso total de matrículas: " + e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+        return totalImporteMatriculas;
     }
 
 }
