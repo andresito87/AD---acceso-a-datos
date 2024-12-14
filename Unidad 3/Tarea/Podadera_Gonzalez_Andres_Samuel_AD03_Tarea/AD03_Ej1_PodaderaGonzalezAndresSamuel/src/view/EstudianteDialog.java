@@ -331,6 +331,8 @@ public class EstudianteDialog extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
                     limpiarFormulario();
+                    cargarEstudiantes(codigoUniversidad);
+                    JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
 
@@ -340,6 +342,8 @@ public class EstudianteDialog extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
                     limpiarFormulario();
+                    cargarEstudiantes(codigoUniversidad);
+                    JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
             // actualizo la tabla con las modifcaciones
