@@ -8,6 +8,7 @@ import model.entity.Estudiante;
 import model.hibernate.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
@@ -32,7 +33,7 @@ public class EstudianteController {
      * ascendente (ASC)**. Si ocurre algún error, se devuelve una lista vacía.
      */
     public static List<Estudiante> listarTodos() {
-        // Llamar a la versión con parámetros y establecer valores predeterminados
+        // usa la versión sobrecargada con parámetros con valores predeterminados
         return listarTodos("nif", "ASC");
     }
 
@@ -346,8 +347,6 @@ public class EstudianteController {
      *
      * @throws HibernateException Si ocurre algún problema al abrir la sesión,
      * ejecutar la consulta o procesar los resultados.
-     * @throws Exception Si ocurre cualquier otro tipo de excepción no
-     * controlada.
      */
     public static List<Estudiante> obtenerAlmeriensesBecados() {
         Session session = null;
@@ -385,5 +384,58 @@ public class EstudianteController {
         }
 
         return listaEstudiantes;
+    }
+
+    public static RespuestaDTO modificarImporte(float nuevoImporte, String nif) {
+        Session session = null;
+        Transaction transaction = null;
+        RespuestaDTO respuesta;
+
+        try {
+            // abrir la sesión de Hibernate
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            // consulta SQL nativa
+            String sql = "UPDATE estudiante SET importe_matricula = :nuevoImporte WHERE nif = :nif";
+
+            // crear la consulta SQL nativa
+            SQLQuery query = session.createSQLQuery(sql);
+            query.setParameter("nuevoImporte", nuevoImporte);
+            query.setParameter("nif", nif);
+
+            // ejecutar la actualización
+            int filasAfectadas = query.executeUpdate();
+
+            // confirmar la transacción
+            transaction.commit();
+
+            if (filasAfectadas > 0) {
+                respuesta = new RespuestaDTO(true, "Importe actualizado correctamente para el NIF: " + nif);
+            } else {
+                respuesta = new RespuestaDTO(false, "No se encontró ningún estudiante con el NIF: " + nif);
+            }
+
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback(); // Deshacer la transacción en caso de error
+            }
+            respuesta = new RespuestaDTO(false, "Error de Hibernate: " + e.getMessage());
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback(); // Deshacer la transacción en caso de error general
+            }
+            respuesta = new RespuestaDTO(false, "Error general: " + e.getMessage());
+        } finally {
+            if (session != null && session.isOpen()) {
+                try {
+                    session.close();
+                } catch (Exception e) {
+                    System.err.println("Error al cerrar la sesión: " + e.getMessage());
+                }
+            }
+        }
+
+        return respuesta;
     }
 }

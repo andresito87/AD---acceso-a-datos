@@ -2,6 +2,10 @@ package view;
 
 import controller.EstudianteController;
 import controller.UniversidadController;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,7 +45,6 @@ public class EstudianteDialog extends javax.swing.JDialog {
         setLocationRelativeTo(null);
 
         this.cargarEstudiantes(this.codigoUniversidad);
-
         this.inicializarFormulario();
     }
 
@@ -349,7 +352,7 @@ public class EstudianteDialog extends javax.swing.JDialog {
 
     private void menuItemModificarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemModificarMousePressed
 
-        // Comprobar si hay una fila seleccionada
+        // comprobar si hay una fila seleccionada
         if (!hayFilaSeleccionada()) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar una fila de la tabla", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -358,10 +361,10 @@ public class EstudianteDialog extends javax.swing.JDialog {
         // operacion de modificacion
         esOperacionActalizacion = true;
 
-        // Obtener la fila seleccionada
+        // obtener la fila seleccionada
         int filaSeleccionada = tablaEstudiantes.getSelectedRow();
 
-        // Extraer los valores de la fila seleccionada
+        // extraer los valores de la fila seleccionada
         Object valor1 = tablaEstudiantes.getValueAt(filaSeleccionada, 0); // Nif (ID)
         Object valor2 = tablaEstudiantes.getValueAt(filaSeleccionada, 1); // Nombre
         Object valor3 = tablaEstudiantes.getValueAt(filaSeleccionada, 2); // Apellidos
@@ -377,10 +380,10 @@ public class EstudianteDialog extends javax.swing.JDialog {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            // Convertir el String a Date
+            // convertir el String a Date
             Date fecha = dateFormat.parse(valor4.toString());
 
-            // Asignar la fecha al JSpinner
+            // asignar la fecha al JSpinner
             spinnerFechaNac.setValue(new Date(fecha.getTime()));
 
         } catch (ParseException e) {
@@ -399,30 +402,30 @@ public class EstudianteDialog extends javax.swing.JDialog {
 
     private void menuItemEliminarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemEliminarMousePressed
 
-        // Comprobar si hay una fila seleccionada
+        // comprobar si hay una fila seleccionada
         if (!hayFilaSeleccionada()) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar una fila primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Obtener la fila seleccionada
+        // obtener la fila seleccionada
         int filaSeleccionada = tablaEstudiantes.getSelectedRow();
 
         // Extraer los valores de la fila seleccionada
         String nifEstudiante = tablaEstudiantes.getValueAt(filaSeleccionada, 0).toString(); // nif (ID)
 
-        // Confirmar la eliminación
+        // confirmar la eliminación
         int confirmacion = JOptionPane.showConfirmDialog(this,
                 "¿Estás seguro de que quieres eliminar el estudiante \"" + tablaEstudiantes.getValueAt(filaSeleccionada, 1).toString() + "\"?",
                 "Confirmación",
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            // Eliminar el estudiante de la base de datos
+            // eliminar el estudiante de la base de datos
             RespuestaDTO respuesta = eliminar(nifEstudiante);
 
             if (respuesta.isSuccess()) {
-                // Eliminar la fila de la JTable
+                // eliminar la fila de la JTable
                 DefaultTableModel model = (DefaultTableModel) tablaEstudiantes.getModel();
                 model.removeRow(filaSeleccionada);
 
@@ -478,14 +481,14 @@ public class EstudianteDialog extends javax.swing.JDialog {
     }
 
     private void cargarEstudiantes(int codigoUniversidad) {
-        // Llamar al método listarTodas() del controlador
+        // llamar al método listarTodas() del controlador
         List<Estudiante> listaEstudiantes = EstudianteController.listarPorCodigoUniversidad(codigoUniversidad);
 
-        // Limpiar el modelo de la tabla antes de cargar nuevos datos
+        // limpiar el modelo de la tabla antes de cargar nuevos datos
         tableModel = (DefaultTableModel) tablaEstudiantes.getModel();
         tableModel.setRowCount(0);
 
-        // Añadir cada universidad a la tabla
+        // añadir cada universidad a la tabla
         if (listaEstudiantes != null) {
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -494,10 +497,10 @@ public class EstudianteDialog extends javax.swing.JDialog {
 
             for (Estudiante estudiante : listaEstudiantes) {
                 try {
-                    // Convierte el String a Date
+                    // convierte el String a Date
                     Date fechaNacimiento = parseFormat.parse(estudiante.getFechaNacimiento().toString());
 
-                    // Formatea la fecha al formato deseado (dd/MM/yyyy)
+                    // formatea la fecha al formato deseado (dd/MM/yyyy)
                     fechaNacimientoFormateada = dateFormat.format(fechaNacimiento);
 
                 } catch (ParseException e) {
@@ -516,7 +519,7 @@ public class EstudianteDialog extends javax.swing.JDialog {
                 };
                 tableModel.addRow(fila);
             }
-            // Configurar tamaños de las columnas
+            // configurar tamaños de las columnas
             ajustarTamanioColumnas();
         } else {
             JOptionPane.showMessageDialog(this, "No se pudo cargar la lista de universidades", "Error", JOptionPane.ERROR_MESSAGE);
@@ -524,10 +527,10 @@ public class EstudianteDialog extends javax.swing.JDialog {
     }
 
     private void ajustarTamanioColumnas() {
-        // Obtener el modelo de columnas
+        // obtener el modelo de columnas
         javax.swing.table.TableColumnModel columnModel = tablaEstudiantes.getColumnModel();
 
-        // Definir tamaños para cada columna
+        // definir tamaños para cada columna
         columnModel.getColumn(0).setPreferredWidth(80);  // NIF
         columnModel.getColumn(0).setMinWidth(80);
         columnModel.getColumn(0).setMaxWidth(100);
@@ -567,10 +570,10 @@ public class EstudianteDialog extends javax.swing.JDialog {
 
     private void colocarFechaDeNacimiento() {
         try {
-            // Obtener la fecha actual con java.util.Date
+            // obtener la fecha actual con java.util.Date
             Date fechaHoy = new Date();
 
-            // Configurar el modelo de fecha para el spinner (no se usa incremento explícito de días)
+            // configurar el modelo de fecha para el spinner (no se usa incremento explícito de días)
             SpinnerDateModel model = new SpinnerDateModel(
                     fechaHoy, // fecha inicial
                     null, // límite inferior (null = sin límite)
@@ -578,14 +581,14 @@ public class EstudianteDialog extends javax.swing.JDialog {
                     GregorianCalendar.DAY_OF_MONTH // incremento de días
             );
 
-            // Asignar el modelo al spinner
+            // asignar el modelo al spinner
             spinnerFechaNac.setModel(model);
 
-            // Configurar el editor del spinner con el formato "dd/MM/yyyy"
+            // configurar el editor del spinner con el formato "dd/MM/yyyy"
             JSpinner.DateEditor editor = new JSpinner.DateEditor(spinnerFechaNac, "dd/MM/yyyy");
             spinnerFechaNac.setEditor(editor);
 
-            // Establecer la fecha actual en el spinner
+            // establecer la fecha actual en el spinner
             spinnerFechaNac.setValue(fechaHoy);
         } catch (Exception e) {
             e.printStackTrace();
@@ -597,6 +600,63 @@ public class EstudianteDialog extends javax.swing.JDialog {
         this.campoCodigoUni.setEditable(false);
 
         this.colocarFechaDeNacimiento();
+
+        // ===========================
+        // BOTÓN GUARDAR (Color Azul)
+        // ===========================
+        // cambiar el color de fondo
+        botonGuardar.setBackground(new Color(70, 130, 180));
+        botonGuardar.setForeground(Color.WHITE);
+
+        // quitar borde de enfoque
+        botonGuardar.setFocusPainted(false);
+
+        // cambiar el cursor a 'pointer'
+        botonGuardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // evento para cambiar el color de fondo cuando el ratón está sobre el botón
+        botonGuardar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botonGuardar.setBackground(new Color(100, 149, 237));
+                botonGuardar.setForeground(new Color(0, 0, 0));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botonGuardar.setBackground(new Color(70, 130, 180));
+                botonGuardar.setForeground(new Color(255, 255, 255));
+            }
+        });
+
+        // ===========================
+        // BOTÓN SALIR (Color Rojo)
+        // ===========================
+        // cambiar el color de fondo
+        botonSalir.setBackground(new Color(178, 34, 34)); // Rojo fuego
+        botonSalir.setForeground(Color.WHITE); // Texto en blanco
+
+        // quitar borde de enfoque
+        botonSalir.setFocusPainted(false);
+
+        // cambiar el cursor a 'pointer'
+        botonSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // evento para cambiar el color de fondo cuando el ratón está sobre el botón
+        botonSalir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botonSalir.setBackground(new Color(220, 20, 60));
+                botonSalir.setForeground(new Color(0, 0, 0));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botonSalir.setBackground(new Color(178, 34, 34));
+                botonSalir.setForeground(new Color(255, 255, 255));
+            }
+        });
+
     }
 
     private RespuestaDTO agregar(Estudiante nuevoEstudiante) {
@@ -608,7 +668,6 @@ public class EstudianteDialog extends javax.swing.JDialog {
     }
 
     private RespuestaDTO modificar(Estudiante estudiante) {
-
         // vuelvo a operacion de creacion
         esOperacionActalizacion = false;
 

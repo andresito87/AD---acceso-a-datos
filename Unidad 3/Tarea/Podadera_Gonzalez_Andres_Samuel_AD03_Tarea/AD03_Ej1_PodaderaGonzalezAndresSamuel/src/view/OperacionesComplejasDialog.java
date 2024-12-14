@@ -1,19 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import controller.EstudianteController;
 import controller.UniversidadController;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 import model.dto.RespuestaDTO;
 import model.entity.Estudiante;
@@ -21,12 +18,14 @@ import model.entity.Universidad;
 
 /**
  *
- * @author andres
+ * @author ANDRÉS SAMUEL PODADERA GONZÁLEZ
  */
 public class OperacionesComplejasDialog extends javax.swing.JDialog {
 
     /**
-     * Creates new form OperacionesComplejasDialog
+     * Crea un nuevo formulario OperacionesComplejasDialog
+     * @param parent
+     * @param modal
      */
     public OperacionesComplejasDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -142,12 +141,12 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
         });
         jScrollPane3.setViewportView(tablaEstudiantesAlmeria);
 
-        jTextArea1.setBackground(new java.awt.Color(102, 255, 102));
+        jTextArea1.setBackground(new java.awt.Color(255, 255, 255));
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font("Dialog", 1, 16)); // NOI18N
         jTextArea1.setForeground(new java.awt.Color(0, 0, 0));
         jTextArea1.setRows(2);
-        jTextArea1.setText("Insertar Estudiante\nnif: 11110000B, nombre: \"Javier\", apellidos: \"Pérez Pérez\", fecha_nacimiento: 23/11/2000, \ndireccion: \"Velázque, 33, Aguadulce\", provincia: \"GRANADA\", importe_matricula: 1550,20, becado: true, codigo_uni: 1001.");
+        jTextArea1.setText("Insertar Estudiante\nnif: 11110000B, nombre: \"Javier\", apellidos: \"Pérez Pérez\", fecha_nacimiento: 23/11/2000, \ndireccion: \"Velázque, 33, Aguadulce\", provincia: \"GRANADA\", importe_matricula: 1550,20, becado: true, codigo_uni: 1003.");
         jTextArea1.setCaretColor(new java.awt.Color(255, 0, 0));
         jTextArea1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextArea1.setEnabled(false);
@@ -202,38 +201,38 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addGap(313, 313, 313))
             .addGroup(layout.createSequentialGroup()
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(campoImporteMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonModificarEstudiante)
+                        .addGap(26, 26, 26))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(campoImporteMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(botonModificarEstudiante)
-                                .addGap(26, 26, 26))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane4)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(398, 398, 398)
-                        .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel2)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane4))
                 .addContainerGap(53, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(385, 385, 385)
-                .addComponent(botonInsertarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(385, 385, 385)
+                        .addComponent(botonInsertarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(409, 409, 409)
+                        .addComponent(botonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -279,21 +278,24 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_botonModificarEstudianteActionPerformed
 
     private void botonSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonSalirMouseClicked
+        // cierra el formulario
         this.dispose();
     }//GEN-LAST:event_botonSalirMouseClicked
 
     private void botonInsertarEstudianteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonInsertarEstudianteMouseClicked
+        // creo un nuevo estudiante con los datos requeridos
         Estudiante nuevoEstudiante = new Estudiante();
         nuevoEstudiante.setNif("11110000B");
         nuevoEstudiante.setNombre("Javier");
         nuevoEstudiante.setApellidos("Pérez Pérez");
 
+        // formateador de fechas
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            // Convertir el String a Date
+            // convertir el String a Date
             Date fecha = dateFormat.parse("23/11/2000");
 
-            // Asignar la fecha al JSpinner
+            // asignar la fecha al JSpinner
             nuevoEstudiante.setFechaNacimiento(new Date(fecha.getTime()));
 
         } catch (ParseException e) {
@@ -305,7 +307,7 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
         nuevoEstudiante.setImporteMatricula(Float.parseFloat("1550.20"));
         nuevoEstudiante.setBecado(true);
 
-        Universidad universidad = UniversidadController.obtener("1001");
+        Universidad universidad = UniversidadController.obtener("1003");
 
         nuevoEstudiante.setUniversidad(universidad);
 
@@ -320,39 +322,15 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
 
     private void botonModificarEstudianteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonModificarEstudianteMouseClicked
 
-        Estudiante nuevoEstudiante = new Estudiante();
-        nuevoEstudiante.setNif("11110000B");
-        nuevoEstudiante.setNombre("Javier");
-        nuevoEstudiante.setApellidos("Pérez Pérez");
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+       float importeMatricula;
         try {
-            // Convertir el String a Date
-            Date fecha = dateFormat.parse("23/11/2000");
-
-            // Asignar la fecha al JSpinner
-            nuevoEstudiante.setFechaNacimiento(new Date(fecha.getTime()));
-
-        } catch (ParseException e) {
-            System.out.println("Error al convertir la fecha: " + e.getMessage());
-        }
-
-        nuevoEstudiante.setDireccion("Velázquez, 33, Aguadulce");
-        nuevoEstudiante.setProvincia("GRANADA");
-        try {
-            String importeMatricula = campoImporteMatricula.getText().replace(",", ".");
-            nuevoEstudiante.setImporteMatricula(Float.parseFloat(importeMatricula));
+            importeMatricula = Float.parseFloat(campoImporteMatricula.getText().replace(",", "."));
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Error en el importe de matricula", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        nuevoEstudiante.setBecado(true);
-
-        Universidad universidad = UniversidadController.obtener("1001");
-
-        nuevoEstudiante.setUniversidad(universidad);
-
-        RespuestaDTO respuesta = EstudianteController.modificar(nuevoEstudiante);
+        
+        RespuestaDTO respuesta = EstudianteController.modificarImporte(importeMatricula, "11110000B");
 
         if (respuesta.isSuccess()) {
             JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Exito", JOptionPane.INFORMATION_MESSAGE);
@@ -422,6 +400,79 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
 
         // inicializo el campo del importe de matriculacion que sera actualizado
         this.campoImporteMatricula.setText("1200,00");
+
+        // ===========================
+        // BOTÓN INSERTAR Y MODIFICAR (Color Azul)
+        // ===========================
+        // Cambiar el color de fondo
+        botonInsertarEstudiante.setBackground(new Color(70, 130, 180)); // Azul acero
+        botonInsertarEstudiante.setForeground(Color.WHITE); // Texto en blanco
+        botonModificarEstudiante.setBackground(new Color(70, 130, 180)); // Azul acero
+        botonModificarEstudiante.setForeground(Color.WHITE); // Texto en blanco
+
+        // Quitar borde de enfoque (opcional)
+        botonInsertarEstudiante.setFocusPainted(false);
+        botonModificarEstudiante.setFocusPainted(false);
+
+        // Cambiar el cursor a 'pointer' (mano) cuando el ratón esté sobre el botón
+        botonInsertarEstudiante.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        botonModificarEstudiante.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Evento para cambiar el color de fondo cuando el ratón está sobre el botón
+        botonInsertarEstudiante.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botonInsertarEstudiante.setBackground(new Color(100, 149, 237)); 
+                botonInsertarEstudiante.setForeground(new Color(0,0,0)); 
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botonInsertarEstudiante.setBackground(new Color(70, 130, 180)); // Azul acero (restaurar color original)
+                botonInsertarEstudiante.setForeground(new Color(255,255,255)); 
+            }
+        });
+        botonModificarEstudiante.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botonModificarEstudiante.setBackground(new Color(100, 149, 237));
+                botonModificarEstudiante.setForeground(new Color(0,0,0)); 
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botonModificarEstudiante.setBackground(new Color(70, 130, 180)); // Azul acero (restaurar color original)
+                botonModificarEstudiante.setForeground(new Color(255,255,255)); 
+            }
+        });
+
+        // ===========================
+        // BOTÓN SALIR (Color Rojo)
+        // ===========================
+        // Cambiar el color de fondo
+        botonSalir.setBackground(new Color(178, 34, 34)); // Rojo fuego
+        botonSalir.setForeground(Color.WHITE); // Texto en blanco
+
+        // Quitar borde de enfoque (opcional)
+        botonSalir.setFocusPainted(false);
+
+        // Cambiar el cursor a 'pointer' (mano) cuando el ratón esté sobre el botón
+        botonSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Evento para cambiar el color de fondo cuando el ratón está sobre el botón
+        botonSalir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botonSalir.setBackground(new Color(220, 20, 60)); // Rojo carmesí
+                botonSalir.setForeground(new Color(0,0,0));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botonSalir.setBackground(new Color(178, 34, 34)); // Rojo fuego (restaurar color original)
+                botonSalir.setForeground(new Color(255,255,255)); 
+            }
+        });
     }
 
     private void completarTablaEstudiantesOrdenados() {
@@ -500,7 +551,7 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "No se pudo cargar la lista de universidades", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonInsertarEstudiante;
     private javax.swing.JButton botonModificarEstudiante;

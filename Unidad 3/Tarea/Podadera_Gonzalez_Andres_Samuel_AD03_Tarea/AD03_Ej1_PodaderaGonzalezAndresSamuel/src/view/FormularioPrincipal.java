@@ -1,5 +1,12 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.UIManager;
+
 /**
  *
  * @author ANDRES SAMUEL PODADERA GONZALEZ
@@ -7,7 +14,7 @@ package view;
 public class FormularioPrincipal extends javax.swing.JFrame {
 
     /**
-     * Creates new form FormularioPrincipal
+     * Crea un nuevo FormularioPrincipal
      */
     public FormularioPrincipal() {
         initComponents();
@@ -15,6 +22,8 @@ public class FormularioPrincipal extends javax.swing.JFrame {
         setSize(950, 700);
         setDefaultCloseOperation(javax.swing.JDialog.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        inicializarFormulario();
     }
 
     /**
@@ -100,16 +109,17 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void opcionMenuSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_opcionMenuSalirMouseClicked
+        // cierro el programa
         System.exit(0);
     }//GEN-LAST:event_opcionMenuSalirMouseClicked
 
     private void menuItemApartadosABCMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemApartadosABCMousePressed
-        UniversidadDialog universidadDialog= new UniversidadDialog(this, rootPaneCheckingEnabled);
+        UniversidadDialog universidadDialog = new UniversidadDialog(this, rootPaneCheckingEnabled);
         universidadDialog.setVisible(true);
     }//GEN-LAST:event_menuItemApartadosABCMousePressed
 
     private void menuItemApartadoDEFMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemApartadoDEFMousePressed
-        OperacionesComplejasDialog operacionesComplejasDialog= new OperacionesComplejasDialog(this, rootPaneCheckingEnabled);
+        OperacionesComplejasDialog operacionesComplejasDialog = new OperacionesComplejasDialog(this, rootPaneCheckingEnabled);
         operacionesComplejasDialog.setVisible(true);
     }//GEN-LAST:event_menuItemApartadoDEFMousePressed
 
@@ -142,10 +152,94 @@ public class FormularioPrincipal extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new FormularioPrincipal().setVisible(true);
             }
         });
+    }
+
+    private void inicializarFormulario() {
+        // ================================
+        // JLabel: Título Personalizado
+        // ================================
+        // Título principal
+        labelTitulo.setFont(new Font("Arial", Font.BOLD, 24));
+        labelTitulo.setForeground(new Color(70, 130, 180));
+
+        // ================================
+        // JMenuBar y JMenus Personalizados
+        // ================================
+        // Menú principal (Acciones)
+        opcionMenuAcciones.setFont(new Font("Arial", Font.BOLD, 24));
+        opcionMenuAcciones.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Evento para cambiar color al pasar el ratón (hover)
+        opcionMenuAcciones.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                opcionMenuAcciones.setForeground(new Color(100, 200, 50));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                opcionMenuAcciones.setForeground(Color.BLACK);
+            }
+        });
+
+        // menu principal (Salir)
+        opcionMenuSalir.setFont(new Font("Arial", Font.BOLD, 24));
+        opcionMenuSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // evento para cambiar color al pasar el ratón (hover)
+        opcionMenuSalir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                opcionMenuSalir.setForeground(new Color(220, 20, 60));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                opcionMenuSalir.setForeground(Color.BLACK);
+            }
+        });
+
+        // ================================
+        // JMenuItems Personalizados
+        // ================================
+        // Menú secundario (Acciones)
+        menuItemApartadosABC.setFont(new Font("Arial", Font.PLAIN, 20));
+        menuItemApartadosABC.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // evento para cambiar color de fondo al pasar el ratón (hover)
+        menuItemApartadosABC.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                menuItemApartadosABC.setBackground(new Color(173, 216, 230));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                menuItemApartadosABC.setBackground(UIManager.getColor("MenuItem.background")); // Fondo original
+            }
+        });
+
+        menuItemApartadoDEF.setFont(new Font("Arial", Font.PLAIN, 20));
+        menuItemApartadoDEF.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // evento para cambiar color de fondo al pasar el ratón (hover)
+        menuItemApartadoDEF.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                menuItemApartadoDEF.setBackground(new Color(173, 216, 230));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                menuItemApartadoDEF.setBackground(UIManager.getColor("MenuItem.background")); // Fondo original
+            }
+        });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

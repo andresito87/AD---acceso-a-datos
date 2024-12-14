@@ -62,7 +62,9 @@ INSERT INTO `matriculas`.`universidad` (`codigo`, `nombre`, `provincia_uni`, `pr
 (1002, 'Universidad de Sevilla', 'SEVILLA', FALSE),
 (1003, 'Universidad de Granada', 'GRANADA', FALSE),
 (1004, 'Universidad de Jaén', 'JAEN', FALSE),
-(1005, 'Universidad Loyola', 'CORDOBA', TRUE);
+(1005, 'Universidad Loyola', 'CORDOBA', TRUE),
+(1006, 'Universidad de Almería', 'ALMERIA', FALSE),
+(1007, 'Universidad de Cádiz', 'CADIZ', FALSE);
 
 -- -----------------------------------------------------
 -- Insertar registros en la tabla `matriculas`.`estudiante`
@@ -77,7 +79,8 @@ INSERT INTO `matriculas`.`estudiante` (`NIF`, `nombre`, `apellidos`, `fecha_naci
 ('77777777H', 'Carmen', 'Casas Cava', '1975-09-25', 'Centro Histórico 77', 'GRANADA', 3200.00, FALSE, 1003),
 ('88888888J', 'Marcos', 'Luna Pío', '1989-08-15', 'Calle Sol 88', 'MALAGA', 2100.75, TRUE, 1001),
 ('99999999K', 'Juana', 'Navarro Marín', '1998-04-05', 'Paseo Marítimo 99', 'GRANADA', 2600.00, TRUE, 1003),
-('10101010L', 'Elisa', 'López Fuentes', '1990-03-02', 'Avenida Universitaria 10', 'SEVILLA', 1800.00, TRUE, 1002);
+('10101010L', 'Elisa', 'López Fuentes', '1990-03-02', 'Avenida Universitaria 10', 'SEVILLA', 1800.00, TRUE, 1002),
+('34343434C', 'Daniel', 'Sánchez Santiago', '1995-12-02', 'Avenida Luis Buñuel 14', 'ALMERIA', 2000.00, TRUE, 1006);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

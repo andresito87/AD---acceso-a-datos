@@ -4,11 +4,13 @@ import view.FormularioPrincipal;
 
 /**
  *
- * @author Andrés Samuel Podadera González
+ * @author ANDRÉS SAMUEL PODADERA GONZÁLEZ
  */
 public class Main {
 
     /**
+     * Método estático que es el punto de inicio de nuestra aplicación
+     * 
      * @param args the command line arguments
      */
     public static void main(String[] args) {

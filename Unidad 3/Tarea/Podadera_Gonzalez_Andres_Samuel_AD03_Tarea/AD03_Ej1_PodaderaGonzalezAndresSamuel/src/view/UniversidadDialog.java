@@ -1,6 +1,10 @@
 package view;
 
 import controller.UniversidadController;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,6 +22,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form UniversidadDialog
+     *
      * @param parent
      * @param modal
      */
@@ -28,7 +33,9 @@ public class UniversidadDialog extends javax.swing.JDialog {
         setSize(1030, 740);
         setLocationRelativeTo(null);
 
-        // rellenamos la tabla con las universidades
+        inicializarFormulario();
+
+        // cargamos la tabla con las universidades
         cargarUniversidades();
     }
 
@@ -257,7 +264,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
         boolean esPrivada = this.checkboxPrivada.isSelected();
 
         if (codigo != null && !codigo.trim().isEmpty()
-                && nombre != null && !nombre.trim().isEmpty() 
+                && nombre != null && !nombre.trim().isEmpty()
                 && provincia != null && !provincia.trim().isEmpty()) {
 
             Universidad nuevaUniversidad = new Universidad();
@@ -265,6 +272,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
             nuevaUniversidad.setNombre(nombre);
             nuevaUniversidad.setProvinciaUni(provincia);
             nuevaUniversidad.setPrivada(esPrivada);
+            
             // compruebo si quiere actualizar
             if (esOperacionActalizacion) {
 
@@ -289,7 +297,8 @@ public class UniversidadDialog extends javax.swing.JDialog {
                 }
 
             }
-            // actualizo la tabla con las modifcaciones
+            
+            // recargo la tabla con las modifcaciones
             cargarUniversidades();
         } else {
             JOptionPane.showMessageDialog(this, "Debes rellenar todos los campos", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -298,31 +307,30 @@ public class UniversidadDialog extends javax.swing.JDialog {
 
     private void menuItemEliminarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemEliminarMousePressed
 
-        // Comprobar si hay una fila seleccionada
+        // comprobar si hay una fila seleccionada
         if (!hayFilaSeleccionada()) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar una fila primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Obtener la fila seleccionada
+        // obtener la fila seleccionada
         int filaSeleccionada = tablaUniversidades.getSelectedRow();
 
-        // Extraer los valores de la fila seleccionada
-        String codigoUniversidad = tablaUniversidades.getValueAt(filaSeleccionada, 0).toString(); // Código (ID)
+        // extraer los valores de la fila seleccionada
+        String codigoUniversidad = tablaUniversidades.getValueAt(filaSeleccionada, 0).toString(); // codigo (ID)
 
-
-        // Confirmar la eliminación
+        // confirmar la eliminación
         int confirmacion = JOptionPane.showConfirmDialog(this,
                 "¿Estás seguro de que quieres eliminar la universidad \"" + tablaUniversidades.getValueAt(filaSeleccionada, 1).toString() + "\"?",
                 "Confirmación",
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            // Eliminar la universidad de la base de datos
+            // eliminar la universidad de la base de datos
             RespuestaDTO respuesta = eliminar(codigoUniversidad);
 
             if (respuesta.isSuccess()) {
-                // Eliminar la fila de la JTable
+                // eliminar la fila de la JTable
                 DefaultTableModel model = (DefaultTableModel) tablaUniversidades.getModel();
                 model.removeRow(filaSeleccionada);
 
@@ -339,7 +347,7 @@ public class UniversidadDialog extends javax.swing.JDialog {
 
     private void menuItemModificarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemModificarMousePressed
 
-        // Comprobar si hay una fila seleccionada
+        // comprobar si hay una fila seleccionada
         if (!hayFilaSeleccionada()) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar una fila primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -348,10 +356,10 @@ public class UniversidadDialog extends javax.swing.JDialog {
         // operacion de modificacion
         esOperacionActalizacion = true;
 
-        // Obtener la fila seleccionada
+        // obtener la fila seleccionada
         int filaSeleccionada = tablaUniversidades.getSelectedRow();
 
-        // Extraer los valores de la fila seleccionada
+        // extraer los valores de la fila seleccionada
         Object valor1 = tablaUniversidades.getValueAt(filaSeleccionada, 0); // Código (ID)
         Object valor2 = tablaUniversidades.getValueAt(filaSeleccionada, 1); // Nombre
         Object valor3 = tablaUniversidades.getValueAt(filaSeleccionada, 2); // Provincia
@@ -362,14 +370,14 @@ public class UniversidadDialog extends javax.swing.JDialog {
         this.campoProvincia.setText(valor3.toString());
         this.checkboxPrivada.setSelected(!(valor4 == "No"));
 
-        // actualizar los cambios en la tabla
+        // recargar la tabla con los cambios
         cargarUniversidades();
 
     }//GEN-LAST:event_menuItemModificarMousePressed
 
     private void menuItemEstudiantesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuItemEstudiantesMousePressed
 
-        // Comprobar si hay una fila seleccionada
+        // comprobar si hay una fila seleccionada
         if (!hayFilaSeleccionada()) {
             JOptionPane.showMessageDialog(this, "Debes seleccionar una fila primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -424,14 +432,14 @@ public class UniversidadDialog extends javax.swing.JDialog {
     }
 
     private void cargarUniversidades() {
-        // Llamar al método listarTodas() del controlador
+        // uso el metodo listarTodas()
         List<Universidad> listaUniversidades = UniversidadController.listarTodas();
 
-        // Limpiar el modelo de la tabla antes de cargar nuevos datos
+        // limpiar el modelo de la tabla antes de cargar nuevos datos
         tableModel = (DefaultTableModel) tablaUniversidades.getModel();
         tableModel.setRowCount(0);
 
-        // Añadir cada universidad a la tabla
+        // agregar cada universidad a la tabla
         if (listaUniversidades != null) {
             for (Universidad universidad : listaUniversidades) {
                 Object[] fila = {universidad.getCodigo(), universidad.getNombre(), universidad.getProvinciaUni(), universidad.isPrivada() ? "Sí" : "No"};
@@ -467,6 +475,65 @@ public class UniversidadDialog extends javax.swing.JDialog {
 
     private boolean hayFilaSeleccionada() {
         return this.tablaUniversidades.getSelectedRow() != -1;
+    }
+
+    private void inicializarFormulario() {
+        // ===========================
+        // BOTÓN GUARDAR (Color Azul)
+        // ===========================
+        // cambiar el color de fondo
+        botonGuardar.setBackground(new Color(70, 130, 180));
+        botonGuardar.setForeground(Color.WHITE);
+
+        // quitar borde de enfoque
+        botonGuardar.setFocusPainted(false);
+
+        // cambiar el cursor a 'pointer'
+        botonGuardar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // evento para cambiar el color de fondo cuando el ratón está sobre el botón
+        botonGuardar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botonGuardar.setBackground(new Color(100, 149, 237));
+                botonGuardar.setForeground(new Color(0, 0, 0));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botonGuardar.setBackground(new Color(70, 130, 180)); // Azul acero (restaurar color original)
+                botonGuardar.setForeground(new Color(255, 255, 255));
+            }
+        });
+
+        // ===========================
+        // BOTÓN SALIR (Color Rojo)
+        // ===========================
+        // cambiar el color de fondo
+        botonSalir.setBackground(new Color(178, 34, 34));
+        botonSalir.setForeground(Color.WHITE);
+
+        // quitar borde de enfoque
+        botonSalir.setFocusPainted(false);
+
+        // cambiar el cursor a 'pointer'
+        botonSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // evento para cambiar el color de fondo cuando el ratón está sobre el botón
+        botonSalir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botonSalir.setBackground(new Color(220, 20, 60));
+                botonSalir.setForeground(new Color(0, 0, 0));
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botonSalir.setBackground(new Color(178, 34, 34));
+                botonSalir.setForeground(new Color(255, 255, 255));
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
