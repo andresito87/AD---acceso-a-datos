@@ -355,6 +355,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="campoImporteMatricula">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="campoImporteMatriculaKeyTyped"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

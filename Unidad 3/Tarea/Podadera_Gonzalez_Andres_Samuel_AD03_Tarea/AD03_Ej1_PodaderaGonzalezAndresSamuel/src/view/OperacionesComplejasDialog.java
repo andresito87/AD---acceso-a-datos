@@ -4,6 +4,7 @@ import controller.EstudianteController;
 import controller.UniversidadController;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
@@ -24,6 +25,7 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
 
     /**
      * Crea un nuevo formulario OperacionesComplejasDialog
+     *
      * @param parent
      * @param modal
      */
@@ -192,6 +194,12 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
             }
         });
 
+        campoImporteMatricula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campoImporteMatriculaKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -322,7 +330,7 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
 
     private void botonModificarEstudianteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonModificarEstudianteMouseClicked
 
-       float importeMatricula;
+        float importeMatricula;
         try {
             importeMatricula = Float.parseFloat(campoImporteMatricula.getText().replace(",", "."));
         } catch (NumberFormatException e) {
@@ -330,7 +338,10 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
             return;
         }
         
-        RespuestaDTO respuesta = EstudianteController.modificarImporte(importeMatricula, "11110000B");
+        Estudiante estudiante= EstudianteController.obtener("11110000B");
+        estudiante.setImporteMatricula(importeMatricula);
+
+        RespuestaDTO respuesta = EstudianteController.modificar(estudiante);
 
         if (respuesta.isSuccess()) {
             JOptionPane.showMessageDialog(this, respuesta.getMessage(), "Exito", JOptionPane.INFORMATION_MESSAGE);
@@ -339,6 +350,26 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_botonModificarEstudianteMouseClicked
+
+    private void campoImporteMatriculaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoImporteMatriculaKeyTyped
+        char caracter = evt.getKeyChar();
+
+        // Verifica la longitud máxima (12 caracteres)
+        if (campoImporteMatricula.getText().length() >= 12) {
+            evt.consume();
+        }
+
+        // Permite solo números y la coma
+        if (!Character.isDigit(caracter) && caracter != ',' && caracter != KeyEvent.VK_BACK_SPACE) {
+            evt.consume();
+        }
+
+        // Permite solo una coma (para evitar múltiples comas)
+        String text = campoImporteMatricula.getText();
+        if (caracter == ',' && text.contains(",")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_campoImporteMatriculaKeyTyped
 
     /**
      * @param args the command line arguments
@@ -422,27 +453,27 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
         botonInsertarEstudiante.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                botonInsertarEstudiante.setBackground(new Color(100, 149, 237)); 
-                botonInsertarEstudiante.setForeground(new Color(0,0,0)); 
+                botonInsertarEstudiante.setBackground(new Color(100, 149, 237));
+                botonInsertarEstudiante.setForeground(new Color(0, 0, 0));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 botonInsertarEstudiante.setBackground(new Color(70, 130, 180)); // Azul acero (restaurar color original)
-                botonInsertarEstudiante.setForeground(new Color(255,255,255)); 
+                botonInsertarEstudiante.setForeground(new Color(255, 255, 255));
             }
         });
         botonModificarEstudiante.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 botonModificarEstudiante.setBackground(new Color(100, 149, 237));
-                botonModificarEstudiante.setForeground(new Color(0,0,0)); 
+                botonModificarEstudiante.setForeground(new Color(0, 0, 0));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 botonModificarEstudiante.setBackground(new Color(70, 130, 180)); // Azul acero (restaurar color original)
-                botonModificarEstudiante.setForeground(new Color(255,255,255)); 
+                botonModificarEstudiante.setForeground(new Color(255, 255, 255));
             }
         });
 
@@ -464,13 +495,13 @@ public class OperacionesComplejasDialog extends javax.swing.JDialog {
             @Override
             public void mouseEntered(MouseEvent e) {
                 botonSalir.setBackground(new Color(220, 20, 60)); // Rojo carmesí
-                botonSalir.setForeground(new Color(0,0,0));
+                botonSalir.setForeground(new Color(0, 0, 0));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 botonSalir.setBackground(new Color(178, 34, 34)); // Rojo fuego (restaurar color original)
-                botonSalir.setForeground(new Color(255,255,255)); 
+                botonSalir.setForeground(new Color(255, 255, 255));
             }
         });
     }
