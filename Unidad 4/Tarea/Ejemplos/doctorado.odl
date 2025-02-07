@@ -1,0 +1,20 @@
+interface Profesor : persistent {
+attribute String nombre;
+attribute String email;
+attribute Integer ingreso;
+relationship Set<Tesis> dirige[0, -1]
+inverse Tesis::es_dirigida;
+relationship Departamento pertenece
+inverse Departamento::formado_por;
+};
+interface Tesis : persistent {
+attribute String titulo;
+attribute String tema;
+relationship Profesor es_dirigida
+inverse Profesor::dirige;
+};
+interface Departamento : persistent {
+attribute String nombre;
+relationship Set<Profesor> formado_por [0, -1]
+inverse Profesor::pertenece;
+};
