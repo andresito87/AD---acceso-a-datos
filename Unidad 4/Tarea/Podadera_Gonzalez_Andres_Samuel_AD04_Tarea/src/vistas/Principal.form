@@ -176,16 +176,16 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                   <Component id="jButtonConsultarAutoresEnRango1" min="-2" pref="180" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="jTextFieldSalarioInicial" min="-2" pref="103" max="-2" attributes="0"/>
+                          <Component id="jTextFieldIngresoInicial" min="-2" pref="103" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextFieldSalarioFinal" min="-2" pref="99" max="-2" attributes="0"/>
+                          <Component id="jTextFieldIngresoFinal" min="-2" pref="99" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonConsultarAutoresEnRango" min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
@@ -194,7 +194,7 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <Component id="jTextFieldPorcentajeAumento" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jButtonAumentarSalario" min="-2" pref="100" max="-2" attributes="0"/>
@@ -269,26 +269,34 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonGuardarAutor" min="-2" pref="35" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="151" max="32767" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jButtonConsultarAutoresEnRango" alignment="1" min="-2" pref="35" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jTextFieldSalarioInicial" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextFieldSalarioFinal" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonAumentarSalario" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                          <Component id="jTextFieldPorcentajeAumento" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonConsultarAutoresEnRango1" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" pref="151" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jButtonConsultarAutoresEnRango" alignment="1" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jTextFieldIngresoInicial" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jTextFieldIngresoFinal" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jButtonAumentarSalario" alignment="0" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="jTextFieldPorcentajeAumento" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jButtonConsultarAutoresEnRango1" min="-2" pref="35" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -436,7 +444,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Porcentaje de Aumento de sueldo:"/>
+            <Property name="text" type="java.lang.String" value="Porcentaje de Aumento de ingresos anuales:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldPorcentajeAumento">
@@ -466,10 +474,10 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Consultar autores con salario entre:"/>
+            <Property name="text" type="java.lang.String" value="Consultar autores con ingresos anuales entre:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldSalarioInicial">
+        <Component class="javax.swing.JTextField" name="jTextFieldIngresoInicial">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
@@ -479,7 +487,7 @@
             <Property name="text" type="java.lang.String" value="y"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldSalarioFinal">
+        <Component class="javax.swing.JTextField" name="jTextFieldIngresoFinal">
         </Component>
         <Component class="javax.swing.JButton" name="jButtonConsultarAutoresEnRango">
           <Properties>

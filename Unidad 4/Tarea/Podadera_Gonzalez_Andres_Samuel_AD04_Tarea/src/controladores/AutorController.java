@@ -174,4 +174,30 @@ public class AutorController {
         return false; // Si hubo algún error, devolvemos false
     }
 
+    public static List<Autor> obtenerAutoresConSalarioEntre(int cantidadInicial, int cantidadFinal) {
+        List<Autor> autoresFiltrados = new ArrayList<>();
+
+        if (db == null || db.ext().isClosed()) {
+            db = ConexionDB4O.conectar();
+        }
+
+        try {
+            // Crear consulta con restricciones
+            Query query = db.query();
+            query.constrain(Autor.class);
+            query.descend("ingresos_anuales").constrain(cantidadInicial).greater();
+            query.descend("ingresos_anuales").constrain(cantidadFinal).smaller();
+
+            ObjectSet<Autor> resultados = query.execute();
+
+            while (resultados.hasNext()) {
+                autoresFiltrados.add(resultados.next());
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al obtener autores con ingresos entre " + cantidadInicial + " y " + cantidadFinal + ": " + e.getMessage());
+        }
+
+        return autoresFiltrados;
+    }
 }

@@ -61,9 +61,9 @@ public class Principal extends javax.swing.JFrame {
         jTextFieldPorcentajeAumento = new javax.swing.JTextField();
         jButtonAumentarSalario = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jTextFieldSalarioInicial = new javax.swing.JTextField();
+        jTextFieldIngresoInicial = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextFieldSalarioFinal = new javax.swing.JTextField();
+        jTextFieldIngresoFinal = new javax.swing.JTextField();
         jButtonConsultarAutoresEnRango = new javax.swing.JButton();
         jButtonConsultarAutoresEnRango1 = new javax.swing.JButton();
         jSpinnerAnyoNacimiento = new javax.swing.JSpinner();
@@ -221,7 +221,7 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTableAutores);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel9.setText("Porcentaje de Aumento de sueldo:");
+        jLabel9.setText("Porcentaje de Aumento de ingresos anuales:");
 
         jButtonAumentarSalario.setBackground(new java.awt.Color(102, 255, 102));
         jButtonAumentarSalario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -235,7 +235,7 @@ public class Principal extends javax.swing.JFrame {
         });
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel10.setText("Consultar autores con salario entre:");
+        jLabel10.setText("Consultar autores con ingresos anuales entre:");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setText("y");
@@ -273,23 +273,23 @@ public class Principal extends javax.swing.JFrame {
         jPanelAutoresLayout.setHorizontalGroup(
             jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAutoresLayout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(58, 58, 58)
                 .addComponent(jButtonConsultarAutoresEnRango1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(121, 121, 121)
+                .addGap(118, 118, 118)
                 .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelAutoresLayout.createSequentialGroup()
-                        .addComponent(jTextFieldSalarioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldIngresoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldSalarioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldIngresoFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonConsultarAutoresEnRango, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
-                    .addGroup(jPanelAutoresLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAutoresLayout.createSequentialGroup()
                         .addComponent(jTextFieldPorcentajeAumento, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonAumentarSalario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -351,23 +351,28 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jSpinnerIngresosAnuales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonGuardarAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonConsultarAutoresEnRango, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextFieldSalarioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel11)
-                        .addComponent(jTextFieldSalarioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonAumentarSalario, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextFieldPorcentajeAumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonConsultarAutoresEnRango1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(15, 15, 15))
+                    .addGroup(jPanelAutoresLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonConsultarAutoresEnRango, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jTextFieldIngresoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel11)
+                                .addComponent(jTextFieldIngresoFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonAumentarSalario, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldPorcentajeAumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(15, 15, 15))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAutoresLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonConsultarAutoresEnRango1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26))))
         );
 
         jPanelCanciones.setBackground(new java.awt.Color(255, 255, 204));
@@ -570,21 +575,70 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAumentarSalarioActionPerformed
 
     private void jButtonConsultarAutoresEnRangoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarAutoresEnRangoActionPerformed
-        // TODO add your handling code here:
+
+        if (!this.jTextFieldIngresoInicial.getText().isEmpty() && !this.jTextFieldIngresoFinal.getText().isEmpty()) {
+            try {
+                int cantidadInicial = Integer.parseInt(this.jTextFieldIngresoInicial.getText());
+                int cantidadFinal = Integer.parseInt(this.jTextFieldIngresoFinal.getText());
+
+                if (cantidadInicial != 0 && cantidadFinal != 0 && cantidadInicial <= cantidadFinal) {
+                    List<Autor> autoresEnRango = AutorController.obtenerAutoresConSalarioEntre(cantidadInicial, cantidadFinal);
+
+                    // Obtener el modelo de la tabla y limpiarlo antes de agregar nuevos datos
+                    DefaultTableModel modelo = (DefaultTableModel) jTableAutores.getModel();
+                    modelo.setRowCount(0); // Limpiar la tabla antes de actualizarla
+
+                    // Recorrer la lista de canciones y agregarlas a la tabla
+                    for (Autor autor : autoresEnRango) {
+                        Object[] fila = {
+                            autor.getNombre(), // Columna 1: Nombre
+                            autor.getNacionalidad(), // Columna 2: Nacionalidad
+                            autor.getPaisResidencia(), // Columna 3: País de residencia
+                            autor.getAnyoDeNacimiento(), // Columna 4: Año de nacimiento
+                            autor.getIngresosAnuales()// Columna 5: Ingresos anuales
+                        };
+                        modelo.addRow(fila); // Agregar la fila a la tabla
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Revisa las cantidades de ingresos introducidas, la inicial no puede ser mayor a la final", "Aviso", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (Exception ex) {
+                System.out.println("Error en la recepcion de los rangos de ingresos anuales. " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Revisa las cantidades de ingresos introducidas, deben ser números enteros", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Revisa las cantidades de ingresos introducidas, falta alguna", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_jButtonConsultarAutoresEnRangoActionPerformed
 
     private void jButtonConsultarAutoresEnRango1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarAutoresEnRango1ActionPerformed
-        // TODO add your handling code here:
         this.listarAutores();
     }//GEN-LAST:event_jButtonConsultarAutoresEnRango1ActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        ConexionDB4O.cerrar();
-        this.dispose();
+        String[] opciones = {"Sí", "No"};
+
+        int confirmacion = JOptionPane.showOptionDialog(
+                this,
+                "¿Estás seguro de que deseas salir?",
+                "Confirmar salida",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[1] // Opción por defecto: "No"
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            ConexionDB4O.cerrar(); // Cierra la base de datos
+            this.dispose(); // Cierra la ventana
+        }
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jButtonConsultarTodasCancionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarTodasCancionesActionPerformed
-        // TODO add your handling code here:
         this.listarCanciones();
     }//GEN-LAST:event_jButtonConsultarTodasCancionesActionPerformed
 
@@ -676,7 +730,6 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemEliminarAutorMousePressed
 
     private void jMenuItemModificarAutorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemModificarAutorMousePressed
-        // TODO add your handling code here:
         if (hayAutorSeleccionado()) {
             int filaSeleccionada = jTableAutores.getSelectedRow();
 
@@ -699,7 +752,6 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemModificarAutorMousePressed
 
     private void jMenuItemModificarCancionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemModificarCancionMousePressed
-        // TODO add your handling code here:
         if (hayCancionSeleccionada()) {
             int filaSeleccionada = jTableCanciones.getSelectedRow();
 
@@ -714,7 +766,7 @@ public class Principal extends javax.swing.JFrame {
             this.jTextFieldTitulo.setText(titulo);
             this.jSpinnerDuracion.setValue(duracion);
             this.jSpinnerAnyoCreacion.setValue(anyoDeCreacion);
-            
+
             // Seleccionar el género en el JComboBox
             for (int i = 0; i < jComboBoxGenero.getItemCount(); i++) {
                 if (jComboBoxGenero.getItemAt(i).equalsIgnoreCase(genero)) {
@@ -938,12 +990,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable jTableAutores;
     private javax.swing.JTable jTableCanciones;
     private javax.swing.JTextField jTextFieldBusquedaAutor;
+    private javax.swing.JTextField jTextFieldIngresoFinal;
+    private javax.swing.JTextField jTextFieldIngresoInicial;
     private javax.swing.JTextField jTextFieldNacionalidad;
     private javax.swing.JTextField jTextFieldNombre;
     private javax.swing.JTextField jTextFieldPais;
     private javax.swing.JTextField jTextFieldPorcentajeAumento;
-    private javax.swing.JTextField jTextFieldSalarioFinal;
-    private javax.swing.JTextField jTextFieldSalarioInicial;
     private javax.swing.JTextField jTextFieldTitulo;
     // End of variables declaration//GEN-END:variables
 }
