@@ -19,7 +19,7 @@ public enum GeneroMusical {
 
     private static final GeneroMusical GENERO_POR_DEFECTO = CLASICA;
 
-    private String nombre;
+    private final String nombre;
 
     GeneroMusical(String nombre) {
         this.nombre = nombre;

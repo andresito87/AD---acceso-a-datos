@@ -60,6 +60,7 @@ public class Autor {
         this.ingresos_anuales = ingresos_anuales;
     }
 
+    @Override
     public String toString() {
         return "Nombre: " + this.getNombre() + " - Nacionalidad: " + this.getNacionalidad()
                 + " - País: " + this.getPaisResidencia() + " - Año de naciemiento: " + this.getAnyoDeNacimiento()

@@ -3,6 +3,7 @@ package vistas;
 import controladores.AutorController;
 import controladores.CancionController;
 import db.ConexionDB4O;
+import java.awt.HeadlessException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -22,7 +23,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
 
-        this.inicializarFormulario();
+        this.inicializarFrame();
 
     }
 
@@ -88,6 +89,9 @@ public class Principal extends javax.swing.JFrame {
         jButtonConsultarTodasCanciones = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         jComboBoxAutores = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
+        jTextFieldBusquedaAutorConNacionalidad = new javax.swing.JTextField();
+        jButtonConsultarCancionesDeAutorConNacionalidad = new javax.swing.JButton();
 
         jMenuItemModificarAutor.setText("Modificar");
         jMenuItemModificarAutor.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -275,8 +279,9 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jPanelAutoresLayout.createSequentialGroup()
                 .addGap(58, 58, 58)
                 .addComponent(jButtonConsultarAutoresEnRango1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(118, 118, 118)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
                     .addGroup(jPanelAutoresLayout.createSequentialGroup()
                         .addComponent(jTextFieldIngresoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -284,9 +289,8 @@ public class Principal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldIngresoFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonConsultarAutoresEnRango, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonConsultarAutoresEnRango, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(181, 181, 181)
                 .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAutoresLayout.createSequentialGroup()
@@ -298,38 +302,33 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAutoresLayout.createSequentialGroup()
-                .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanelAutoresLayout.createSequentialGroup()
-                        .addContainerGap(27, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1036, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelAutoresLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+            .addGroup(jPanelAutoresLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAutoresLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
+                        .addComponent(jTextFieldNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                         .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelAutoresLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jButtonGuardarAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jButtonGuardarAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelAutoresLayout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextFieldPais, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addGap(39, 39, 39)
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSpinnerAnyoNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addGap(38, 38, 38)
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinnerIngresosAnuales)))))
+                                .addComponent(jSpinnerIngresosAnuales, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(25, 25, 25))
         );
         jPanelAutoresLayout.setVerticalGroup(
@@ -349,28 +348,31 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(jSpinnerAnyoNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinnerIngresosAnuales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonGuardarAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelAutoresLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jButtonGuardarAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonConsultarAutoresEnRango, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextFieldIngresoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel11)
-                                .addComponent(jTextFieldIngresoFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButtonAumentarSalario, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextFieldPorcentajeAumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanelAutoresLayout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButtonAumentarSalario, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextFieldPorcentajeAumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanelAutoresLayout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelAutoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jTextFieldIngresoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jTextFieldIngresoFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonConsultarAutoresEnRango, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(15, 15, 15))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAutoresLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 233, Short.MAX_VALUE)
                         .addComponent(jButtonConsultarAutoresEnRango1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26))))
         );
@@ -433,6 +435,11 @@ public class Principal extends javax.swing.JFrame {
         jButtonConsultarCancionesOrdenadas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonConsultarCancionesOrdenadas.setText("Consultar Canciones Ordenadas Por Título");
         jButtonConsultarCancionesOrdenadas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonConsultarCancionesOrdenadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsultarCancionesOrdenadasActionPerformed(evt);
+            }
+        });
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel16.setText("Autor:");
@@ -441,6 +448,11 @@ public class Principal extends javax.swing.JFrame {
         jButtonConsultarCancionesDeAutor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonConsultarCancionesDeAutor.setText("Consultar canciones");
         jButtonConsultarCancionesDeAutor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonConsultarCancionesDeAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsultarCancionesDeAutorActionPerformed(evt);
+            }
+        });
 
         jButtonConsultarTodasCanciones.setBackground(new java.awt.Color(102, 255, 102));
         jButtonConsultarTodasCanciones.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -457,61 +469,78 @@ public class Principal extends javax.swing.JFrame {
 
         jComboBoxAutores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel18.setText("Nacionalidad del autor:");
+
+        jButtonConsultarCancionesDeAutorConNacionalidad.setBackground(new java.awt.Color(102, 255, 102));
+        jButtonConsultarCancionesDeAutorConNacionalidad.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonConsultarCancionesDeAutorConNacionalidad.setText("Consultar canciones");
+        jButtonConsultarCancionesDeAutorConNacionalidad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonConsultarCancionesDeAutorConNacionalidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsultarCancionesDeAutorConNacionalidadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelCancionesLayout = new javax.swing.GroupLayout(jPanelCanciones);
         jPanelCanciones.setLayout(jPanelCancionesLayout);
         jPanelCancionesLayout.setHorizontalGroup(
             jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCancionesLayout.createSequentialGroup()
+            .addGroup(jPanelCancionesLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelCancionesLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanelCancionesLayout.createSequentialGroup()
-                        .addGroup(jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanelCancionesLayout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanelCancionesLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonConsultarTodasCanciones)
+                        .addGap(28, 28, 28)
+                        .addComponent(jButtonConsultarCancionesOrdenadas)
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldBusquedaAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonConsultarCancionesDeAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldBusquedaAutorConNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonConsultarCancionesDeAutorConNacionalidad)
+                        .addGap(16, 16, 16))
+                    .addGroup(jPanelCancionesLayout.createSequentialGroup()
                         .addGroup(jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCancionesLayout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinnerDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGroup(jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanelCancionesLayout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jLabel14)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinnerAnyoCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel3)
+                                .addGap(0, 1124, Short.MAX_VALUE))
                             .addGroup(jPanelCancionesLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxAutores, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(56, 56, 56)
-                        .addComponent(jButtonGuardarCancion, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)))
-                .addGap(26, 26, 26))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCancionesLayout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jButtonConsultarTodasCanciones)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonConsultarCancionesOrdenadas)
-                .addGap(82, 82, 82)
-                .addComponent(jLabel16)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldBusquedaAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonConsultarCancionesDeAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
+                                .addGroup(jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanelCancionesLayout.createSequentialGroup()
+                                        .addGap(55, 55, 55)
+                                        .addComponent(jLabel12)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(84, 84, 84)
+                                        .addComponent(jLabel13)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jSpinnerDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel14)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jSpinnerAnyoCreacion, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(71, 71, 71))
+                                    .addGroup(jPanelCancionesLayout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel15)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jComboBoxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(158, 158, 158)
+                                        .addComponent(jLabel17)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jComboBoxAutores, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(119, 119, 119)))
+                                .addComponent(jButtonGuardarCancion, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(9, 9, 9)))
+                        .addGap(26, 26, 26))))
         );
         jPanelCancionesLayout.setVerticalGroup(
             jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -540,12 +569,17 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17)
-                .addGroup(jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonConsultarTodasCanciones, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonConsultarCancionesOrdenadas, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16)
-                    .addComponent(jTextFieldBusquedaAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonConsultarCancionesDeAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel18)
+                        .addComponent(jTextFieldBusquedaAutorConNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonConsultarCancionesDeAutorConNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonConsultarCancionesDeAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldBusquedaAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16))
+                    .addGroup(jPanelCancionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonConsultarTodasCanciones, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonConsultarCancionesOrdenadas, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
@@ -571,7 +605,25 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAumentarSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAumentarSalarioActionPerformed
-        // TODO add your handling code here:
+
+        try {
+            int porcentaje = Integer.parseInt(this.jTextFieldPorcentajeAumento.getText());
+
+            if (porcentaje > 0) { // sólo se comtenplan aumentos de ingresos, no descuentos
+                boolean resultado = AutorController.aumentarIngresosEnPorcentaje(porcentaje);
+
+                if (resultado) {
+                    this.listarAutores();
+                    JOptionPane.showMessageDialog(null, "Ingresos aumentados un " + porcentaje + " % para todos los autores.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error en la operación de aumento de ingresos anuales", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "La cantidad debe ser un número entero positivo", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Revisa la información introducida como porcentaje de aumento", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonAumentarSalarioActionPerformed
 
     private void jButtonConsultarAutoresEnRangoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarAutoresEnRangoActionPerformed
@@ -603,15 +655,13 @@ public class Principal extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Revisa las cantidades de ingresos introducidas, la inicial no puede ser mayor a la final", "Aviso", JOptionPane.WARNING_MESSAGE);
                 }
-            } catch (Exception ex) {
+            } catch (HeadlessException | NumberFormatException ex) {
                 System.out.println("Error en la recepcion de los rangos de ingresos anuales. " + ex.getMessage());
                 JOptionPane.showMessageDialog(null, "Revisa las cantidades de ingresos introducidas, deben ser números enteros", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Revisa las cantidades de ingresos introducidas, falta alguna", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
-
-
     }//GEN-LAST:event_jButtonConsultarAutoresEnRangoActionPerformed
 
     private void jButtonConsultarAutoresEnRango1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarAutoresEnRango1ActionPerformed
@@ -710,20 +760,34 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonGuardarCancionActionPerformed
 
     private void jMenuItemEliminarAutorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItemEliminarAutorMousePressed
+        String[] opciones = {"Sí", "No"};
+
         if (hayAutorSeleccionado()) {
             int filaSeleccionada = jTableAutores.getSelectedRow();
-
             DefaultTableModel modelo = (DefaultTableModel) jTableAutores.getModel();
             String nombreAutor = modelo.getValueAt(filaSeleccionada, 0).toString(); // Obtener el nombre del autor
 
-            boolean resultado = AutorController.eliminar(nombreAutor);
+            int confirmacion = JOptionPane.showOptionDialog(
+                    this,
+                    "¿Estás seguro de que quieres eliminar al autor \"" + nombreAutor + "\"?",
+                    "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[1] // Opción por defecto: "No"
+            );
 
-            if (resultado) {
-                JOptionPane.showMessageDialog(null, "Autor eliminado correctamente de la base de datos DB4O", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "El autor seleccionado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                boolean resultado = AutorController.eliminar(nombreAutor);
+
+                if (resultado) {
+                    JOptionPane.showMessageDialog(this, "Autor eliminado correctamente de la base de datos DB4O", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se puede eliminar un autor con canciones asociadas", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                this.listarAutores();
             }
-            this.listarAutores();
         } else {
             JOptionPane.showMessageDialog(this, "Primero, debes seleccionar un autor", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
@@ -756,7 +820,7 @@ public class Principal extends javax.swing.JFrame {
             int filaSeleccionada = jTableCanciones.getSelectedRow();
 
             DefaultTableModel modelo = (DefaultTableModel) jTableCanciones.getModel();
-            String id = modelo.getValueAt(filaSeleccionada, 0).toString(); // Obtener el identificador
+            //String id = modelo.getValueAt(filaSeleccionada, 0).toString(); // Obtener el identificador
             String titulo = modelo.getValueAt(filaSeleccionada, 1).toString(); // Obtener el título
             int duracion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 2).toString()); // Obtener la duracion
             int anyoDeCreacion = Integer.parseInt(modelo.getValueAt(filaSeleccionada, 3).toString()); // Obtener el año de creación
@@ -795,6 +859,93 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItemModificarCancionMousePressed
 
+    private void jButtonConsultarCancionesOrdenadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarCancionesOrdenadasActionPerformed
+        List<Cancion> canciones = CancionController.obtenerTodasOrdenadasPorTitulo();
+
+        // Obtener el modelo de la tabla y limpiarlo antes de agregar nuevos datos
+        DefaultTableModel modelo = (DefaultTableModel) jTableCanciones.getModel();
+        modelo.setRowCount(0); // Limpiar la tabla antes de actualizarla
+
+        // Recorrer la lista de canciones y agregarlas a la tabla
+        for (Cancion cancion : canciones) {
+            Object[] fila = {
+                cancion.getIdentificador(), // Columna 1: ID
+                cancion.getTitulo(), // Columna 2: Título
+                cancion.getDuracion(), // Columna 3: Duración
+                cancion.getAnyoCreacion(), // Columna 4: Año de creación
+                cancion.getGenero().toString(), // Columna 5: Género
+                cancion.getAutor().getNombre() // Columna 6: Autor
+            };
+            modelo.addRow(fila); // Agregar la fila a la tabla
+        }
+    }//GEN-LAST:event_jButtonConsultarCancionesOrdenadasActionPerformed
+
+    private void jButtonConsultarCancionesDeAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarCancionesDeAutorActionPerformed
+        String nombreAutor = this.jTextFieldBusquedaAutor.getText();
+
+        if (!nombreAutor.trim().isEmpty()) {
+
+            List<Cancion> canciones = CancionController.obtenerTodasDelAutor(nombreAutor);
+
+            if (!canciones.isEmpty()) {
+
+                // Obtener el modelo de la tabla y limpiarlo antes de agregar nuevos datos
+                DefaultTableModel modelo = (DefaultTableModel) jTableCanciones.getModel();
+                modelo.setRowCount(0); // Limpiar la tabla antes de actualizarla
+
+                // Recorrer la lista de canciones y agregarlas a la tabla
+                for (Cancion cancion : canciones) {
+                    Object[] fila = {
+                        cancion.getIdentificador(), // Columna 1: ID
+                        cancion.getTitulo(), // Columna 2: Título
+                        cancion.getDuracion(), // Columna 3: Duración
+                        cancion.getAnyoCreacion(), // Columna 4: Año de creación
+                        cancion.getGenero().toString(), // Columna 5: Género
+                        cancion.getAutor().getNombre() // Columna 6: Autor
+                    };
+                    modelo.addRow(fila); // Agregar la fila a la tabla
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "El autor " + nombreAutor + " no tiene canciones asociadas.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Revisa la información introducida, el nombre del autor no puede estar vacío", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonConsultarCancionesDeAutorActionPerformed
+
+    private void jButtonConsultarCancionesDeAutorConNacionalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarCancionesDeAutorConNacionalidadActionPerformed
+        String nacionalidad = this.jTextFieldBusquedaAutorConNacionalidad.getText();
+
+        if (!nacionalidad.trim().isEmpty()) {
+
+            List<Cancion> canciones = CancionController.obtenerTodasDelAutorConNacionalidad(nacionalidad);
+
+            if (!canciones.isEmpty()) {
+
+                // Obtener el modelo de la tabla y limpiarlo antes de agregar nuevos datos
+                DefaultTableModel modelo = (DefaultTableModel) jTableCanciones.getModel();
+                modelo.setRowCount(0); // Limpiar la tabla antes de actualizarla
+
+                // Recorrer la lista de canciones y agregarlas a la tabla
+                for (Cancion cancion : canciones) {
+                    Object[] fila = {
+                        cancion.getIdentificador(), // Columna 1: ID
+                        cancion.getTitulo(), // Columna 2: Título
+                        cancion.getDuracion(), // Columna 3: Duración
+                        cancion.getAnyoCreacion(), // Columna 4: Año de creación
+                        cancion.getGenero().toString(), // Columna 5: Género
+                        cancion.getAutor().getNombre() // Columna 6: Autor
+                    };
+                    modelo.addRow(fila); // Agregar la fila a la tabla
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay canciones con autores de la nacionalidad " + nacionalidad +".", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Revisa la información introducida, la nacionalidad del autor no puede estar vacía", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonConsultarCancionesDeAutorConNacionalidadActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -811,22 +962,16 @@ public class Principal extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
+        //</editor-fold>
+
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Principal().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Principal().setVisible(true);
         });
     }
 
@@ -900,7 +1045,7 @@ public class Principal extends javax.swing.JFrame {
 
     }
 
-    private void inicializarFormulario() {
+    private void inicializarFrame() {
         // Seteo de valor de título y posición del frame
         this.setTitle("Podadera's Songs Vault");
         this.setLocationRelativeTo(null);
@@ -948,6 +1093,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButtonConsultarAutoresEnRango;
     private javax.swing.JButton jButtonConsultarAutoresEnRango1;
     private javax.swing.JButton jButtonConsultarCancionesDeAutor;
+    private javax.swing.JButton jButtonConsultarCancionesDeAutorConNacionalidad;
     private javax.swing.JButton jButtonConsultarCancionesOrdenadas;
     private javax.swing.JButton jButtonConsultarTodasCanciones;
     private javax.swing.JButton jButtonGuardarAutor;
@@ -964,6 +1110,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -990,6 +1137,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable jTableAutores;
     private javax.swing.JTable jTableCanciones;
     private javax.swing.JTextField jTextFieldBusquedaAutor;
+    private javax.swing.JTextField jTextFieldBusquedaAutorConNacionalidad;
     private javax.swing.JTextField jTextFieldIngresoFinal;
     private javax.swing.JTextField jTextFieldIngresoInicial;
     private javax.swing.JTextField jTextFieldNacionalidad;

@@ -72,6 +72,7 @@ public class Cancion {
         this.autor = autor;
     }
 
+    @Override
     public String toString() {
         return "Identificador: " + this.getIdentificador() + " - Título: " + this.getTitulo()
                 + " - Duración: " + this.getDuracion() + " segundos - Año de creación: "

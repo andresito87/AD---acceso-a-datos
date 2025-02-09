@@ -5,6 +5,8 @@ import com.db4o.ObjectSet;
 import com.db4o.ext.DatabaseClosedException;
 import com.db4o.ext.DatabaseReadOnlyException;
 import com.db4o.ext.Db4oIOException;
+import com.db4o.query.Candidate;
+import com.db4o.query.Evaluation;
 import com.db4o.query.Query;
 import db.ConexionDB4O;
 import java.util.ArrayList;
@@ -65,7 +67,7 @@ public class CancionController {
         } finally {
             try {
                 db.rollback(); // Revertimos la transacción en caso de error
-            } catch (Exception rollbackError) {
+            } catch (DatabaseClosedException | DatabaseReadOnlyException | Db4oIOException rollbackError) {
                 System.err.println("Error al revertir la transacción: " + rollbackError.getMessage());
             }
         }
@@ -131,4 +133,78 @@ public class CancionController {
         return false;
     }
 
+    public static List<Cancion> obtenerTodasOrdenadasPorTitulo() {
+        if (db == null || db.ext().isClosed()) {
+            db = ConexionDB4O.conectar();
+        }
+
+        try {
+            Query query = db.query();
+            query.constrain(Cancion.class);
+            query.descend("titulo").orderAscending(); // Ordenar por título ascendente, alfabéticamente
+
+            return query.execute();
+        } catch (DatabaseClosedException e) {
+            System.err.println("Error al obtener las canciones ordenadas: " + e.getMessage());
+            return new ArrayList<>(); // Devuelve una lista vacía en caso de error
+        }
+    }
+
+    public static List<Cancion> obtenerTodasDelAutor(String nombreAutor) {
+        if (db == null || db.ext().isClosed()) {
+            db = ConexionDB4O.conectar();
+        }
+
+        try {
+            Query query = db.query();
+            query.constrain(Cancion.class);
+            query.descend("autor").descend("nombre").constrain(new Evaluation() { // filtra resultados ignorando mayúsculas
+                @Override
+                public void evaluate(Candidate candidate) {
+                    String nombreEnBD = (String) candidate.getObject();
+                    if (nombreEnBD != null && nombreEnBD.equalsIgnoreCase(nombreAutor)) {
+                        candidate.include(true);
+                    } else {
+                        candidate.include(false);
+                    }
+                }
+            });
+
+            return query.execute(); // Devuelve los resultados directamente desde DB4O
+
+        } catch (DatabaseClosedException e) {
+            System.err.println("Error al obtener canciones del autor " + nombreAutor + ": " + e.getMessage());
+        }
+
+        return new ArrayList<>();
+    }
+
+    public static List<Cancion> obtenerTodasDelAutorConNacionalidad(String nacionalidad) {
+        if (db == null || db.ext().isClosed()) {
+            db = ConexionDB4O.conectar();
+        }
+
+        try {
+            Query query = db.query();
+            query.constrain(Cancion.class);
+            query.descend("autor").descend("nacionalidad").constrain(new Evaluation() { // filtra resultados ignorando mayúsculas
+                @Override
+                public void evaluate(Candidate candidate) {
+                    String nombreEnBD = (String) candidate.getObject();
+                    if (nombreEnBD != null && nombreEnBD.equalsIgnoreCase(nacionalidad)) {
+                        candidate.include(true);
+                    } else {
+                        candidate.include(false);
+                    }
+                }
+            });
+
+            return query.execute(); // Devuelve los resultados directamente desde DB4O
+
+        } catch (DatabaseClosedException e) {
+            System.err.println("Error al obtener canciones de los autores con nacionalidad " + nacionalidad + ": " + e.getMessage());
+        }
+
+        return new ArrayList<>();
+    }
 }

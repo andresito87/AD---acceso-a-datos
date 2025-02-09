@@ -65,7 +65,7 @@ public class AutorController {
         } finally {
             try {
                 db.rollback(); // Revertimos la transacción en caso de error
-            } catch (Exception rollbackError) {
+            } catch (DatabaseClosedException | DatabaseReadOnlyException | Db4oIOException rollbackError) {
                 System.err.println("Error al revertir la transacción: " + rollbackError.getMessage());
             }
         }
@@ -185,8 +185,8 @@ public class AutorController {
             // Crear consulta con restricciones
             Query query = db.query();
             query.constrain(Autor.class);
-            query.descend("ingresos_anuales").constrain(cantidadInicial).greater();
-            query.descend("ingresos_anuales").constrain(cantidadFinal).smaller();
+            query.descend("ingresos_anuales").constrain(cantidadInicial - 1).greater(); // Incluye la cifra límite
+            query.descend("ingresos_anuales").constrain(cantidadFinal + 1).smaller(); // Incluye la cifra límite
 
             ObjectSet<Autor> resultados = query.execute();
 
@@ -194,10 +194,46 @@ public class AutorController {
                 autoresFiltrados.add(resultados.next());
             }
 
-        } catch (Exception e) {
+        } catch (DatabaseClosedException e) {
             System.err.println("Error al obtener autores con ingresos entre " + cantidadInicial + " y " + cantidadFinal + ": " + e.getMessage());
         }
 
         return autoresFiltrados;
+    }
+
+    public static boolean aumentarIngresosEnPorcentaje(int porcentaje) {
+        if (db == null || db.ext().isClosed()) {
+            db = ConexionDB4O.conectar();
+        }
+
+        try {
+            // Obtener todos los autores
+            ObjectSet<Autor> autores = db.query(Autor.class);
+
+            if (autores.isEmpty()) {
+                System.out.println("No hay autores en la base de datos.");
+                return false;
+            }
+
+            // Aplicar el incremento a cada autor
+            for (Autor autor : autores) {
+                double nuevoIngreso = autor.getIngresosAnuales() * (1 + porcentaje / 100.0);
+                autor.setIngresosAnuales((int) nuevoIngreso);
+                db.store(autor); // Guardar cambios en la base de datos
+            }
+
+            db.commit(); // Confirmar transacción
+            System.out.println("Ingresos aumentados un " + porcentaje + " % para todos los autores.");
+            return true;
+
+        } catch (DatabaseClosedException e) {
+            System.err.println("Error: La base de datos está cerrada. " + e.getMessage());
+        } catch (Db4oIOException e) {
+            System.err.println("Error de I/O en db4o: " + e.getMessage());
+        } catch (DatabaseReadOnlyException e) {
+            System.err.println("Error inesperado al actualizar ingresos: " + e.getMessage());
+        }
+
+        return false;
     }
 }
