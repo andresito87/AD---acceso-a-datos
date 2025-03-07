@@ -26,7 +26,7 @@ public class Main {
     try {
       //abre la conexión con la base de datos a la que apunta el url
       //mediante la contraseña del usuario postgres
-      conn = DriverManager.getConnection(url, "postgres", "1234");
+      conn = DriverManager.getConnection(url, "admin", "admin");
 
       //elimina la tabla y los tipos de datos (si existen)
       drop_Ejemplo(conn);

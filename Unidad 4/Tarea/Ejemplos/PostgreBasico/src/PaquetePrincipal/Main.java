@@ -20,7 +20,7 @@ public class Main {
   public static void main(String[] args) throws SQLException {
 
     //cadena url de la base de datos anaconda en el servidor local
-    String url = "jdbc:postgresql://localhost/anaconda";
+    String url = "jdbc:postgresql://localhost:5432/anaconda";
 
     //conexión con la base de datos
     Connection conn = null;
@@ -28,7 +28,7 @@ public class Main {
     try {
       //abre la conexión con la base de datos a la que apunta el url
       //mediante la contraseña del usuario postgres
-      conn = DriverManager.getConnection(url, "postgres", "1234");
+      conn = DriverManager.getConnection(url, "admin", "admin");
 
       //elimina las tablas (si existen)
       drop_Ejemplo(conn);

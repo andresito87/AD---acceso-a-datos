@@ -1,0 +1,9 @@
+#
+# Generated with Matisse Schema Definition Language 9.1.11
+# Generation date: Fri Feb 28 15:56:37 2025
+#
+# Mapping of Java classes and indexes to the corresponding database schema objects
+#
+doctoradomatisse.Profesor = Profesor
+doctoradomatisse.Tesis = Tesis
+doctoradomatisse.Departamento = Departamento

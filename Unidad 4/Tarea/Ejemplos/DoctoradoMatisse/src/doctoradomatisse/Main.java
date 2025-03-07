@@ -23,7 +23,7 @@ public class Main {
         //crea el objeto base de datos MtDatabase indicando la cadena de conexión
         //nombre del host "zailla" y base de datos "doctorado"
         //no se necesita usuario porque no se ha deficnido un control de acceso
-        MtDatabase db = new MtDatabase("zailla", "doctorado");
+        MtDatabase db = new MtDatabase("Andres-Portatil", "Doctorad0");
         //mensaje para la Salida
         System.out.println("=========== connectFromMtDatabase ==========\n");
         try {
