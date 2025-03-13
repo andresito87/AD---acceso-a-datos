@@ -1,0 +1,105 @@
+XQuery es un lenguaje diseñado para escribir consultas sobre colecciones de datos expresadas en XML. 
+Puede aplicarse tanto a archivos XML, como a bases de datos relacionales con funciones de conversión 
+de registros a XML. Su principal función es extraer información de un conjunto de datos organizados 
+como un árbol de etiquetas XML. En este sentido XQuery es independiente del origen de los datos.
+
+FLWOR (pronunciado "flower") es el acrónimo para "For, Let, Where, Order by, Return". 
+
+For - selecciona una secuencia de nodos
+Let - guarda esa secuencia en una variable
+Where - filtra los nodos
+Order by - ordena los nodos
+Return - lo que se devuelve (evaluado una vez por cada nodo)
+
+Función doc(): seleccionamos el archivo xml donde está guardada la información
+for $libro in doc("libros.xml")//libro
+
+For: Iteración o recorrido de conjunto de nodos obtenidos apartir de la función doc()+expresión Xpath
+(lo que va entre[...] se le llama predicado y es una forma de seleccionar un nodo(el predicado devuelve TRUE)
+o descartarlo(el predicado devuelve FALSE))
+
+	for $escritor in doc("06.xml")//Escritor[ends-with(fecha_nacimiento,"1964")]
+
+Let: se usa para guardar en una variable($nombreDeVariable), el grupo de nodos el cual cumple una expresión XPath o el valor que devuelve una función(sum,max,...)
+	Se usa la asignación con := y no se usa la cláusula where, se usan predicados en la expresión XPath.
+
+	let $masculino := doc("06.xml")//Escritor[@sexo="M"]
+	return <total>{sum($masculino/libros_publicados)}</total>
+
+	¡Nota!: La principal diferencia entre Let y For es que el primero se usa como variable, como "envase" para guardar uno/varios nodo/s o un valor. 
+		En cambio, For permite recorrer todos esos nodos, uno por uno, aplicar alguna acción sobre ellos y devolver algún valor con return. 
+
+Where: Filtrar usando condiciones(Contenga la palabra ÁNGEL(en mayúsculas) o que acabe con la palabra "perdido"(en minúsculas)):
+	where contains(upper-case($libro), 'ÁNGEL') or ends-with(lower-case($libro), 'perdido')
+
+Order by: Ordenación de nodos:(sino se especifica descending, el valor por defecto es ascending)
+	order by $p/precio descending
+
+Funciones:
+	Suma:
+		<total moneda="E"> {sum($precio/libro/@precio)} </total>
+	Empieza por:
+		where starts-with($titulo/@EAN,"978842")
+	Acabado en:
+		doc("06.xml")//Escritor[ends-with(fecha_nacimiento,"1964")]
+	Data(): Obtener el valor del nodo o atributo
+		return <nombre>{data($nombre)} </nombre>
+	Max(): Máximo valor
+		let $max := max(//precio)
+	Count(): contar el número de elementos que satisfacen una expresión XPath()
+		<flota_vehiculos>{count($vehiculo/modelo)}</flota_vehiculos>
+	Distinct-values(): elimina los elementos repetidos
+		<flota_vehiculos>{count(distinct-values($vehiculo/modelo))}</flota_vehiculos>
+	Igual o distinto:(=,!=)
+		let $s := doc("llegaya.xml")//repartidor[provincia='Sevilla' and @zona!='A' and localidad!='Sevilla' and salario<1000 ]
+	String-length(): se usa paraa obtener la longitud de una cadena de caracteres obtenida con data()
+		string-length(data($e/nombre))
+Comentarios:
+	(:Esto es un comentario en XQuery:)
+
+Separación de bloques de código mediante la coma(,)
+
+Return:
+	Mostrando datos con etiquetas personalizadas, el valor que se desea mostrar tiene que ir entre llaves {...}
+	Tres formas de mostrar la misma información:
+	<repartidor>{$r/nombre, $r/telefono, $r/salario}</repartidor>
+	<repartidor>{{$r/nombre}{$r/telefono}{$r/salario}</repartidor>
+	<repartidor><nombre>{$r/nombre/data()}</nombre><telefono>{$r/telefono/data()}</telefono><salario>{$r/salario/data()}</salario></repartidor>
+
+Composición de bloque de información a partir del recorrido de varios conjuntos de nodos:
+	for $a in doc("02.xml")//alumno,
+	    $n in doc("02.xml")//nota,
+	    $m in doc("02.xml")//asignatura
+		where $a/@cod = $n/@alum and $n/@asig = $m/@cod and $m/@nombre="LMSGI"
+		order by $n/@calificacion 
+	return <notas_LMSGI>{$n/@calificacion}{$a/apenom}</notas_LMSGI>
+
+
+Diferencias de formateado de datos:
+
+for $titulo in doc("05.xml") //Escritor
+	where $titulo/Nacionalidad="Española"
+return 
+    $titulo/Libros/libro
+
+Muestra:
+<libro EAN="9788408099956" precio="21.90" moneda="E">El ángel perdido</libro>
+<libro EAN="9788408091868" precio="8.95" moneda="E">La dama azul</libro>
+<libro EAN="9788408073956" precio="20.50" moneda="E">La ruta prohibida</libro>
+<libro EAN="9788408043645" precio="22.00" moneda="E">La sombre del viento</libro>
+<libro EAN="9788408081180" precio="24.50" moneda="E">El juego del ángel</libro>
+<libro EAN="9788408031215" precio="16.90" moneda="E">El prisionero del cielo</libro>
+
+for $titulo in doc("05.xml") //Escritor/Libros/libro (:Necesito iterar libro, y no escritor, porque quiero una lista única de libros sin atributos:)
+	where  $titulo/../../Nacionalidad="Española" (:Nos movemos por el árbol XML para buscar la info que necesitamos:)
+return 
+  <libro>{data($titulo)}</libro>
+
+Muestra:
+<libro>El maestro del prado</libro>
+<libro>El ángel perdido</libro>
+<libro>La dama azul</libro>
+<libro>La ruta prohibida</libro>
+<libro>La sombre del viento</libro>
+<libro>El juego del ángel</libro>
+<libro>El prisionero del cielo</libro>
