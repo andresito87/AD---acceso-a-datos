@@ -13,7 +13,7 @@ public class Main {
   //URL de la base de datos anaconda
   static String url = "jdbc:postgresql://localhost/anaconda";
   //contraseña del usuario 'postgres' para acceder a la base de datos anaconda
-  static String passwd = "1234";
+  static String passwd = "admin";
 
   /**
    * @param args the command line arguments
@@ -27,7 +27,7 @@ public class Main {
     try {
       //abre la conexión con la base de datos a la que apunta el url
       //mediante la contraseña del usuario postgres
-      conn = DriverManager.getConnection(url, "postgres", passwd);
+      conn = DriverManager.getConnection(url, "admin", passwd);
 
       //comando
       sta = conn.createStatement();
