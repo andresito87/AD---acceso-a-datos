@@ -1,4 +1,15 @@
-package programaad52425;
+package vistas;
+
+import controladores.TallerController;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import modelos.Reparacion;
+import modelos.Vehiculo;
+import org.basex.core.Context;
+import org.basex.query.QueryException;
+import org.basex.query.QueryIOException;
 
 /**
  *
@@ -6,11 +17,18 @@ package programaad52425;
  */
 public class JFramePrincipal extends javax.swing.JFrame {
 
+    private static Context contexto = null;
+
     /**
      * Creates new form JFramePrincipal
+     *
+     * @param contexto
      */
-    public JFramePrincipal() {
+    public JFramePrincipal(Context contexto) throws QueryException {
         initComponents();
+        JFramePrincipal.contexto = contexto;
+        rellenarTablaVehiculos();
+        rellenarTablaReparaciones();
     }
 
     /**
@@ -23,17 +41,34 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelTituloTarea = new javax.swing.JLabel();
+        jLabelNombreAutor = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jLabelVehiculo = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableVehiculos = new javax.swing.JTable();
+        jLabelRparaciones = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableReparaciones = new javax.swing.JTable();
+        jButtonListarVehiculos = new javax.swing.JButton();
+        jButtonListarReparaciones = new javax.swing.JButton();
+        jButtonConsultarVehiculosFecha2024 = new javax.swing.JButton();
+        jButtonConsultarVehiculosKm = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButtonConsultarPropietariosGolf = new javax.swing.JButton();
+        jButtonConsultarMecanicos = new javax.swing.JButton();
+        jButtonModificarNodoKm = new javax.swing.JButton();
+        jButtonInsertarReparacion = new javax.swing.JButton();
+        jButtonGuardarColecciones = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabel1.setText("Acceso a datos - TAREA 5 ");
+        jLabelTituloTarea.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabelTituloTarea.setText("Acceso a datos - TAREA 5 ");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jLabel2.setText("Andrés Samuel Podadera González ");
+        jLabelNombreAutor.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabelNombreAutor.setText("Andrés Samuel Podadera González ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -43,31 +78,157 @@ public class JFramePrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(385, 385, 385)
-                        .addComponent(jLabel1))
+                        .addComponent(jLabelTituloTarea))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(372, 372, 372)
-                        .addComponent(jLabel2)))
-                .addContainerGap(379, Short.MAX_VALUE))
+                        .addComponent(jLabelNombreAutor)))
+                .addContainerGap(410, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel1)
+                .addComponent(jLabelTituloTarea)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(jLabelNombreAutor)
                 .addContainerGap(18, Short.MAX_VALUE))
         );
+
+        jLabelVehiculo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabelVehiculo.setText("Vehículos:");
+
+        jTableVehiculos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Matrícula", "Año de fabricación", "Propietario", "Marca", "Modelo", "Kilometraje"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTableVehiculos);
+        if (jTableVehiculos.getColumnModel().getColumnCount() > 0) {
+            jTableVehiculos.getColumnModel().getColumn(2).setMinWidth(150);
+            jTableVehiculos.getColumnModel().getColumn(5).setMinWidth(20);
+        }
+
+        jLabelRparaciones.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabelRparaciones.setText("Reparaciones:");
+
+        jTableReparaciones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Matrícula", "Fecha Inicio", "Fecha Fin", "Nombre Mecánico", "Apellidos Mecánico", "Teléfono Mecánico"
+            }
+        ));
+        jScrollPane2.setViewportView(jTableReparaciones);
+
+        jButtonListarVehiculos.setText("Consultar Vehiculos");
+
+        jButtonListarReparaciones.setText("Consultar Reparaciones");
+
+        jButtonConsultarVehiculosFecha2024.setText("Consultar Vehiculos Del 2024");
+
+        jButtonConsultarVehiculosKm.setText("Consultar Vehiculos con mas de 75000 KM");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
+
+        jButtonConsultarPropietariosGolf.setText("Consultar Propietarios con Golf");
+
+        jButtonConsultarMecanicos.setText("Consultar Mecanicos");
+
+        jButtonModificarNodoKm.setText("Modificar Nodo Kilometros");
+
+        jButtonInsertarReparacion.setText("Insertar Nueva Reparacion");
+
+        jButtonGuardarColecciones.setText("Guardar Colecciones en Archivos");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelVehiculo, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelRparaciones, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonListarVehiculos)
+                                    .addComponent(jButtonConsultarVehiculosFecha2024)
+                                    .addComponent(jButtonConsultarVehiculosKm)
+                                    .addComponent(jButtonConsultarPropietariosGolf))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonModificarNodoKm)
+                                    .addComponent(jButtonConsultarMecanicos)
+                                    .addComponent(jButtonListarReparaciones)
+                                    .addComponent(jButtonInsertarReparacion))
+                                .addGap(34, 34, 34))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(149, 149, 149)
+                                .addComponent(jButtonGuardarColecciones)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(35, 35, 35))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 528, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelVehiculo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(jLabelRparaciones)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonListarVehiculos)
+                            .addComponent(jButtonListarReparaciones))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonConsultarVehiculosFecha2024)
+                            .addComponent(jButtonConsultarMecanicos))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonConsultarVehiculosKm)
+                            .addComponent(jButtonModificarNodoKm))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonConsultarPropietariosGolf)
+                            .addComponent(jButtonInsertarReparacion))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonGuardarColecciones)))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -75,17 +236,18 @@ public class JFramePrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -121,15 +283,87 @@ public class JFramePrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFramePrincipal().setVisible(true);
+                try {
+                    new JFramePrincipal(contexto).setVisible(true);
+                } catch (QueryException ex) {
+                    Logger.getLogger(JFramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
+    private void rellenarTablaVehiculos() {
+        try {
+            List<Vehiculo> vehiculos = TallerController.obtenerTodosVehiculos(contexto);
+
+            DefaultTableModel model = (DefaultTableModel) jTableVehiculos.getModel();
+
+            // Eliminar todas las filas existentes
+            model.setRowCount(0);
+
+            for (Vehiculo v : vehiculos) {
+                model.addRow(new Object[]{
+                    v.getMatricula(),
+                    v.getAnyoFabricacion(),
+                    v.getPropietario().getNombre() + " " + v.getPropietario().getApellidos(),
+                    v.getMarca(),
+                    v.getModelo(),
+                    v.getKilometraje()
+                });
+            }
+
+        } catch (QueryException | QueryIOException ex) {
+            Logger.getLogger(JFramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void rellenarTablaReparaciones() {
+        try {
+            List<Reparacion> reparaciones = TallerController.obtenerTodasReparaciones(contexto);
+
+            DefaultTableModel model = (DefaultTableModel) jTableReparaciones.getModel();
+
+            // Eliminar todas las filas existentes
+            model.setRowCount(0);
+
+            for (Reparacion reparacion : reparaciones) {
+                model.addRow(new Object[]{
+                    reparacion.getMatricula(),
+                    reparacion.getInicio().toString(),
+                    reparacion.getFin() != null ? reparacion.getFin() : "Sin Terminar",
+                    reparacion.getMecanico().getNombre(),
+                    reparacion.getMecanico().getApellidos(),
+                    reparacion.getMecanico().getTelefono()
+                });
+            }
+
+        } catch (QueryException | QueryIOException ex) {
+            Logger.getLogger(JFramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton jButtonConsultarMecanicos;
+    private javax.swing.JButton jButtonConsultarPropietariosGolf;
+    private javax.swing.JButton jButtonConsultarVehiculosFecha2024;
+    private javax.swing.JButton jButtonConsultarVehiculosKm;
+    private javax.swing.JButton jButtonGuardarColecciones;
+    private javax.swing.JButton jButtonInsertarReparacion;
+    private javax.swing.JButton jButtonListarReparaciones;
+    private javax.swing.JButton jButtonListarVehiculos;
+    private javax.swing.JButton jButtonModificarNodoKm;
+    private javax.swing.JLabel jLabelNombreAutor;
+    private javax.swing.JLabel jLabelRparaciones;
+    private javax.swing.JLabel jLabelTituloTarea;
+    private javax.swing.JLabel jLabelVehiculo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTableReparaciones;
+    private javax.swing.JTable jTableVehiculos;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }

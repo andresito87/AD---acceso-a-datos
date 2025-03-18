@@ -1,29 +1,42 @@
-package programaad52425;
+package vistas;
 
+import controladores.BaseDeDatos;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.basex.core.*;
-import java.nio.file.*;
+import org.basex.query.QueryException;
 
 public class Main {
 
     public static void main(String[] args) {
         try {
-            String directorioSalida = "AD52425";
 
-            // Crear el directorio si no existe
-            Files.createDirectories(Paths.get(directorioSalida));
+            Context contexto = BaseDeDatos.conectar();
 
-            Context context = BaseDeDatos.conectar();
+            JFramePrincipal formularioPrincipal = new JFramePrincipal(contexto);
+            formularioPrincipal.setVisible(true);
+            formularioPrincipal.setLocationRelativeTo(null);
 
             // EJERCICIO 1: Procesar y guardar colecciones
-            TallerController.guardarVehiculos(context, directorioSalida);
-            TallerController.guardarReparaciones(context, directorioSalida);
-            TallerController.guardarMarcas(context, directorioSalida);
-
-            BaseDeDatos.desconectar();
+            //TallerController.guardarVehiculos(context, directorioSalida);
+            //TallerController.guardarReparaciones(context, directorioSalida);
+            // TallerController.guardarMarcas(context, directorioSalida);
+            
+            // Cierra la base de datos al cerrar la ventana
+            formularioPrincipal.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    BaseDeDatos.desconectar();
+                }
+            });
 
         } catch (IOException ex) {
             System.out.println("Error de Entrada/Salida " + ex.getMessage());
+        } catch (QueryException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
