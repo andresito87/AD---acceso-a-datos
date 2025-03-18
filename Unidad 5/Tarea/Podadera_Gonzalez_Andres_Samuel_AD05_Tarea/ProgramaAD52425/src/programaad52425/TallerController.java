@@ -69,7 +69,7 @@ public class TallerController {
                     + "' | Inicio: ', $inicio, "
                     + "' | Fin: ', $fin, "
                     + "' | Teléfono: ', $telefono, "
-                    + "' | Mecánico: ', $nombre, ' ', $apellidos)";
+                    + "' | Mecánico/a: ', $nombre, ' ', $apellidos)";
 
             String result = new XQuery(query).execute(context);
 

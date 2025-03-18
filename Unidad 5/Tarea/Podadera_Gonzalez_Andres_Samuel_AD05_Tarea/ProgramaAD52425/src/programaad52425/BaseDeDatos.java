@@ -23,11 +23,12 @@ public class BaseDeDatos {
             // Crear la base de datos a partir del archivo XML
             new CreateDB(databaseName, filePath).execute(context);
 
+            System.out.println("Conexión y creación de la Base de datos realizada correctamente.");
             return context;
         } catch (BaseXException ex) {
             System.out.println("Error en la conexión a la base de datos XML");
         }
-        
+
         return null;
     }
 
