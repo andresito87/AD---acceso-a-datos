@@ -25,8 +25,9 @@ import org.basex.query.QueryProcessor;
 public class TallerController {
 
     private static final String DATABASE_NAME = "tallerDB";
+    private static final String DIRECTORIO_SALIDA = "AD52425";
 
-    public static void guardarVehiculos(Context context, String directorioSalida) {
+    public static boolean guardarVehiculos(Context context) {
         try {
             // Consulta para obtener cada vehiculo por separado
             String query
@@ -51,21 +52,24 @@ public class TallerController {
             int index = 1;
             for (String item : items) {
                 if (!item.trim().isEmpty()) {  // Evitar líneas vacías
-                    String fileName = directorioSalida + "/vehiculo" + index + ".txt";
+                    String fileName = DIRECTORIO_SALIDA + "/vehiculo" + index + ".txt";
                     Files.writeString(Paths.get(fileName), item.trim());
                     index++;
                 }
             }
 
             System.out.println("Guardados " + (index - 1) + " vehículos");
+            return true;
         } catch (BaseXException ex) {
             System.err.println("Error procesando vehículos: " + ex.getMessage());
         } catch (IOException ex) {
-            System.err.println("Error accediendo/escribiendo en archivo " + directorioSalida + ": " + ex.getMessage());
+            System.err.println("Error accediendo/escribiendo en archivo " + DIRECTORIO_SALIDA + ": " + ex.getMessage());
         }
+
+        return false;
     }
 
-    public static void guardarReparaciones(Context context, String directorioSalida) {
+    public static boolean guardarReparaciones(Context context) {
         try {
             // Consulta para obtener cada reparacion por separado
             String query
@@ -90,21 +94,23 @@ public class TallerController {
             int index = 1;
             for (String item : items) {
                 if (!item.trim().isEmpty()) {  // Evitar líneas vacías
-                    String fileName = directorioSalida + "/reparacion" + index + ".txt";
+                    String fileName = DIRECTORIO_SALIDA + "/reparacion" + index + ".txt";
                     Files.writeString(Paths.get(fileName), item.trim());
                     index++;
                 }
             }
 
             System.out.println("Guardadas " + (index - 1) + " reparaciones");
+            return true;
         } catch (BaseXException ex) {
             System.err.println("Error procesando reparaciones: " + ex.getMessage());
         } catch (IOException ex) {
-            System.err.println("Error accediendo/escribiendo en archivo " + directorioSalida + ": " + ex.getMessage());
+            System.err.println("Error accediendo/escribiendo en archivo " + DIRECTORIO_SALIDA + ": " + ex.getMessage());
         }
+        return false;
     }
 
-    static void guardarMarcas(Context contexto, String directorioSalida) {
+    public static boolean guardarMarcas(Context contexto) {
         try {
             // Consulta para obtener cada marca por separado
             String query
@@ -120,21 +126,24 @@ public class TallerController {
             int index = 1;
             for (String item : items) {
                 if (!item.trim().isEmpty()) {  // Evitar líneas vacías
-                    String fileName = directorioSalida + "/marca" + index + ".txt";
+                    String fileName = DIRECTORIO_SALIDA + "/marca" + index + ".txt";
                     Files.writeString(Paths.get(fileName), item.trim());
                     index++;
                 }
             }
 
             System.out.println("Guardadas " + (index - 1) + " marcas");
+            return true;
         } catch (BaseXException ex) {
             System.err.println("Error procesando marcas: " + ex.getMessage());
         } catch (IOException ex) {
-            System.err.println("Error accediendo/escribiendo en archivo " + directorioSalida + ": " + ex.getMessage());
+            System.err.println("Error accediendo/escribiendo en archivo " + DIRECTORIO_SALIDA + ": " + ex.getMessage());
         }
+
+        return false;
     }
 
-    public static List<Vehiculo> obtenerTodosVehiculos(Context contexto) throws QueryException, QueryIOException {
+    public static List<Vehiculo> obtenerTodosVehiculos(Context contexto) {
         List<Vehiculo> vehiculos = new ArrayList<>();
 
         try {
@@ -176,12 +185,14 @@ public class TallerController {
 
         } catch (NumberFormatException ex) {
             System.out.println("Error: " + ex.getMessage());
+        } catch (QueryIOException | QueryException ex) {
+            System.out.println("Error en las consultas XQuery"+ ex.getMessage());
         }
 
         return vehiculos;
     }
 
-    public static List<Reparacion> obtenerTodasReparaciones(Context contexto) throws QueryException, QueryIOException {
+    public static List<Reparacion> obtenerTodasReparaciones(Context contexto) {
         List<Reparacion> reparaciones = new ArrayList<>();
 
         try {
@@ -226,6 +237,8 @@ public class TallerController {
 
         } catch (NumberFormatException ex) {
             System.out.println("Error: " + ex.getMessage());
+        } catch (QueryException | QueryIOException ex) {
+            System.out.println("Error en las consultas XQuery"+ ex.getMessage());
         }
 
         return reparaciones;
@@ -259,6 +272,148 @@ public class TallerController {
         Mecanico mecanico = new Mecanico(nombre, apellidos, telefono);
 
         return mecanico;
+    }
+
+    public static String obtenerVehiculos2024(Context contexto) {
+        String resultado = "";
+        try {
+            // Consulta FLWOR para obtener todos los vehículos del 2024
+            // Cargar la consulta desde el archivo
+            String query = new String(Files.readAllBytes(Paths.get("Consultas_XQuery/Ejercicio2-1.xq")));
+
+            resultado = new XQuery(query).execute(contexto);
+
+        } catch (BaseXException ex) {
+            System.err.println("Error obteniendo vehículos del 2024: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error de entrada/salida: " + ex.getMessage());
+        }
+        return resultado;
+    }
+
+    public static String obtenerVehiculosCon75000(Context contexto) {
+        String resultado = "";
+        try {
+            // Consulta FLWOR para obtener todos los vehículos con mas de 75000 kilometros
+            // Cargar la consulta desde el archivo
+            String query = new String(Files.readAllBytes(Paths.get("Consultas_XQuery/Ejercicio2-2.xq")));
+
+            resultado = new XQuery(query).execute(contexto);
+
+        } catch (BaseXException ex) {
+            System.err.println("Error obteniendo vehículos con más de 75000: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error de entrada/salida: " + ex.getMessage());
+        }
+
+        return resultado;
+    }
+
+    public static String obtenerPropietariosConGolf(Context contexto) {
+        String resultado = "";
+        try {
+            // Consulta FLWOR para obtener todos los propietarios que tienen un golf
+            // Cargar la consulta desde el archivo
+            String query = new String(Files.readAllBytes(Paths.get("Consultas_XQuery/Ejercicio2-3.xq")));
+
+            resultado = new XQuery(query).execute(contexto);
+
+        } catch (BaseXException ex) {
+            System.err.println("Error obteniendo propietarios con un Golf: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error de entrada/salida: " + ex.getMessage());
+        }
+        return resultado;
+    }
+
+    public static String obtenerMecanicos(Context contexto) {
+        String resultado = "";
+        try {
+            // Consulta FLWOR para obtener todos los mecánicos
+            // Cargar la consulta desde el archivo
+            String query = new String(Files.readAllBytes(Paths.get("Consultas_XQuery/Ejercicio2-4.xq")));
+
+            resultado = new XQuery(query).execute(contexto);
+
+        } catch (BaseXException ex) {
+            System.err.println("Error obteniendo los mecánicos: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error de entrada/salida: " + ex.getMessage());
+        }
+        return resultado;
+    }
+
+    public static boolean modificarKilometrosDe6666FFF(Context contexto) {
+        try {
+            // Consulta para modificar los kilometros del vehiculo con matrícula 6666FFF
+            // Cargar la consulta desde el archivo
+            String query = new String(Files.readAllBytes(Paths.get("Consultas_XQuery/Ejercicio3-1.xq")));
+
+            new XQuery(query).execute(contexto);
+
+            return true;
+
+        } catch (BaseXException ex) {
+            System.err.println("Error modificando los kilómetros: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error de entrada/salida: " + ex.getMessage());
+        }
+        return false;
+    }
+
+    public static String modificarNodoKilometrosAKm(Context contexto) {
+        String resultado = "";
+        try {
+            // Consulta para reemplazar el nodo kilómetros por km de todos los vehículos
+            // Cargar la consulta desde el archivo
+            String query = new String(Files.readAllBytes(Paths.get("Consultas_XQuery/Ejercicio3-2.xq")));
+
+            new XQuery(query).execute(contexto);
+
+            query = "for $vehiculo in //vehiculo\n"
+                    + "return $vehiculo/kms";
+
+            resultado = new XQuery(query).execute(contexto);
+
+        } catch (BaseXException ex) {
+            System.err.println("Error procesando nodos kilómetro: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error de entrada/salida: " + ex.getMessage());
+        }
+        return resultado;
+    }
+
+    public static void modificarNodoKmAKilometros(Context contexto) {
+        try {
+            String query
+                    = "for $v in //vehiculo\n"
+                    + "let $kilometros := $v/kms/text()\n"
+                    + "let $nodoKilometro := $v/kms\n"
+                    + "return replace node $nodoKilometro with <kilometros>{$kilometros}</kilometros>";
+
+            // Ejecutar la consulta de actualización
+            new XQuery(query).execute(contexto);
+        } catch (BaseXException ex) {
+            System.err.println("Error procesando kilómetros: " + ex.getMessage());
+        }
+    }
+
+    public static boolean insertarNuevaReparacion(Context contexto) {
+        try {
+            // Consulta para modificar los kilometros del vehiculo con matrícula 6666FFF
+            // Cargar la consulta desde el archivo
+            String query = new String(Files.readAllBytes(Paths.get("Consultas_XQuery/Ejercicio3-3.xq")));
+
+            new XQuery(query).execute(contexto);
+
+            return true;
+
+        } catch (BaseXException ex) {
+            System.err.println("Error insertando una nueva reparación: " + ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println("Error de entrada/salida: " + ex.getMessage());
+        }
+        return false;
     }
 
 }

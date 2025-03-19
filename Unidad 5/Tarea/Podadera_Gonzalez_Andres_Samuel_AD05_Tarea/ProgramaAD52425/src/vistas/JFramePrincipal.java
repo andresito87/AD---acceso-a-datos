@@ -4,6 +4,7 @@ import controladores.TallerController;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelos.Reparacion;
 import modelos.Vehiculo;
@@ -27,8 +28,8 @@ public class JFramePrincipal extends javax.swing.JFrame {
     public JFramePrincipal(Context contexto) throws QueryException {
         initComponents();
         JFramePrincipal.contexto = contexto;
-        rellenarTablaVehiculos();
-        rellenarTablaReparaciones();
+        //rellenarTablaVehiculos();
+        //rellenarTablaReparaciones();
     }
 
     /**
@@ -55,17 +56,19 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jButtonConsultarVehiculosFecha2024 = new javax.swing.JButton();
         jButtonConsultarVehiculosKm = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextAreaResultados = new javax.swing.JTextArea();
         jButtonConsultarPropietariosGolf = new javax.swing.JButton();
         jButtonConsultarMecanicos = new javax.swing.JButton();
         jButtonModificarNodoKm = new javax.swing.JButton();
         jButtonInsertarReparacion = new javax.swing.JButton();
         jButtonGuardarColecciones = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jButtonModificarCantidadKm = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabelTituloTarea.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        jLabelTituloTarea.setText("Acceso a datos - TAREA 5 ");
+        jLabelTituloTarea.setText("Acceso a datos - TAREA 5 - DAM ");
 
         jLabelNombreAutor.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabelNombreAutor.setText("Andrés Samuel Podadera González ");
@@ -77,12 +80,12 @@ public class JFramePrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(385, 385, 385)
-                        .addComponent(jLabelTituloTarea))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(372, 372, 372)
-                        .addComponent(jLabelNombreAutor)))
-                .addContainerGap(410, Short.MAX_VALUE))
+                        .addComponent(jLabelNombreAutor))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(343, 343, 343)
+                        .addComponent(jLabelTituloTarea)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,26 +142,81 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTableReparaciones);
 
         jButtonListarVehiculos.setText("Consultar Vehiculos");
+        jButtonListarVehiculos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonListarVehiculosMouseClicked(evt);
+            }
+        });
 
         jButtonListarReparaciones.setText("Consultar Reparaciones");
+        jButtonListarReparaciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonListarReparacionesMouseClicked(evt);
+            }
+        });
 
         jButtonConsultarVehiculosFecha2024.setText("Consultar Vehiculos Del 2024");
+        jButtonConsultarVehiculosFecha2024.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonConsultarVehiculosFecha2024MouseClicked(evt);
+            }
+        });
 
         jButtonConsultarVehiculosKm.setText("Consultar Vehiculos con mas de 75000 KM");
+        jButtonConsultarVehiculosKm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonConsultarVehiculosKmMouseClicked(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        jTextAreaResultados.setColumns(20);
+        jTextAreaResultados.setRows(5);
+        jScrollPane3.setViewportView(jTextAreaResultados);
 
         jButtonConsultarPropietariosGolf.setText("Consultar Propietarios con Golf");
+        jButtonConsultarPropietariosGolf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonConsultarPropietariosGolfMouseClicked(evt);
+            }
+        });
 
         jButtonConsultarMecanicos.setText("Consultar Mecanicos");
+        jButtonConsultarMecanicos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonConsultarMecanicosMouseClicked(evt);
+            }
+        });
 
         jButtonModificarNodoKm.setText("Modificar Nodo Kilometros");
+        jButtonModificarNodoKm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonModificarNodoKmMouseClicked(evt);
+            }
+        });
 
         jButtonInsertarReparacion.setText("Insertar Nueva Reparacion");
+        jButtonInsertarReparacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonInsertarReparacionMouseClicked(evt);
+            }
+        });
 
         jButtonGuardarColecciones.setText("Guardar Colecciones en Archivos");
+        jButtonGuardarColecciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonGuardarColeccionesMouseClicked(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("Resultados:");
+
+        jButtonModificarCantidadKm.setText("Modificar KM al 6666FFF");
+        jButtonModificarCantidadKm.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonModificarCantidadKmMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -176,22 +234,29 @@ public class JFramePrincipal extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonListarVehiculos)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(120, 120, 120)
+                                        .addComponent(jButtonListarVehiculos))
                                     .addComponent(jButtonConsultarVehiculosFecha2024)
                                     .addComponent(jButtonConsultarVehiculosKm)
-                                    .addComponent(jButtonConsultarPropietariosGolf))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButtonConsultarPropietariosGolf)
+                                    .addComponent(jButtonConsultarMecanicos))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButtonModificarNodoKm)
-                                    .addComponent(jButtonConsultarMecanicos)
-                                    .addComponent(jButtonListarReparaciones)
+                                    .addComponent(jButtonModificarCantidadKm)
                                     .addComponent(jButtonInsertarReparacion))
                                 .addGap(34, 34, 34))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(149, 149, 149)
+                                .addGap(148, 148, 148)
                                 .addComponent(jButtonGuardarColecciones)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jButtonListarReparaciones)
+                                .addGap(117, 117, 117)))))
                 .addGap(35, 35, 35))
         );
         jPanel2Layout.setVerticalGroup(
@@ -200,35 +265,43 @@ public class JFramePrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabelVehiculo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
                 .addComponent(jLabelRparaciones)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonListarReparaciones)
+                    .addComponent(jButtonListarVehiculos))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonListarVehiculos)
-                            .addComponent(jButtonListarReparaciones))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonConsultarVehiculosFecha2024)
-                            .addComponent(jButtonConsultarMecanicos))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonConsultarVehiculosKm)
-                            .addComponent(jButtonModificarNodoKm))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonConsultarPropietariosGolf)
-                            .addComponent(jButtonInsertarReparacion))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonGuardarColecciones)))
-                .addContainerGap(13, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButtonModificarCantidadKm)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonModificarNodoKm)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonInsertarReparacion)
+                                .addGap(32, 32, 32))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonConsultarVehiculosFecha2024)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonConsultarVehiculosKm)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonConsultarPropietariosGolf)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonConsultarMecanicos)))
+                        .addComponent(jButtonGuardarColecciones)
+                        .addGap(21, 21, 21))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -246,12 +319,71 @@ public class JFramePrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonGuardarColeccionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGuardarColeccionesMouseClicked
+        // EJERCICIO 1: Procesar y guardar colecciones
+        boolean resultado = TallerController.guardarVehiculos(contexto)
+                && TallerController.guardarReparaciones(contexto)
+                && TallerController.guardarMarcas(contexto);
+
+        if (resultado) {
+            JOptionPane.showMessageDialog(null, "✅ Guardado exitoso de los vehículos, reparaciones y marcas.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "❌ Error guardar las colecciones.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonGuardarColeccionesMouseClicked
+
+    private void jButtonConsultarMecanicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonConsultarMecanicosMouseClicked
+        // TODO add your handling code here:
+        this.mostrarTodosMecanicos();
+    }//GEN-LAST:event_jButtonConsultarMecanicosMouseClicked
+
+    private void jButtonConsultarPropietariosGolfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonConsultarPropietariosGolfMouseClicked
+        // TODO add your handling code here:
+        this.mostrarPropietariosConGolf();
+    }//GEN-LAST:event_jButtonConsultarPropietariosGolfMouseClicked
+
+    private void jButtonConsultarVehiculosKmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonConsultarVehiculosKmMouseClicked
+        // TODO add your handling code here:
+        this.mostrarVehiculosConKilometros();
+    }//GEN-LAST:event_jButtonConsultarVehiculosKmMouseClicked
+
+    private void jButtonConsultarVehiculosFecha2024MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonConsultarVehiculosFecha2024MouseClicked
+        // TODO add your handling code here:
+        this.mostrarVehiculos2024();
+    }//GEN-LAST:event_jButtonConsultarVehiculosFecha2024MouseClicked
+
+    private void jButtonListarReparacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonListarReparacionesMouseClicked
+        // TODO add your handling code here:
+        this.rellenarTablaReparaciones();
+    }//GEN-LAST:event_jButtonListarReparacionesMouseClicked
+
+    private void jButtonListarVehiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonListarVehiculosMouseClicked
+        // TODO add your handling code here:
+        this.rellenarTablaVehiculos();
+    }//GEN-LAST:event_jButtonListarVehiculosMouseClicked
+
+    private void jButtonModificarCantidadKmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModificarCantidadKmMouseClicked
+        // TODO add your handling code here:
+        this.modificarKilometrosDe6666FFF();
+    }//GEN-LAST:event_jButtonModificarCantidadKmMouseClicked
+
+    private void jButtonModificarNodoKmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModificarNodoKmMouseClicked
+        // TODO add your handling code here:
+        this.modificarNodoKilometrosAKm();
+        this.modificarNodoKmAKilometros();
+    }//GEN-LAST:event_jButtonModificarNodoKmMouseClicked
+
+    private void jButtonInsertarReparacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonInsertarReparacionMouseClicked
+        // TODO add your handling code here:
+        this.insertarNuevaReparacion();
+    }//GEN-LAST:event_jButtonInsertarReparacionMouseClicked
 
     /**
      * @param args the command line arguments
@@ -293,54 +425,104 @@ public class JFramePrincipal extends javax.swing.JFrame {
     }
 
     private void rellenarTablaVehiculos() {
-        try {
-            List<Vehiculo> vehiculos = TallerController.obtenerTodosVehiculos(contexto);
+        List<Vehiculo> vehiculos = TallerController.obtenerTodosVehiculos(contexto);
 
-            DefaultTableModel model = (DefaultTableModel) jTableVehiculos.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTableVehiculos.getModel();
 
-            // Eliminar todas las filas existentes
-            model.setRowCount(0);
+        // Eliminar todas las filas existentes
+        model.setRowCount(0);
 
-            for (Vehiculo v : vehiculos) {
-                model.addRow(new Object[]{
-                    v.getMatricula(),
-                    v.getAnyoFabricacion(),
-                    v.getPropietario().getNombre() + " " + v.getPropietario().getApellidos(),
-                    v.getMarca(),
-                    v.getModelo(),
-                    v.getKilometraje()
-                });
-            }
-
-        } catch (QueryException | QueryIOException ex) {
-            Logger.getLogger(JFramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        for (Vehiculo v : vehiculos) {
+            model.addRow(new Object[]{
+                v.getMatricula(),
+                v.getAnyoFabricacion(),
+                v.getPropietario().getNombre() + " " + v.getPropietario().getApellidos(),
+                v.getMarca(),
+                v.getModelo(),
+                v.getKilometraje()
+            });
         }
     }
 
     private void rellenarTablaReparaciones() {
-        try {
-            List<Reparacion> reparaciones = TallerController.obtenerTodasReparaciones(contexto);
+        List<Reparacion> reparaciones = TallerController.obtenerTodasReparaciones(contexto);
 
-            DefaultTableModel model = (DefaultTableModel) jTableReparaciones.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTableReparaciones.getModel();
 
-            // Eliminar todas las filas existentes
-            model.setRowCount(0);
+        // Eliminar todas las filas existentes
+        model.setRowCount(0);
 
-            for (Reparacion reparacion : reparaciones) {
-                model.addRow(new Object[]{
-                    reparacion.getMatricula(),
-                    reparacion.getInicio().toString(),
-                    reparacion.getFin() != null ? reparacion.getFin() : "Sin Terminar",
-                    reparacion.getMecanico().getNombre(),
-                    reparacion.getMecanico().getApellidos(),
-                    reparacion.getMecanico().getTelefono()
-                });
-            }
-
-        } catch (QueryException | QueryIOException ex) {
-            Logger.getLogger(JFramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        for (Reparacion reparacion : reparaciones) {
+            model.addRow(new Object[]{
+                reparacion.getMatricula(),
+                reparacion.getInicio().toString(),
+                reparacion.getFin() != null ? reparacion.getFin() : "Sin Terminar",
+                reparacion.getMecanico().getNombre(),
+                reparacion.getMecanico().getApellidos(),
+                reparacion.getMecanico().getTelefono()
+            });
         }
 
+    }
+
+    private void mostrarVehiculos2024() {
+        String vehiculos2024 = TallerController.obtenerVehiculos2024(contexto);
+
+        this.jTextAreaResultados.setText(vehiculos2024);
+
+    }
+
+    private void mostrarVehiculosConKilometros() {
+        String vehiculosCon75000 = TallerController.obtenerVehiculosCon75000(contexto);
+
+        this.jTextAreaResultados.setText(vehiculosCon75000);
+    }
+
+    private void mostrarPropietariosConGolf() {
+        String propietariosConGolf = TallerController.obtenerPropietariosConGolf(contexto);
+
+        this.jTextAreaResultados.setText(propietariosConGolf);
+    }
+
+    private void mostrarTodosMecanicos() {
+        String mecanicos = TallerController.obtenerMecanicos(contexto);
+
+        this.jTextAreaResultados.setText(mecanicos);
+    }
+
+    private void modificarKilometrosDe6666FFF() {
+        boolean resultado = TallerController.modificarKilometrosDe6666FFF(contexto);
+
+        if (resultado) {
+            this.rellenarTablaVehiculos();
+
+            JOptionPane.showMessageDialog(null, "✅ Modificación de los kilómetros del vehículo con matrícula 6666FFF realizada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "❌ Error en la modificación de los kilómetros del vehículo con matrícula 6666FFF", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    private void modificarNodoKilometrosAKm() {
+        String nodosModificados = TallerController.modificarNodoKilometrosAKm(contexto);
+
+        this.jTextAreaResultados.setText(nodosModificados);
+    }
+
+    private void modificarNodoKmAKilometros() {
+        TallerController.modificarNodoKmAKilometros(contexto);
+    }
+
+    private void insertarNuevaReparacion() {
+        boolean resultado = TallerController.insertarNuevaReparacion(contexto);
+
+        if (resultado) {
+            this.rellenarTablaReparaciones();
+
+            JOptionPane.showMessageDialog(null, "✅ Modificación de los kilómetros del vehículo con matrícula 6666FFF realizada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "❌ Error en la modificación de los kilómetros del vehículo con matrícula 6666FFF", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -352,7 +534,9 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButtonInsertarReparacion;
     private javax.swing.JButton jButtonListarReparaciones;
     private javax.swing.JButton jButtonListarVehiculos;
+    private javax.swing.JButton jButtonModificarCantidadKm;
     private javax.swing.JButton jButtonModificarNodoKm;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelNombreAutor;
     private javax.swing.JLabel jLabelRparaciones;
     private javax.swing.JLabel jLabelTituloTarea;
@@ -364,6 +548,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTableReparaciones;
     private javax.swing.JTable jTableVehiculos;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextAreaResultados;
     // End of variables declaration//GEN-END:variables
+
 }

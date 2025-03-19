@@ -18,14 +18,10 @@ public class Main {
 
             JFramePrincipal formularioPrincipal = new JFramePrincipal(contexto);
             formularioPrincipal.setVisible(true);
+            formularioPrincipal.setTitle("Acceso a Datos - Tarea 05 - Andrés Samuel Podadera González - Curso: 2024/2025");
             formularioPrincipal.setLocationRelativeTo(null);
-
-            // EJERCICIO 1: Procesar y guardar colecciones
-            //TallerController.guardarVehiculos(context, directorioSalida);
-            //TallerController.guardarReparaciones(context, directorioSalida);
-            // TallerController.guardarMarcas(context, directorioSalida);
             
-            // Cierra la base de datos al cerrar la ventana
+            // Cierra la conexión a la base de datos al cerrar la ventana
             formularioPrincipal.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
