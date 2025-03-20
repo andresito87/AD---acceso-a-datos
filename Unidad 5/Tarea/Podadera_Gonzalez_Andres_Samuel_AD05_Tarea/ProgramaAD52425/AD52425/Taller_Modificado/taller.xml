@@ -8,7 +8,7 @@
 </propietario>
 <marca>Peugeot</marca>
 <modelo>308</modelo>
-<kms>20000</kms>
+<kilometros>20000</kilometros>
 </vehiculo>   
 <vehiculo afabricacion="2024">
 <matricula>2222BBB</matricula>
@@ -18,7 +18,7 @@
 </propietario>
 <marca>Citroen</marca>
 <modelo>C5</modelo>
-<kms>54000</kms>
+<kilometros>54000</kilometros>
 </vehiculo>
 <vehiculo afabricacion="2023">
 <matricula>3333CCC</matricula>
@@ -28,7 +28,7 @@
 </propietario>
 <marca>Lexus</marca>
 <modelo>NX</modelo>
-<kms>70000</kms>
+<kilometros>70000</kilometros>
 </vehiculo>
 <vehiculo afabricacion="2023">
 <matricula>4444CCC</matricula>
@@ -38,7 +38,7 @@
 </propietario>
 <marca>Renault</marca>
 <modelo>Megane</modelo>
-<kms>85000</kms>
+<kilometros>85000</kilometros>
 </vehiculo>
 <vehiculo afabricacion="2022">
 <matricula>5555DDD</matricula>
@@ -48,7 +48,7 @@
 </propietario>
 <marca>Volkswagen</marca>
 <modelo>Golf</modelo>
-<kms>100000</kms>
+<kilometros>100000</kilometros>
 </vehiculo>
 <vehiculo afabricacion="2020">
 <matricula>6666FFF</matricula>
@@ -58,7 +58,7 @@
 </propietario>
 <marca>BMW</marca>
 <modelo>X3</modelo>
-<kms>90000</kms>
+<kilometros>90000</kilometros>
 </vehiculo>  
 <vehiculo afabricacion="2021">
 <matricula>7777FFF</matricula>
@@ -68,7 +68,7 @@
 </propietario>
 <marca>Audi</marca>
 <modelo>Q5</modelo>
-<kms>150000</kms>
+<kilometros>150000</kilometros>
 </vehiculo>    
 </vehiculos>
 <!--  Tabla reparaciones  -->
@@ -112,6 +112,17 @@
 <matricula>4444CCC</matricula>
 <reparacion>
 <inicio>2024-02-20</inicio>
+<mecanico>
+<nombre>Lucas</nombre>
+<apellidos>Garcia</apellidos>
+<telefono>950456987</telefono>
+</mecanico>
+</reparacion>
+</entrada>
+<entrada>
+<matricula>3333CCC</matricula>
+<reparacion>
+<inicio>2025-03-02</inicio>
 <mecanico>
 <nombre>Lucas</nombre>
 <apellidos>Garcia</apellidos>

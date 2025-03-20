@@ -10,9 +10,10 @@ import modelos.Reparacion;
 import modelos.Vehiculo;
 import org.basex.core.Context;
 import org.basex.query.QueryException;
-import org.basex.query.QueryIOException;
 
 /**
+ * Clase del formulario principal del programa, muestra listado de vehículos,
+ * reparaciones y varios botones que permiten la funcionalidad que pide la tarea
  *
  * @author andres
  */
@@ -413,13 +414,11 @@ public class JFramePrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new JFramePrincipal(contexto).setVisible(true);
-                } catch (QueryException ex) {
-                    Logger.getLogger(JFramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new JFramePrincipal(contexto).setVisible(true);
+            } catch (QueryException ex) {
+                Logger.getLogger(JFramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }
@@ -500,7 +499,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "❌ Error en la modificación de los kilómetros del vehículo con matrícula 6666FFF", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     private void modificarNodoKilometrosAKm() {
@@ -519,9 +517,9 @@ public class JFramePrincipal extends javax.swing.JFrame {
         if (resultado) {
             this.rellenarTablaReparaciones();
 
-            JOptionPane.showMessageDialog(null, "✅ Modificación de los kilómetros del vehículo con matrícula 6666FFF realizada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "✅ Reparación insertada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(null, "❌ Error en la modificación de los kilómetros del vehículo con matrícula 6666FFF", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "❌ Error en la inserción de una reparación.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
