@@ -1,6 +1,6 @@
 package vistas;
 
-import controladores.conexionBD;
+import controladores.ConexionBD;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
@@ -24,7 +24,7 @@ public class Main {
     public static void main(String[] args) {
         try {
 
-            Context contexto = conexionBD.conectar();
+            Context contexto = ConexionBD.conectar();
 
             JFramePrincipal formularioPrincipal = new JFramePrincipal(contexto);
             formularioPrincipal.setVisible(true);
@@ -35,7 +35,7 @@ public class Main {
             formularioPrincipal.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    conexionBD.desconectar();
+                    ConexionBD.desconectar();
                 }
             });
 

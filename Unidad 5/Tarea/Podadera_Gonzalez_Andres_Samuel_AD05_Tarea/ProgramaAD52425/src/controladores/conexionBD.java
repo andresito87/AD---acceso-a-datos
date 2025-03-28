@@ -13,7 +13,7 @@ import org.basex.core.cmd.CreateDB;
  *
  * @author Andres
  */
-public class conexionBD {
+public class ConexionBD {
 
     // Nombre del directorio donde guardar las colecciones de vehículos, reparaciones y marcas
     private static final String DIRECTORIO_SALIDA = "AD52425";

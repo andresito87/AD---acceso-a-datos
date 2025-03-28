@@ -378,6 +378,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private void jButtonModificarNodoKmMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonModificarNodoKmMouseClicked
         // TODO add your handling code here:
         this.modificarNodoKilometrosAKm();
+        // Revierto los cambios del nombre de los nodos para evitar errores en la ejecución de otras sentencias
         this.modificarNodoKmAKilometros();
     }//GEN-LAST:event_jButtonModificarNodoKmMouseClicked
 

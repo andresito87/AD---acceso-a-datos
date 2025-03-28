@@ -517,6 +517,9 @@ public class TallerController {
 
             new XQuery(query).execute(contexto);
 
+            // Guardamos los cambios en el fichero xml
+            guardarCambiosEnXML(contexto);
+
             return true;
 
         } catch (BaseXException ex) {
@@ -547,14 +550,14 @@ public class TallerController {
             String query = new String(Files.readAllBytes(Paths.get("Consultas_XQuery/Ejercicio3-2.xq")));
 
             new XQuery(query).execute(contexto);
+            
+            // Guardamos los cambios en el fichero xml
+            guardarCambiosEnXML(contexto);
 
             query = "for $vehiculo in //vehiculo\n"
                     + "return $vehiculo/kms";
 
             resultado = new XQuery(query).execute(contexto);
-
-            // Guardamos los cambios en el fichero xml
-            guardarCambiosEnXML(contexto);
 
         } catch (BaseXException ex) {
             System.err.println("Error procesando nodos kilómetro: " + ex.getMessage());
