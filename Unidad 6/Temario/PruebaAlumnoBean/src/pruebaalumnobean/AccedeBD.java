@@ -2,8 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pruebaalumnobean;
+
 import Alumno.AlumnoBean;
 import Alumno.AlumnoBean.BDModificadaEvent;
 import Alumno.AlumnoBean.BDModificadaListener;
@@ -15,19 +15,17 @@ import java.util.logging.Logger;
  *
  * @author usuario
  */
-public class AccedeBD implements BDModificadaListener{
+public class AccedeBD implements BDModificadaListener {
 
     AlumnoBean alumnos;
-    AccedeBD()
-    {
-         alumnos = new AlumnoBean();
-         alumnos.addBDModificadaListener( (BDModificadaListener)this );
+
+    AccedeBD() {
+        alumnos = new AlumnoBean();
+        alumnos.addBDModificadaListener((BDModificadaListener) this);
     }
 
-    public void listado()
-    {
-        for(int i=0; i<4; i++)
-        {
+    public void listado() {
+        for (int i = 0; i < 4; i++) {
             alumnos.seleccionarFila(i);
             System.out.println("Alumno " + i + "\n\tDNI:" + alumnos.getDNI());
             System.out.println("\tNombre: " + alumnos.getNombre());
@@ -37,8 +35,7 @@ public class AccedeBD implements BDModificadaListener{
         }
     }
 
-    void anade()
-    {
+    void anade() {
         alumnos.setDNI("98765432A");
         alumnos.setNombre("Asunción");
         alumnos.setApellidos("de las Heras López");
@@ -51,8 +48,7 @@ public class AccedeBD implements BDModificadaListener{
         }
     }
 
-    public void capturarBDModificada(BDModificadaEvent ev)
-    {
+    public void capturarBDModificada(BDModificadaEvent ev) {
         System.out.println("Se ha añadido un elemento a la base de datos");
     }
 }
