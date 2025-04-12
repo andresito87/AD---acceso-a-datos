@@ -1,6 +1,7 @@
 package pruebabeans_andres_samuel_podadera_gonzalez;
 
 import bean.ProductoBean;
+import java.awt.Frame;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
@@ -11,16 +12,17 @@ import javax.swing.JSpinner;
  */
 public class FormularioNuevoProducto extends javax.swing.JDialog {
 
-    ProductoBean productos = new ProductoBean();
+    public static ProductoBean productos = new ProductoBean();
     FramePrincipal formularioPrincipal = null;
 
     /**
      * Creates new form FrameNuevoProducto
      */
-    public FormularioNuevoProducto(java.awt.Frame parent, boolean modal) {
+    public FormularioNuevoProducto(Frame parent, boolean modal, ProductoBean productos) {
         super(parent, modal);
         initComponents();
         this.formularioPrincipal = (FramePrincipal) parent;
+        this.productos = productos;
     }
 
     /**
@@ -47,8 +49,11 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
         jSpinnerDescuento = new javax.swing.JSpinner();
         jButtonAnadir = new javax.swing.JButton();
         jButtonLimpiar = new javax.swing.JButton();
+        jButtonCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 153));
 
         jLabelTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabelTitulo.setText("Añadir nuevo producto");
@@ -76,6 +81,7 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
 
         jSpinnerDescuento.setModel(new javax.swing.SpinnerNumberModel());
 
+        jButtonAnadir.setBackground(new java.awt.Color(0, 204, 51));
         jButtonAnadir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonAnadir.setText("Añadir");
         jButtonAnadir.addActionListener(new java.awt.event.ActionListener() {
@@ -84,11 +90,21 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
             }
         });
 
+        jButtonLimpiar.setBackground(new java.awt.Color(0, 153, 153));
         jButtonLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonLimpiar.setText("Limpiar");
         jButtonLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLimpiarActionPerformed(evt);
+            }
+        });
+
+        jButtonCerrar.setBackground(new java.awt.Color(255, 51, 51));
+        jButtonCerrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonCerrar.setText("Cerrar");
+        jButtonCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCerrarActionPerformed(evt);
             }
         });
 
@@ -117,22 +133,21 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextFieldDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(84, 84, 84)
-                                        .addComponent(jLabelPrecio)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinnerPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(64, 64, 64))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButtonAnadir)
-                                        .addGap(46, 46, 46)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinnerDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jButtonLimpiar)))))
+                                .addGap(84, 84, 84)
+                                .addComponent(jLabelPrecio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSpinnerPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(64, 64, 64)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSpinnerDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButtonAnadir)
+                                .addGap(45, 45, 45)
+                                .addComponent(jButtonLimpiar)
+                                .addGap(46, 46, 46)
+                                .addComponent(jButtonCerrar)
+                                .addGap(137, 137, 137))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(220, 220, 220)
                         .addComponent(jLabelTitulo)))
@@ -151,7 +166,7 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
                     .addComponent(jLabelNombre)
                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelDescripcion)
                     .addComponent(jTextFieldDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -163,7 +178,8 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
                 .addGap(67, 67, 67)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAnadir)
-                    .addComponent(jButtonLimpiar))
+                    .addComponent(jButtonLimpiar)
+                    .addComponent(jButtonCerrar))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
 
@@ -218,12 +234,7 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
 
     private void jButtonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarActionPerformed
         // TODO add your handling code here:
-        this.jComboBoxCodigo.setSelectedIndex(0);
-        this.jSpinnerNumero.setValue(1);
-        this.jTextFieldNombre.setText("");
-        this.jTextFieldDescripcion.setText("");
-        this.jSpinnerDescuento.setValue(0);
-        this.jSpinnerPrecio.setValue(0);
+        this.limpiarFormulario();
     }//GEN-LAST:event_jButtonLimpiarActionPerformed
 
     private void jButtonAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirActionPerformed
@@ -232,32 +243,44 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
         if (!esReferenciaValida()) {
             JOptionPane.showMessageDialog(null, "Verifica el número de referencia introducido",
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
+        } else if (!esNombreValido()) {
+            JOptionPane.showMessageDialog(null, "Verifica el nombre introducido",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else if (!esDescripcionValida()) {
+            JOptionPane.showMessageDialog(null, "Verifica la descripción introducida",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else if (!esPrecioValido()) {
             JOptionPane.showMessageDialog(null, "Verifica el precio introducido",
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
         } else if (!esDescuentoValido()) {
             JOptionPane.showMessageDialog(null, "Verifica el descuento introducido",
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        String numeroFormateado = String.format("%04d", Integer.valueOf(this.jSpinnerNumero.getValue().toString()));
-        String codigo = this.jComboBoxCodigo.getItemAt(this.jComboBoxCodigo.getSelectedIndex());
-        productos.setReferencia(codigo + numeroFormateado);
-        productos.setNombre(this.jTextFieldNombre.getText());
-        productos.setDescripcion(this.jTextFieldDescripcion.getText());
-        productos.setPrecio(Float.parseFloat(this.jSpinnerPrecio.getValue().toString()));
-        productos.setDescuento(Float.parseFloat(this.jSpinnerDescuento.getValue().toString()));
+        } else {
+            String numeroFormateado = String.format("%04d", Integer.valueOf(this.jSpinnerNumero.getValue().toString()));
+            String codigo = this.jComboBoxCodigo.getItemAt(this.jComboBoxCodigo.getSelectedIndex());
+            productos.setReferencia(codigo + numeroFormateado);
+            productos.setNombre(this.jTextFieldNombre.getText());
+            productos.setDescripcion(this.jTextFieldDescripcion.getText());
+            productos.setPrecio(Float.parseFloat(this.jSpinnerPrecio.getValue().toString()));
+            productos.setDescuento(Float.parseFloat(this.jSpinnerDescuento.getValue().toString()));
 
-        boolean resultado = productos.anadir();
-        if (resultado) {
-            formularioPrincipal.recargarTablaProductos();
-            JOptionPane.showMessageDialog(null, "Producto añadido correctamente",
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            boolean resultado = productos.anadir();
+            if (resultado) {
+                formularioPrincipal.recargarTablaProductos();
+                this.limpiarFormulario();
+                JOptionPane.showMessageDialog(null, "Producto añadido correctamente",
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Se ha producido un error al intentar agregar un producto",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
     }//GEN-LAST:event_jButtonAnadirActionPerformed
+
+    private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonCerrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -290,7 +313,7 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FormularioNuevoProducto dialog = new FormularioNuevoProducto(new javax.swing.JFrame(), true);
+                FormularioNuevoProducto dialog = new FormularioNuevoProducto(new javax.swing.JFrame(), true, productos);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -308,8 +331,17 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
             return true;
         } catch (NumberFormatException ex) {
             System.out.println("Error al obtener el numero de referencia. " + ex.getMessage());
-            return false;
         }
+        return false;
+    }
+
+    private boolean esNombreValido() {
+        return !this.jTextFieldNombre.getText().isBlank();
+
+    }
+
+    private boolean esDescripcionValida() {
+        return !this.jTextFieldDescripcion.getText().isBlank();
     }
 
     private boolean esPrecioValido() {
@@ -318,8 +350,8 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
             return true;
         } catch (NumberFormatException ex) {
             System.out.println("Error al obtener el precio del producto. " + ex.getMessage());
-            return false;
         }
+        return false;
     }
 
     private boolean esDescuentoValido() {
@@ -328,13 +360,23 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
             return true;
         } catch (NumberFormatException ex) {
             System.out.println("Error al obtener el descuento del producto. " + ex.getMessage());
-            return false;
         }
+        return false;
+    }
+
+    private void limpiarFormulario() {
+        this.jComboBoxCodigo.setSelectedIndex(0);
+        this.jSpinnerNumero.setValue(1);
+        this.jTextFieldNombre.setText("");
+        this.jTextFieldDescripcion.setText("");
+        this.jSpinnerDescuento.setValue(0);
+        this.jSpinnerPrecio.setValue(0);
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnadir;
+    private javax.swing.JButton jButtonCerrar;
     private javax.swing.JButton jButtonLimpiar;
     private javax.swing.JComboBox<String> jComboBoxCodigo;
     private javax.swing.JLabel jLabel1;

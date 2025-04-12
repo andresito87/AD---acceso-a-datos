@@ -55,6 +55,8 @@ public final class FramePrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(204, 255, 204));
+
         jLabelTitulo.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabelTitulo.setText("Tarea 06 - Acceso a Datos");
 
@@ -85,11 +87,15 @@ public final class FramePrincipal extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jLabelListado.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jPanel2.setBackground(new java.awt.Color(255, 255, 204));
+
+        jLabelListado.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabelListado.setText("Listado de productos");
 
         jScrollPaneListado.setComponentPopupMenu(jPopupMenuEliminar);
 
+        jTableProductos.setBackground(new java.awt.Color(153, 255, 204));
+        jTableProductos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTableProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -140,11 +146,12 @@ public final class FramePrincipal extends javax.swing.JFrame {
                         .addComponent(jLabelListado))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addComponent(jScrollPaneListado, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(350, 350, 350)
-                        .addComponent(jButtonAnadirProducto)))
+                        .addComponent(jScrollPaneListado, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(28, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButtonAnadirProducto)
+                .addGap(346, 346, 346))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,9 +160,9 @@ public final class FramePrincipal extends javax.swing.JFrame {
                 .addComponent(jLabelListado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneListado, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addGap(29, 29, 29)
                 .addComponent(jButtonAnadirProducto)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -177,7 +184,7 @@ public final class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirProductoActionPerformed
-        FormularioNuevoProducto formulario = new FormularioNuevoProducto(this, rootPaneCheckingEnabled);
+        FormularioNuevoProducto formulario = new FormularioNuevoProducto(this, rootPaneCheckingEnabled,productos);
         formulario.setTitle("Nuevo Producto");
         formulario.setLocationRelativeTo(this);
         formulario.setVisible(true);
