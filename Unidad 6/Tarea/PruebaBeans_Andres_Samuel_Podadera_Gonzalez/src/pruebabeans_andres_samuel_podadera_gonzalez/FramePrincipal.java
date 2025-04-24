@@ -1,6 +1,10 @@
 package pruebabeans_andres_samuel_podadera_gonzalez;
 
 import bean.ProductoBean;
+import bean.ProductoBean.BDModificadaListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -8,9 +12,9 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author andres
  */
-public final class FramePrincipal extends javax.swing.JFrame {
+public final class FramePrincipal extends javax.swing.JFrame implements BDModificadaListener {
 
-    ProductoBean productos = new ProductoBean();
+    public static ProductoBean productoBean = new ProductoBean();
 
     /**
      * Creates new form FramePrincipal
@@ -20,7 +24,24 @@ public final class FramePrincipal extends javax.swing.JFrame {
         this.setTitle("Tarea 06 - Acceso a Datos - Componente ProductoBean");
         this.setLocationRelativeTo(null);
 
-        recargarTablaProductos();
+        productoBean.addBDModificadaListener((BDModificadaListener) this);
+
+        this.recargarTablaProductos();
+
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // para capturar el cierre
+
+        // Agregar listener de cierre
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                cerrarAplicacion();
+            }
+        });
+    }
+
+    @Override
+    public void capturarBDModificada(ProductoBean.BDModificadaEvent ev) {
+        this.recargarTablaProductos();
     }
 
     /**
@@ -42,6 +63,7 @@ public final class FramePrincipal extends javax.swing.JFrame {
         jScrollPaneListado = new javax.swing.JScrollPane();
         jTableProductos = new javax.swing.JTable();
         jButtonAnadirProducto = new javax.swing.JButton();
+        jButtonCerrarAplicacion = new javax.swing.JButton();
 
         jMenuItemEliminar.setText("Eliminar");
         jMenuItemEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -135,6 +157,15 @@ public final class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonCerrarAplicacion.setBackground(new java.awt.Color(255, 102, 102));
+        jButtonCerrarAplicacion.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonCerrarAplicacion.setText("Cerrar Aplicación");
+        jButtonCerrarAplicacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCerrarAplicacionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -146,12 +177,13 @@ public final class FramePrincipal extends javax.swing.JFrame {
                         .addComponent(jLabelListado))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addComponent(jScrollPaneListado, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPaneListado, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(200, 200, 200)
+                        .addComponent(jButtonAnadirProducto)
+                        .addGap(140, 140, 140)
+                        .addComponent(jButtonCerrarAplicacion)))
                 .addContainerGap(28, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButtonAnadirProducto)
-                .addGap(346, 346, 346))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,9 +192,11 @@ public final class FramePrincipal extends javax.swing.JFrame {
                 .addComponent(jLabelListado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneListado, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jButtonAnadirProducto)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonAnadirProducto)
+                    .addComponent(jButtonCerrarAplicacion))
+                .addGap(31, 31, 31))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -184,7 +218,7 @@ public final class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirProductoActionPerformed
-        FormularioNuevoProducto formulario = new FormularioNuevoProducto(this, rootPaneCheckingEnabled,productos);
+        FormularioNuevoProducto formulario = new FormularioNuevoProducto(this, rootPaneCheckingEnabled, productoBean);
         formulario.setTitle("Nuevo Producto");
         formulario.setLocationRelativeTo(this);
         formulario.setVisible(true);
@@ -194,12 +228,12 @@ public final class FramePrincipal extends javax.swing.JFrame {
         int filaSeleccionada = jTableProductos.getSelectedRow();
 
         // Asegura que hay una fila seleccionada
-        if (filaSeleccionada != -1) { 
+        if (filaSeleccionada != -1) {
             String referencia = jTableProductos.getValueAt(filaSeleccionada, 0).toString();
-            boolean resultado = productos.eliminar(referencia);
+            boolean resultado = productoBean.eliminar(referencia);
 
             if (resultado) {
-                this.recargarTablaProductos();
+//                this.recargarTablaProductos();
                 JOptionPane.showMessageDialog(null, "Producto eliminado correctamente",
                         "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -209,6 +243,10 @@ public final class FramePrincipal extends javax.swing.JFrame {
                     "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItemEliminarMousePressed
+
+    private void jButtonCerrarAplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarAplicacionActionPerformed
+        this.cerrarAplicacion();
+    }//GEN-LAST:event_jButtonCerrarAplicacionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,9 +283,30 @@ public final class FramePrincipal extends javax.swing.JFrame {
         });
     }
 
+    private void cerrarAplicacion() {
+        String[] opciones = {"Sí", "No"};
+
+        int confirm = JOptionPane.showOptionDialog(
+                null,
+                "¿Estás segur@ de que deseas salir?",
+                "Confirmar salida",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[1]
+        );
+
+        if (confirm == 0) {
+            productoBean.cerrarConexionBD();
+            dispose();
+            System.exit(0);
+        }
+    }
+
     public void recargarTablaProductos() {
 
-        productos.obtenerTodos();
+        productoBean.obtenerTodos();
 
         // Obtener el modelo de la tabla
         DefaultTableModel modelo = (DefaultTableModel) jTableProductos.getModel();
@@ -256,15 +315,15 @@ public final class FramePrincipal extends javax.swing.JFrame {
         modelo.setRowCount(0);
 
         // Agregar los datos al modelo
-        for (int i = 0; i < productos.getCantidad() - 1; i++) {
-            productos.seleccionarFila(i);
+        for (int i = 0; i < productoBean.getCantidad() - 1; i++) {
+            productoBean.seleccionarFila(i);
 
             modelo.addRow(new Object[]{
-                productos.getReferencia(),
-                productos.getNombre(),
-                productos.getDescripcion(),
-                productos.getPrecio(),
-                productos.getDescuento()
+                productoBean.getReferencia(),
+                productoBean.getNombre(),
+                productoBean.getDescripcion(),
+                productoBean.getPrecio(),
+                productoBean.getDescuento()
             });
         }
 
@@ -272,6 +331,7 @@ public final class FramePrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnadirProducto;
+    private javax.swing.JButton jButtonCerrarAplicacion;
     private javax.swing.JLabel jLabelListado;
     private javax.swing.JLabel jLabelNombreAlumno;
     private javax.swing.JLabel jLabelTitulo;

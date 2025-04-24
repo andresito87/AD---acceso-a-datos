@@ -165,12 +165,12 @@
         </Component>
         <Component class="javax.swing.JSpinner" name="jSpinnerNumero">
           <Properties>
-            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.SpinnerNumberModel(1, 0, 9999, 1)" type="code"/>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="JFormattedTextField txt = ((JSpinner.DefaultEditor) jSpinnerNumero.getEditor()).getTextField();&#xa;txt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(&#xa;    new javax.swing.JFormattedTextField.AbstractFormatter() {&#xa;        private final java.text.DecimalFormat formato = new java.text.DecimalFormat(&quot;0000&quot;);&#xa;&#xa;        @Override&#xa;        public Object stringToValue(String text) throws java.text.ParseException {&#xa;            return formato.parse(text);&#xa;        }&#xa;&#xa;        @Override&#xa;        public String valueToString(Object value) throws java.text.ParseException {&#xa;            if (value == null) return &quot;0000&quot;;&#xa;            return formato.format(((Number) value).intValue());&#xa;        }&#xa;    }&#xa;));"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="JFormattedTextField txt = ((JSpinner.DefaultEditor) jSpinnerNumero.getEditor()).getTextField();&#xa;            txt.setFormatterFactory(new DefaultFormatterFactory(&#xa;                new JFormattedTextField.AbstractFormatter() {&#xa;                    private final DecimalFormat formato = new DecimalFormat(&quot;0000&quot;);&#xa;&#xa;                    {&#xa;                        formato.setParseIntegerOnly(true);&#xa;                    }&#xa;&#xa;                    @Override&#xa;                    public Object stringToValue(String text) throws java.text.ParseException {&#xa;                        Number num = formato.parse(text);&#xa;                        int valor = num.intValue();&#xa;&#xa;                        if (valor &lt; 0 || valor &gt; 9999) {&#xa;                            throw new java.text.ParseException(&quot;Valor fuera de rango (0000-9999)&quot;, 0);&#xa;                        }&#xa;&#xa;                        return Integer.valueOf(valor);&#xa;                    }&#xa;&#xa;                    @Override&#xa;                    public String valueToString(Object value) throws java.text.ParseException {&#xa;                        if (value == null) return &quot;0001&quot;;&#xa;                        return formato.format(((Number) value).intValue());&#xa;                    }&#xa;                }&#xa;            ));"/>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner()"/>
           </AuxValues>
         </Component>
@@ -204,12 +204,12 @@
         </Component>
         <Component class="javax.swing.JSpinner" name="jSpinnerPrecio">
           <Properties>
-            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="0.0" numberType="java.lang.Float" stepSize="1.0" type="number"/>
+            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.SpinnerNumberModel(0.00f, 0.00f, Float.MAX_VALUE, 1.0f)" type="code"/>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="JFormattedTextField txtPrecio = ((JSpinner.DefaultEditor) jSpinnerPrecio.getEditor()).getTextField();&#xa;txtPrecio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(&#xa;    new javax.swing.JFormattedTextField.AbstractFormatter() {&#xa;        private final java.text.DecimalFormat formato = new java.text.DecimalFormat(&quot;0.00&quot;);&#xa;&#xa;        @Override&#xa;        public Object stringToValue(String text) throws java.text.ParseException {&#xa;            return formato.parse(text);&#xa;        }&#xa;&#xa;        @Override&#xa;        public String valueToString(Object value) throws java.text.ParseException {&#xa;            if (value == null) return &quot;0.00&quot;;&#xa;            return formato.format(((Number) value).doubleValue());&#xa;        }&#xa;    }&#xa;));"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="JFormattedTextField txtPrecio = ((JSpinner.DefaultEditor) jSpinnerPrecio.getEditor()).getTextField();&#xa;txtPrecio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(&#xa;    new javax.swing.JFormattedTextField.AbstractFormatter() {&#xa;        private final java.text.DecimalFormat formato = new java.text.DecimalFormat(&quot;0.00&quot;);&#xa;&#xa;        {&#xa;            formato.setParseBigDecimal(true); // Opcional: m&#xe1;s preciso si quer&#xe9;s&#xa;        }&#xa;&#xa;        @Override&#xa;        public Object stringToValue(String text) throws java.text.ParseException {&#xa;            Number num = formato.parse(text);&#xa;            double valor = num.doubleValue();&#xa;&#xa;            if (valor &lt; 0.0 || valor &gt; Double.MAX_VALUE) {&#xa;                throw new java.text.ParseException(&quot;El valor debe estar entre 0 y &quot; + Double.MAX_VALUE, 0);&#xa;            }&#xa;            return Double.valueOf(valor); // asegurate del tipo correcto&#xa;        }&#xa;&#xa;        @Override&#xa;        public String valueToString(Object value) throws java.text.ParseException {&#xa;            if (value == null) return &quot;0.00&quot;;&#xa;            return formato.format(((Number) value).doubleValue());&#xa;        }&#xa;    }&#xa;));"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
@@ -223,9 +223,12 @@
         <Component class="javax.swing.JSpinner" name="jSpinnerDescuento">
           <Properties>
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel initial="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+              <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="JFormattedTextField txtDescuento = ((JSpinner.DefaultEditor) jSpinnerDescuento.getEditor()).getTextField();&#xa;&#xa;            // Formato para mostrar siempre 2 cifras (opcional, por est&#xe9;tica)&#xa;            txtDescuento.setFormatterFactory(new DefaultFormatterFactory(&#xa;                new JFormattedTextField.AbstractFormatter() {&#xa;                 private final DecimalFormat formato = new DecimalFormat(&quot;#&quot;);&#xa;&#xa;                    @Override&#xa;                    public Object stringToValue(String text) throws java.text.ParseException {&#xa;                        Number num = formato.parse(text);&#xa;                        if (num.intValue() &lt; 0) {&#xa;                            throw new java.text.ParseException(&quot;Descuento no puede ser negativo&quot;, 0);&#xa;                        }&#xa;                        return num.intValue();&#xa;                    }&#xa;&#xa;                    @Override&#xa;                    public String valueToString(Object value) throws java.text.ParseException {&#xa;                        if (value == null) return &quot;00&quot;;&#xa;                        return formato.format(((Number) value).intValue());&#xa;                    }&#xa;                }&#xa;            ));"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonAnadir">
           <Properties>

@@ -2,9 +2,11 @@ package pruebabeans_andres_samuel_podadera_gonzalez;
 
 import bean.ProductoBean;
 import java.awt.Frame;
+import java.text.DecimalFormat;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import javax.swing.text.DefaultFormatterFactory;
 
 /**
  *
@@ -12,17 +14,18 @@ import javax.swing.JSpinner;
  */
 public class FormularioNuevoProducto extends javax.swing.JDialog {
 
-    public static ProductoBean productos = new ProductoBean();
-    FramePrincipal formularioPrincipal = null;
+    public static ProductoBean productos;
 
     /**
      * Creates new form FrameNuevoProducto
+     * @param parent
+     * @param modal
+     * @param productos
      */
     public FormularioNuevoProducto(Frame parent, boolean modal, ProductoBean productos) {
         super(parent, modal);
         initComponents();
-        this.formularioPrincipal = (FramePrincipal) parent;
-        this.productos = productos;
+        FormularioNuevoProducto.productos = productos;
     }
 
     /**
@@ -63,7 +66,7 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
 
         jComboBoxCodigo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AC", "AS", "CC", "PC", "PS" }));
 
-        jSpinnerNumero.setModel(new javax.swing.SpinnerNumberModel(1, null, null, 1));
+        jSpinnerNumero.setModel(new javax.swing.SpinnerNumberModel(1, 0, 9999, 1));
 
         jLabelNombre.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelNombre.setText("Nombre:");
@@ -74,12 +77,12 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
         jLabelPrecio.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelPrecio.setText("Precio:");
 
-        jSpinnerPrecio.setModel(new javax.swing.SpinnerNumberModel(0.0f, null, null, 1.0f));
+        jSpinnerPrecio.setModel(new javax.swing.SpinnerNumberModel(0.00f, 0.00f, Float.MAX_VALUE, 1.0f));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Descuento:");
 
-        jSpinnerDescuento.setModel(new javax.swing.SpinnerNumberModel());
+        jSpinnerDescuento.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         jButtonAnadir.setBackground(new java.awt.Color(0, 204, 51));
         jButtonAnadir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -184,18 +187,29 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
         );
 
         JFormattedTextField txt = ((JSpinner.DefaultEditor) jSpinnerNumero.getEditor()).getTextField();
-        txt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(
-            new javax.swing.JFormattedTextField.AbstractFormatter() {
-                private final java.text.DecimalFormat formato = new java.text.DecimalFormat("0000");
+        txt.setFormatterFactory(new DefaultFormatterFactory(
+            new JFormattedTextField.AbstractFormatter() {
+                private final DecimalFormat formato = new DecimalFormat("0000");
+
+                {
+                    formato.setParseIntegerOnly(true);
+                }
 
                 @Override
                 public Object stringToValue(String text) throws java.text.ParseException {
-                    return formato.parse(text);
+                    Number num = formato.parse(text);
+                    int valor = num.intValue();
+
+                    if (valor < 0 || valor > 9999) {
+                        throw new java.text.ParseException("Valor fuera de rango (0000-9999)", 0);
+                    }
+
+                    return Integer.valueOf(valor);
                 }
 
                 @Override
                 public String valueToString(Object value) throws java.text.ParseException {
-                    if (value == null) return "0000";
+                    if (value == null) return "0001";
                     return formato.format(((Number) value).intValue());
                 }
             }
@@ -205,15 +219,48 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
             new javax.swing.JFormattedTextField.AbstractFormatter() {
                 private final java.text.DecimalFormat formato = new java.text.DecimalFormat("0.00");
 
+                {
+                    formato.setParseBigDecimal(true); // Opcional: más preciso si querés
+                }
+
                 @Override
                 public Object stringToValue(String text) throws java.text.ParseException {
-                    return formato.parse(text);
+                    Number num = formato.parse(text);
+                    double valor = num.doubleValue();
+
+                    if (valor < 0.0 || valor > Double.MAX_VALUE) {
+                        throw new java.text.ParseException("El valor debe estar entre 0 y " + Double.MAX_VALUE, 0);
+                    }
+                    return Double.valueOf(valor); // asegurate del tipo correcto
                 }
 
                 @Override
                 public String valueToString(Object value) throws java.text.ParseException {
                     if (value == null) return "0.00";
                     return formato.format(((Number) value).doubleValue());
+                }
+            }
+        ));
+        JFormattedTextField txtDescuento = ((JSpinner.DefaultEditor) jSpinnerDescuento.getEditor()).getTextField();
+
+        // Formato para mostrar siempre 2 cifras (opcional, por estética)
+        txtDescuento.setFormatterFactory(new DefaultFormatterFactory(
+            new JFormattedTextField.AbstractFormatter() {
+                private final DecimalFormat formato = new DecimalFormat("#");
+
+                @Override
+                public Object stringToValue(String text) throws java.text.ParseException {
+                    Number num = formato.parse(text);
+                    if (num.intValue() < 0) {
+                        throw new java.text.ParseException("Descuento no puede ser negativo", 0);
+                    }
+                    return num.intValue();
+                }
+
+                @Override
+                public String valueToString(Object value) throws java.text.ParseException {
+                    if (value == null) return "00";
+                    return formato.format(((Number) value).intValue());
                 }
             }
         ));
@@ -266,7 +313,6 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
 
             boolean resultado = productos.anadir();
             if (resultado) {
-                formularioPrincipal.recargarTablaProductos();
                 this.limpiarFormulario();
                 JOptionPane.showMessageDialog(null, "Producto añadido correctamente",
                         "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -280,6 +326,8 @@ public class FormularioNuevoProducto extends javax.swing.JDialog {
 
     private void jButtonCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarActionPerformed
         // TODO add your handling code here:
+        
+        this.dispose();
     }//GEN-LAST:event_jButtonCerrarActionPerformed
 
     /**

@@ -1,5 +1,7 @@
 package bean;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,13 +9,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.EventObject;
 import java.util.List;
 
 /**
+ * Clase JavaBean que gestiona operaciones CRUD sobre productos almacenados en
+ * una base de datos MySQL. Además, permite la notificación de eventos cuando la
+ * base de datos ha sido modificada.
  *
- * @author andres
+ * Esta clase funciona como un modelo de datos que encapsula la lógica de
+ * conexión a base de datos, así como la manipulación de productos. Implementa
+ * `Serializable` para permitir su uso en contextos donde se requiera
+ * serialización (como aplicaciones distribuidas).
+ *
+ * También permite la suscripción a eventos de cambio mediante un listener
+ * personalizado.
+ *
+ * @autor: andres
  */
 public class ProductoBean implements Serializable {
+
+    private final PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
+    private BDModificadaListener receptor;
 
     // Propiedades del bean
     protected String nombreBD;
@@ -139,6 +157,10 @@ public class ProductoBean implements Serializable {
         this.descuento = descuento;
     }
 
+    /**
+     * Establece una conexión a la base de datos definida por el atributo
+     * `nombreBD`. Se conecta a una base de datos MySQL
+     */
     private void conectarBD() {
 
         // parametros de la conexion
@@ -150,17 +172,21 @@ public class ProductoBean implements Serializable {
             // establece la conexion
             conexionDB = DriverManager
                     .getConnection("jdbc:mysql://localhost:3307/" + nombreDB, username, password);
-            System.out.println("Conexion establecida correctamente");
+            System.out.println("Conexión a la base de datos establecida correctamente.");
         } catch (SQLException ex) {
             System.out.println("Error de conexión a la base de datos. " + ex.getMessage());
         }
     }
 
+    /**
+     * Cierra la conexión activa con la base de datos, si existe
+     */
     public void cerrarConexionBD() {
         // si la conexion esta creada, la cerramos
         if (conexionDB != null) {
             try {
                 conexionDB.close();
+                System.out.println("Conexión a la base de datos cerrada correctamente.");
             } catch (SQLException ex) {
                 System.out.println("Error al cerrar la conexión a la base de datos." + ex.getMessage());
             }
@@ -168,6 +194,12 @@ public class ProductoBean implements Serializable {
 
     }
 
+    /**
+     * Actualiza los campos del bean con los valores del producto ubicado en la
+     * posición dada.
+     *
+     * @param i índice del producto en la lista `productos`.
+     */
     public void seleccionarFila(int i) {
 
         if (i < this.productos.size()) {
@@ -186,14 +218,20 @@ public class ProductoBean implements Serializable {
         }
     }
 
+    /**
+     * Obtiene todos los productos desde la base de datos y los almacena en la
+     * lista interna `productos`.
+     *
+     * @return lista de objetos Producto obtenidos de la base de datos.
+     */
     public List<Producto> obtenerTodos() {
         if (this.conexionDB == null) {
             this.conectarBD();
         }
 
         productos = new ArrayList<>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
 
         try {
             // sentencia SQL para obtener todos los productos
@@ -222,10 +260,22 @@ public class ProductoBean implements Serializable {
         return this.productos;
     }
 
+    /**
+     * Retorna la cantidad de productos cargados en la lista interna.
+     *
+     * @return número de productos en la lista.
+     */
     public int getCantidad() {
         return this.productos.size();
     }
 
+    /**
+     * Añade un nuevo producto a la base de datos utilizando los valores
+     * actuales del bean.
+     *
+     * @return true si el producto fue añadido exitosamente, false en caso
+     * contrario.
+     */
     public boolean anadir() {
         if (this.conexionDB == null) {
             this.conectarBD();
@@ -235,6 +285,8 @@ public class ProductoBean implements Serializable {
         boolean resultado = false;
 
         try {
+            String referenciaActual = this.getReferencia();
+
             // sentencia de inserción SQL con parametros
             String sql = "INSERT INTO productos (referencia, nombre, descripcion, precio, descuento) "
                     + "VALUES (?, ?, ?, ?, ?)";
@@ -252,6 +304,12 @@ public class ProductoBean implements Serializable {
             int filas = pstmt.executeUpdate();
             resultado = filas > 0;
 
+            if (resultado && receptor != null) {
+                receptor.capturarBDModificada(new BDModificadaEvent(this));
+                System.out.println("Producto con referencia " + referenciaActual
+                        + " añadido correctamente.");
+            }
+
         } catch (SQLException ex) {
             System.out.println("Error al añadir un producto. " + ex.getMessage());
         }
@@ -259,6 +317,12 @@ public class ProductoBean implements Serializable {
         return resultado;
     }
 
+    /**
+     * Elimina un producto de la base de datos por su referencia.
+     *
+     * @param referenciaProducto referencia del producto a eliminar.
+     * @return true si la operación fue exitosa, false en caso contrario.
+     */
     public boolean eliminar(String referenciaProducto) {
         if (this.conexionDB == null) {
             this.conectarBD();
@@ -268,7 +332,7 @@ public class ProductoBean implements Serializable {
         boolean resultado = false;
 
         try {
-            
+
             // sentencia de eliminacion SQL con parametros
             String sql = "DELETE FROM productos WHERE referencia = ?";
             pstmt = conexionDB.prepareStatement(sql);
@@ -277,6 +341,12 @@ public class ProductoBean implements Serializable {
             int filas = pstmt.executeUpdate();
             resultado = filas > 0;
 
+            if (resultado && receptor != null) {
+                receptor.capturarBDModificada(new BDModificadaEvent(this));
+                System.out.println("Producto con referencia " + referenciaProducto
+                        + " eliminado correctamente.");
+            }
+
         } catch (SQLException ex) {
             System.out.println("Error al eliminar un producto. " + ex.getMessage());
         }
@@ -284,6 +354,9 @@ public class ProductoBean implements Serializable {
         return resultado;
     }
 
+    /**
+     * Clase interna que representa un producto.
+     */
     private class Producto {
 
         private final String referencia;
@@ -320,6 +393,76 @@ public class ProductoBean implements Serializable {
             return descuento;
         }
 
+    }
+
+    /**
+     * Clase que representa un evento personalizado que se dispara cuando la
+     * base de datos ha sido modificada.
+     */
+    public class BDModificadaEvent extends EventObject {
+
+        /**
+         * Constructor del evento.
+         *
+         * @param source el objeto que origina el evento.
+         */
+        public BDModificadaEvent(Object source) {
+            super(source);
+        }
+    }
+
+    /**
+     * Interfaz para los listeners que desean ser notificados cuando la base de
+     * datos ha sido modificada.
+     */
+    public interface BDModificadaListener extends EventListener {
+
+        /**
+         * Método que se invoca cuando ocurre una modificación en la base de
+         * datos.
+         *
+         * @param ev evento que encapsula la información de la modificación.
+         */
+        void capturarBDModificada(BDModificadaEvent ev);
+    }
+
+    /**
+     * Registra un listener para eventos de modificación de base de datos.
+     *
+     * @param receptor listener a registrar.
+     */
+    public void addBDModificadaListener(BDModificadaListener receptor) {
+        this.receptor = receptor;
+    }
+
+    /**
+     * Elimina un listener de eventos de modificación de base de datos.
+     *
+     * @param receptor listener a eliminar.
+     */
+    public void removeBDModificadaListener(BDModificadaListener receptor) {
+        this.receptor = null;
+    }
+
+    /**
+     * Agrega un {@link PropertyChangeListener} que será notificado cada vez que
+     * ocurra un cambio en una propiedad del bean.
+     *
+     * @param listener el oyente que desea ser notificado de cambios en las
+     * propiedades del bean.
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertySupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Elimina un {@link PropertyChangeListener} previamente registrado.
+     *
+     * @param listener el oyente que ya no desea recibir notificaciones de
+     * cambios de propiedades.
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertySupport.removePropertyChangeListener(listener);
     }
 
 }
