@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CrearBeans_Andres_Samuel_Podadera_Gonzalez" default="default" basedir=".">
+    <description>Builds, tests, and runs the project CrearBeans_Andres_Samuel_Podadera_Gonzalez.</description>
+
+    <!-- Importa la configuración y targets de NetBeans -->
+    <import file="nbproject/build-impl.xml"/>
+
+    <!-- Tareas personalizadas para generar fat JAR -->
+    
+    <!-- Propiedades -->
+    <property name="src.dir" location="src"/>
+    <property name="build.classes.dir" location="build/classes"/>
+    <property name="dist.dir" location="dist"/>
+    <property name="fatjar.dir" location="build/fatjar"/>
+    <property name="driver.jar" location="mysql-connector-j-9.1.0.jar"/>
+
+    <!-- Crear fat JAR con driver incluido -->
+    <target name="jar-todo-en-uno" depends="jar">
+        
+        <!-- 1. Extraer driver -->
+        <mkdir dir="temp-driver"/>
+        <unzip src="${driver.jar}" dest="temp-driver"/>
+
+        <!-- 2. Combinar clases compiladas + driver -->
+        <mkdir dir="${fatjar.dir}"/>
+        <copy todir="${fatjar.dir}">
+            <fileset dir="${build.classes.dir}"/>
+            <fileset dir="temp-driver"/>
+        </copy>
+
+        <!-- 3. Crear JAR final -->
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/ProductoBeanFatJar.jar" basedir="${fatjar.dir}">
+            <!-- Main-Class opcional -->
+            <manifest>
+                <attribute name="Main-Class" value="bean.ProductoBean"/>
+            </manifest>
+        </jar>
+
+        <!-- 4. Limpieza temporal -->
+        <delete dir="temp-driver"/>
+    </target>
+</project>
